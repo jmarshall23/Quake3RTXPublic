@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LocalDebuggerCommand>D:\projects\Quake3\quake3.exe</LocalDebuggerCommand>
+    <LocalDebuggerCommandArguments>+set r_fullscreen 0 +set r_mode -1 +set r_customwidth 1920 +set r_customheight 1080 +set in_mouse -1 +set sv_pure 0 +map q3dm7</LocalDebuggerCommandArguments>
+    <LocalDebuggerWorkingDirectory>D:\projects\Quake3</LocalDebuggerWorkingDirectory>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LocalDebuggerCommand>D:\projects\Quake3\quake3.exe</LocalDebuggerCommand>
+    <LocalDebuggerCommandArguments>+set r_fullscreen 0 +set r_mode -1 +set r_customwidth 1920 +set r_customheight 1080 +set in_mouse -1 +set sv_pure 0 +map q3dm7</LocalDebuggerCommandArguments>
+    <LocalDebuggerWorkingDirectory>D:\projects\Quake3</LocalDebuggerWorkingDirectory>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+  </PropertyGroup>
+</Project>

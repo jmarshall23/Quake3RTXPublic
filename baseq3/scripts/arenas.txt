@@ -1,0 +1,30 @@
+{
+map			"q3dm1"
+bots		"major"
+longname	"Arena Gate"
+type		"single ffa tourney"
+}
+
+{
+map			"q3dm7"
+bots		"daemia visor grunt stripe"
+longname	"Temple of Retribution"
+fraglimit	20
+type		"single ffa team"
+}
+
+{
+map			"q3dm17"
+bots		"stripe grunt visor"
+longname	"The Longest Yard"
+fraglimit	20
+type		"single ffa"
+}
+
+{
+map			"q3tourney2"
+bots		"sarge"
+longname	"The Proving Grounds"
+type		"single ffa tourney"
+}
+

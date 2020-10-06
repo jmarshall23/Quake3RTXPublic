@@ -1,0 +1,638 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="jpeg">
+      <UniqueIdentifier>{b68a8181-fab9-4858-bb21-166fdcfed0df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="jpeg\Source Files No. 1">
+      <UniqueIdentifier>{27460ce6-4b4d-439c-becd-f4d1dea1d7d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="jpeg\Header Files No. 1">
+      <UniqueIdentifier>{d47ac443-6d0a-47bf-9f8a-62a97f3ffe25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FreeType2">
+      <UniqueIdentifier>{aa5d3c2d-fdc8-45d6-a09b-378971e6c551}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="FreeType2\Include files">
+      <UniqueIdentifier>{3fc33e9c-6787-4093-9d1e-5e903caf5eaa}</UniqueIdentifier>
+      <Extensions>*.h</Extensions>
+    </Filter>
+    <Filter Include="Renderer">
+      <UniqueIdentifier>{2712c3ce-2546-4f88-a348-2d7d0194395b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Raytracing">
+      <UniqueIdentifier>{d64e09dc-b6eb-4c0e-bba1-9ba6a82ef218}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Raytracing\math">
+      <UniqueIdentifier>{fd87992e-62b3-48dc-885d-7101ea4e07dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Raytracing\libs">
+      <UniqueIdentifier>{b966350d-2789-43ae-a080-ddf1a5ffe78c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Raytracing\libs\xml">
+      <UniqueIdentifier>{f5ac2465-bd14-4fb6-9b6d-cf35c92c33a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Raytracing\d3d12">
+      <UniqueIdentifier>{3aa11c82-8be4-49ad-82ae-be7520710ade}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Raytracing\d3d12\nv_helpers_dx12">
+      <UniqueIdentifier>{0988ee87-78ca-4bb3-9534-e3d935d91a5c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\jpeg-6\jcapimin.c">
+      <Filter>jpeg\Source Files No. 1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\jpeg-6\jccoefct.c">
+      <Filter>jpeg\Source Files No. 1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\jpeg-6\jccolor.c">
+      <Filter>jpeg\Source Files No. 1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\jpeg-6\jcdctmgr.c">
+      <Filter>jpeg\Source Files No. 1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\jpeg-6\jchuff.c">
+      <Filter>jpeg\Source Files No. 1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\jpeg-6\jcinit.c">
+      <Filter>jpeg\Source Files No. 1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\jpeg-6\jcmainct.c">
+      <Filter>jpeg\Source Files No. 1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\jpeg-6\jcmarker.c">
+      <Filter>jpeg\Source Files No. 1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\jpeg-6\jcmaster.c">
+      <Filter>jpeg\Source Files No. 1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\jpeg-6\jcomapi.c">
+      <Filter>jpeg\Source Files No. 1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\jpeg-6\jcparam.c">
+      <Filter>jpeg\Source Files No. 1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\jpeg-6\jcphuff.c">
+      <Filter>jpeg\Source Files No. 1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\jpeg-6\jcprepct.c">
+      <Filter>jpeg\Source Files No. 1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\jpeg-6\jcsample.c">
+      <Filter>jpeg\Source Files No. 1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\jpeg-6\jctrans.c">
+      <Filter>jpeg\Source Files No. 1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\jpeg-6\jdapimin.c">
+      <Filter>jpeg\Source Files No. 1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\jpeg-6\jdapistd.c">
+      <Filter>jpeg\Source Files No. 1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\jpeg-6\jdatadst.c">
+      <Filter>jpeg\Source Files No. 1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\jpeg-6\jdatasrc.c">
+      <Filter>jpeg\Source Files No. 1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\jpeg-6\jdcoefct.c">
+      <Filter>jpeg\Source Files No. 1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\jpeg-6\jdcolor.c">
+      <Filter>jpeg\Source Files No. 1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\jpeg-6\jddctmgr.c">
+      <Filter>jpeg\Source Files No. 1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\jpeg-6\jdhuff.c">
+      <Filter>jpeg\Source Files No. 1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\jpeg-6\jdinput.c">
+      <Filter>jpeg\Source Files No. 1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\jpeg-6\jdmainct.c">
+      <Filter>jpeg\Source Files No. 1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\jpeg-6\jdmarker.c">
+      <Filter>jpeg\Source Files No. 1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\jpeg-6\jdmaster.c">
+      <Filter>jpeg\Source Files No. 1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\jpeg-6\jdpostct.c">
+      <Filter>jpeg\Source Files No. 1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\jpeg-6\jdsample.c">
+      <Filter>jpeg\Source Files No. 1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\jpeg-6\jdtrans.c">
+      <Filter>jpeg\Source Files No. 1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\jpeg-6\jerror.c">
+      <Filter>jpeg\Source Files No. 1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\jpeg-6\jfdctflt.c">
+      <Filter>jpeg\Source Files No. 1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\jpeg-6\jidctflt.c">
+      <Filter>jpeg\Source Files No. 1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\jpeg-6\jmemmgr.c">
+      <Filter>jpeg\Source Files No. 1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\jpeg-6\jmemnobs.c">
+      <Filter>jpeg\Source Files No. 1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\jpeg-6\jutils.c">
+      <Filter>jpeg\Source Files No. 1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ft2\ahangles.c">
+      <Filter>FreeType2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ft2\ahglobal.c">
+      <Filter>FreeType2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ft2\ahglyph.c">
+      <Filter>FreeType2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ft2\ahhint.c">
+      <Filter>FreeType2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ft2\ahmodule.c">
+      <Filter>FreeType2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ft2\ahoptim.c">
+      <Filter>FreeType2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ft2\ftcalc.c">
+      <Filter>FreeType2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ft2\ftdebug.c">
+      <Filter>FreeType2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ft2\ftextend.c">
+      <Filter>FreeType2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ft2\ftglyph.c">
+      <Filter>FreeType2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ft2\ftgrays.c">
+      <Filter>FreeType2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ft2\ftinit.c">
+      <Filter>FreeType2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ft2\ftlist.c">
+      <Filter>FreeType2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ft2\ftmm.c">
+      <Filter>FreeType2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ft2\ftnames.c">
+      <Filter>FreeType2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ft2\ftobjs.c">
+      <Filter>FreeType2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ft2\ftoutln.c">
+      <Filter>FreeType2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ft2\ftraster.c">
+      <Filter>FreeType2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ft2\ftrend1.c">
+      <Filter>FreeType2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ft2\ftsmooth.c">
+      <Filter>FreeType2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ft2\ftstream.c">
+      <Filter>FreeType2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ft2\ftsystem.c">
+      <Filter>FreeType2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ft2\sfdriver.c">
+      <Filter>FreeType2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ft2\sfobjs.c">
+      <Filter>FreeType2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ft2\ttcmap.c">
+      <Filter>FreeType2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ft2\ttdriver.c">
+      <Filter>FreeType2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ft2\ttgload.c">
+      <Filter>FreeType2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ft2\ttinterp.c">
+      <Filter>FreeType2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ft2\ttload.c">
+      <Filter>FreeType2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ft2\ttobjs.c">
+      <Filter>FreeType2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ft2\ttpload.c">
+      <Filter>FreeType2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ft2\ttpost.c">
+      <Filter>FreeType2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ft2\ttsbit.c">
+      <Filter>FreeType2</Filter>
+    </ClCompile>
+    <ClCompile Include="tr_animation.c">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="tr_backend.c">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="tr_bsp.c">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="tr_cmds.c">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="tr_curve.c">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="tr_flares.c">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="tr_font.c">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="tr_image.c">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="tr_init.c">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="tr_light.c">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="tr_main.c">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="tr_marks.c">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="tr_mesh.c">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="tr_model.c">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="tr_noise.c">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="tr_scene.c">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="tr_shade.c">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="tr_shade_calc.c">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="tr_shader.c">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="tr_shadows.c">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="tr_sky.c">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="tr_surface.c">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="tr_world.c">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\win32\win_gamma.c">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\win32\win_glimp.c">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\win32\win_qgl.c">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\raytracing\math\matrix.cpp">
+      <Filter>Raytracing\math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\raytracing\libs\xml\tinyxml2.cpp">
+      <Filter>Raytracing\libs\xml</Filter>
+    </ClCompile>
+    <ClCompile Include="..\raytracing\d3d12\d3d12_composite.cpp">
+      <Filter>Raytracing\d3d12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\raytracing\d3d12\d3d12_main.cpp">
+      <Filter>Raytracing\d3d12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\raytracing\d3d12\d3d12_raytrace_cleanup.cpp">
+      <Filter>Raytracing\d3d12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\raytracing\d3d12\d3d12_raytrace_entities.cpp">
+      <Filter>Raytracing\d3d12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\raytracing\d3d12\d3d12_raytrace_lights.cpp">
+      <Filter>Raytracing\d3d12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\raytracing\d3d12\d3d12_raytrace_mega.cpp">
+      <Filter>Raytracing\d3d12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\raytracing\d3d12\d3d12_raytrace_mesh.cpp">
+      <Filter>Raytracing\d3d12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\raytracing\d3d12\d3d12_ui.cpp">
+      <Filter>Raytracing\d3d12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\raytracing\d3d12\tinydx.cpp">
+      <Filter>Raytracing\d3d12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\raytracing\d3d12\nv_helpers_dx12\BottomLevelASGenerator.cpp">
+      <Filter>Raytracing\d3d12\nv_helpers_dx12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\raytracing\d3d12\nv_helpers_dx12\RaytracingPipelineGenerator.cpp">
+      <Filter>Raytracing\d3d12\nv_helpers_dx12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\raytracing\d3d12\nv_helpers_dx12\RootSignatureGenerator.cpp">
+      <Filter>Raytracing\d3d12\nv_helpers_dx12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\raytracing\d3d12\nv_helpers_dx12\ShaderBindingTableGenerator.cpp">
+      <Filter>Raytracing\d3d12\nv_helpers_dx12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\raytracing\d3d12\nv_helpers_dx12\TopLevelASGenerator.cpp">
+      <Filter>Raytracing\d3d12\nv_helpers_dx12</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\jpeg-6\jchuff.h">
+      <Filter>jpeg\Header Files No. 1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\jpeg-6\jconfig.h">
+      <Filter>jpeg\Header Files No. 1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\jpeg-6\jdct.h">
+      <Filter>jpeg\Header Files No. 1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\jpeg-6\jdhuff.h">
+      <Filter>jpeg\Header Files No. 1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\jpeg-6\jerror.h">
+      <Filter>jpeg\Header Files No. 1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\jpeg-6\jinclude.h">
+      <Filter>jpeg\Header Files No. 1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\jpeg-6\jmemsys.h">
+      <Filter>jpeg\Header Files No. 1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\jpeg-6\jmorecfg.h">
+      <Filter>jpeg\Header Files No. 1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\jpeg-6\jpegint.h">
+      <Filter>jpeg\Header Files No. 1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\jpeg-6\jpeglib.h">
+      <Filter>jpeg\Header Files No. 1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\jpeg-6\jversion.h">
+      <Filter>jpeg\Header Files No. 1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\qcommon\cm_public.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\win32\glw_win.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\game\q_shared.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\qcommon\qcommon.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\qcommon\qfiles.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="qgl.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\game\surfaceflags.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="tr_local.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="tr_public.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\cgame\tr_types.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\win32\win_local.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\raytracing\math\vectormath.h">
+      <Filter>Raytracing\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\raytracing\libs\xml\tinyxml2.h">
+      <Filter>Raytracing\libs\xml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\raytracing\d3d12\d3d12_local.h">
+      <Filter>Raytracing\d3d12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\raytracing\d3d12\d3dx12.h">
+      <Filter>Raytracing\d3d12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\raytracing\d3d12\DXRHelper.h">
+      <Filter>Raytracing\d3d12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\raytracing\d3d12\DXSampleHelper.h">
+      <Filter>Raytracing\d3d12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\raytracing\d3d12\tinydx.h">
+      <Filter>Raytracing\d3d12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\raytracing\d3d12\nv_helpers_dx12\BottomLevelASGenerator.h">
+      <Filter>Raytracing\d3d12\nv_helpers_dx12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\raytracing\d3d12\nv_helpers_dx12\RaytracingPipelineGenerator.h">
+      <Filter>Raytracing\d3d12\nv_helpers_dx12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\raytracing\d3d12\nv_helpers_dx12\RootSignatureGenerator.h">
+      <Filter>Raytracing\d3d12\nv_helpers_dx12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\raytracing\d3d12\nv_helpers_dx12\ShaderBindingTableGenerator.h">
+      <Filter>Raytracing\d3d12\nv_helpers_dx12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\raytracing\d3d12\nv_helpers_dx12\TopLevelASGenerator.h">
+      <Filter>Raytracing\d3d12\nv_helpers_dx12</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\ft2\ahangles.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\ahglobal.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\ahglyph.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\ahhint.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\ahloader.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\ahmodule.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\ahoptim.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\ahtypes.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\autohint.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\freetype.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\ftbbox.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\ftcalc.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\ftconfig.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\ftdebug.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\ftdriver.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\fterrors.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\ftextend.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\ftglyph.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\ftimage.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\ftlist.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\ftmemory.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\ftmm.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\ftmodule.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\ftnames.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\ftobjs.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\ftoption.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\ftoutln.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\ftrender.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\ftstream.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\ftsystem.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\fttypes.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\psnames.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\sfnt.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\t1errors.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\t1tables.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\t1types.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\t2errors.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\t2types.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\ttdriver.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\tterrors.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\ttgload.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\ttinterp.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\ttnameid.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\ttobjs.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\ttpload.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\tttables.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\tttags.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ft2\tttypes.h">
+      <Filter>FreeType2\Include files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ref_trin.def">
+      <Filter>Renderer</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\raytracing\libs\dxcompiler.lib">
+      <Filter>Raytracing\libs</Filter>
+    </Library>
+  </ItemGroup>
+</Project>

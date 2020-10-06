@@ -1,0 +1,1 @@
+quake3.exe +set r_fullscreen 0 +set r_mode -1 +set r_customwidth 1920 +set r_customheight 1080 +set in_mouse -1 +set sv_pure 0 +map q3dm7
