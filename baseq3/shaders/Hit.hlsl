@@ -63,21 +63,21 @@ float spot_attenuation(float r, float f, float d, float3 normal, float3 dir, flo
 }
 
 float point_attenuation(float r, float f, float d, float3 normal, float3 dir) {
-	//r = r * 5;
-	//return pow(max(0.0, 1.0 - (d / r)), 1.0);
-	float linearScale = 1.0 / 8000;
-	float lightPointScale				=  7500;
-	
-	float angle = dot(normal, dir);
-	if(r > 0)
-	{
-		float photons = r * lightPointScale;
-		float c = photons / ( d * d ) * angle;
-		return c / 64;
-	}	
-	float photons = -r * lightPointScale;
-	
-	return (angle * photons * linearScale - d) / 128;
+	r = r * 2;
+	return pow(max(0.0, 1.0 - (d / r)), 1.0);
+	//float linearScale = 1.0 / 8000;
+	//float lightPointScale				=  7500;
+	//
+	//float angle = dot(normal, dir);
+	//if(r > 0)
+	//{
+	//	float photons = r * lightPointScale;
+	//	float c = photons / ( d * d ) * angle;
+	//	return c / 64;
+	//}	
+	//float photons = -r * lightPointScale;
+	//
+	//return (angle * photons * linearScale - d) / 128;
 }
 
 // Utility function to get a vector perpendicular to an input vector 
@@ -226,18 +226,18 @@ bool IsLightShadowed(float3 worldOrigin, float3 lightDir, float distance)
   float3 ndotl = 0;
   float3 debug = float3(1, 1, 1);
   
+  float3 normal = BTriVertex[vertId + 0].normal;
+  bool isBackFacing = dot(normal, WorldRayDirection()) > 0.f;
+  if (isBackFacing)
+	normal = -normal;
+  
   // 2 is emissive
   if(BTriVertex[vertId + 0].st.z != 2 && BTriVertex[vertId + 0].st.z != 3)
-  {
-    float3 normal = BTriVertex[vertId + 0].normal;
+  {    
 	for(int i = 0; i < 256; i++)
 	{	  
 		if(lightInfo[i].origin_radius.w == 0)
 			continue;
-
-		bool isBackFacing = dot(normal, WorldRayDirection()) > 0.f;
-		if (isBackFacing)
-			normal = -normal;
 		
 		float3 lightPos = (lightInfo[i].origin_radius.xyz);
 		float3 centerLightDir = lightPos - worldOrigin;
@@ -269,14 +269,14 @@ bool IsLightShadowed(float3 worldOrigin, float3 lightDir, float distance)
 	float3 sunvector = float3(-448, -704, 600) - worldOrigin;
 	float sunlength = length(sunvector);
 	
-	bool isBackFacing = dot(normal, sunvector) > 0.f;
-	if (isBackFacing)
-	{
-		if(!IsLightShadowed(worldOrigin, normalize(sunvector), 900))
-		{
-			ndotl += float3(0.84, 0.72, 0.47); // normalize(centerLightDir); //max(0.f, dot(normal, normalize(centerLightDir))); 
-		}
-	}
+	//bool isBackFacing = dot(normal, sunvector) > 0.f;
+	//if (isBackFacing)
+	//{
+	//	if(!IsLightShadowed(worldOrigin, normalize(sunvector), 900))
+	//	{
+	//		ndotl += float3(0.84, 0.72, 0.47); // normalize(centerLightDir); //max(0.f, dot(normal, normalize(centerLightDir))); 
+	//	}
+	//}
   }
   else
   {
@@ -340,8 +340,7 @@ bool IsLightShadowed(float3 worldOrigin, float3 lightDir, float distance)
   payload.colorAndDistance = float4(hitColor, 1.0);//float4(hitColor * ndotl * debug, RayTCurrent());
   payload.lightColor = float4(ndotl, BTriVertex[vertId + 0].st.z);
   payload.worldOrigin.xyz = worldOrigin.xyz;
-  
-  float3 normal = BTriVertex[vertId + 0].normal;
+
   payload.worldNormal.x = normal.x;
   payload.worldNormal.y = normal.y;
   payload.worldNormal.z = normal.z;
