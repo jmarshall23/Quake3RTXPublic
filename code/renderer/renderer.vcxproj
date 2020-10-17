@@ -2137,6 +2137,7 @@
       <Optimization Condition="'$(Configuration)|$(Platform)'=='vector|Win32'">MaxSpeed</Optimization>
       <Optimization Condition="'$(Configuration)|$(Platform)'=='vector|x64'">MaxSpeed</Optimization>
     </ClCompile>
+    <ClCompile Include="..\raytracing\d3d12\d3d12_clear.cpp" />
     <ClCompile Include="..\raytracing\d3d12\d3d12_composite.cpp" />
     <ClCompile Include="..\raytracing\d3d12\d3d12_main.cpp" />
     <ClCompile Include="..\raytracing\d3d12\d3d12_raytrace_cleanup.cpp" />

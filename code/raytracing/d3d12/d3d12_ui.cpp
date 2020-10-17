@@ -86,10 +86,10 @@ void GL_BlitUIImageUV(int texnum, float u, float v, int destx, int desty, int w,
 	byte* src = textures[texnum].data;
 	int width = textures[texnum].width;
 	int height = textures[texnum].height;
-	if (w > width)
+	if (w > width || w == -1)
 		w = width;
 
-	if (h > height)
+	if (h > height || h == -1)
 		h = height;
 
 	R_CopyImage(src, u * width, v * height, width, (byte*)uiTextureBuffer, destx, desty, glConfig.vidWidth, w, h);
@@ -114,7 +114,7 @@ void GL_BlitUIImageUVNoScale(int texnum, float u, float v, int destx, int desty,
 GL_Upload32
 ===============
 */
-void GL_Upload32(unsigned* data, int textureId, int width, int height, qboolean mipmap, qboolean alpha)
+void GL_Upload32(int textureId, unsigned* data, int width, int height, qboolean mipmap, qboolean alpha)
 {
 	textures[textureId].width = width;
 	textures[textureId].height = height;

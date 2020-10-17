@@ -5,7 +5,7 @@ cbuffer CameraParams : register(b0)
 {
   float4 timeViewOrg;
   float4 skyInfo;
-  float4 notUsed;
+  float4 fogInfo;
   float4 notUsed1;
   float4x4 projection;
   float4x4 viewI;
@@ -124,7 +124,7 @@ HitInfo FirePrimaryRay() {
       // between the hit/miss shaders and the raygen
       payload);
   gOutput[launchIndex] = float4(payload.colorAndDistance.rgb, 1.f);
-  gLightOutput[launchIndex] = float4(payload.lightColor.rgb, 1.f);
+  gLightOutput[launchIndex] += float4(payload.lightColor.rgb, 1.f);
   
   return payload;
 }
@@ -142,18 +142,26 @@ float3 CalculateClouds() {
 	return sky;
 }
 
+float getFogFactor(float d)
+{
+    const float FogMax = fogInfo.x;
+    const float FogMin = fogInfo.y;
+
+    return clamp(1 - (FogMax - d) / (FogMax - FogMin), 0.0, 1.0);
+}
+
 [shader("raygeneration")] void RayGen() {
 	HitInfo hit = FirePrimaryRay();
 	
+	uint2 launchIndex = DispatchRaysIndex().xy;
+	
 	if(hit.colorAndDistance.w == -1) {
 		float3 sky = CalculateClouds();
-		uint2 launchIndex = DispatchRaysIndex().xy;
 		gOutput[launchIndex] = float4(sky.x, sky.y, sky.z, 1.0);
 		gLightOutput[launchIndex] = float4(1, 1, 1, 1);
 	}
-	else if(hit.lightColor.w > 0)
-	{
-		  uint2 launchIndex = DispatchRaysIndex().xy;
+	else if(hit.lightColor.w > 0 && false)
+	{		 
           float2 dims = float2(DispatchRaysDimensions().xy);
 		  float2 d = (((launchIndex.xy + 0.5f) / dims.xy) * 2.f - 1.f);
 		  float4 target = mul(projectionI, float4(d.x, d.y, 1, 1));  
@@ -163,7 +171,7 @@ float3 CalculateClouds() {
 		  HitInfo payload;
 		  payload.colorAndDistance = float4(0, 0, 0, 0);
 
-		   ray.Origin = hit.worldOrigin + (hit.worldNormal * 10);
+		  ray.Origin = hit.worldOrigin + (hit.worldNormal * 10);
 		  ray.Direction = reflect(Direction, hit.worldNormal);
 		  ray.TMin = 0;
 		  ray.TMax = 100000;
@@ -221,9 +229,43 @@ float3 CalculateClouds() {
 			  // between the hit/miss shaders and the raygen
 			  payload);
 			  
+		   //if(payload.colorAndDistance.w == -1)
+		   //{
+			//	//float3 sky = clouds(ray.Direction);
+			//	// gOutput[launchIndex] = lerp(gOutput[launchIndex], float4(sky, 1.f), 0.3);
+			//	//gLightOutput[launchIndex] = lerp(gLightOutput[launchIndex], float4(sky, 1.f), 0.3);
+		   //}			  
+		   //else if(hit.lightColor.w == 3)
+		   //{
+		   //	    gOutput[launchIndex] = lerp(gOutput[launchIndex], float4(payload.colorAndDistance.rgb, 1.f), 1);
+			//	gLightOutput[launchIndex] = lerp(gLightOutput[launchIndex], float4(payload.lightColor.rgb, 1.f), 1);
+		   //}
+		   //else
 		   {
-				gOutput[launchIndex].xyz = lerp(gOutput[launchIndex], float4(payload.colorAndDistance.rgb, 1.f), 0.3);
-				gLightOutput[launchIndex].xyz = lerp(gLightOutput[launchIndex], float4(payload.lightColor.rgb, 1.f), 0.3);
+				//gOutput[launchIndex].xyz = lerp(gOutput[launchIndex], float4(payload.colorAndDistance.rgb, 1.f), 0.3);
+				float spec_contrib = hit.worldOrigin.w;
+				gLightOutput[launchIndex].xyz += lerp(gLightOutput[launchIndex], float4(payload.colorAndDistance.rgb * payload.lightColor.rgb * 8 * spec_contrib, 1.f), 0.3);
 		   }
 	}
+	
+	// Fog
+	if(hit.colorAndDistance.w != -1 && false)
+	{
+		float3 viewPos = float3(timeViewOrg.y, timeViewOrg.z, timeViewOrg.w);
+		float fog = getFogFactor(length(hit.worldOrigin.xyz - viewPos));
+		if(fogInfo.z == 1) {
+			gOutput[launchIndex].xyz = lerp(gOutput[launchIndex].xyz, float3(0.0, 0.0, 1.0), fog);
+		}
+		else if(fogInfo.z == 2) {
+			gOutput[launchIndex].xyz = lerp(gOutput[launchIndex].xyz, float3(1.0, 0.0, 0.0), fog);
+		}
+		else if(fogInfo.z == 3) {
+			gOutput[launchIndex].xyz = lerp(gOutput[launchIndex].xyz, float3(0.0, 1.0, 0.0), fog);
+		}
+		else {
+			gOutput[launchIndex].xyz = lerp(gOutput[launchIndex].xyz, float3(0.0, 0.0, 0.0), fog);
+		}
+		//gLightOutput[launchIndex].xyz = lerp(gLightOutput[launchIndex].xyz, float3(0.0, 0.0, 0.0), fog);
+	}
 }
+

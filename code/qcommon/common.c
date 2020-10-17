@@ -41,13 +41,8 @@ int demo_protocols[] =
 
 #define MIN_DEDICATED_COMHUNKMEGS 1
 #define MIN_COMHUNKMEGS 56
-#ifdef MACOS_X
-#define DEF_COMHUNKMEGS "64"
-#define DEF_COMZONEMEGS "24"
-#else
-#define DEF_COMHUNKMEGS "56"
-#define DEF_COMZONEMEGS "16"
-#endif
+#define DEF_COMHUNKMEGS "512"
+#define DEF_COMZONEMEGS "512"
 
 #define PAD(x,y) (((x)+(y)-1) & ~((y)-1))
 
@@ -1501,7 +1496,7 @@ void Com_InitHunkMemory( void ) {
 	}
 
 	// allocate the stack based hunk allocator
-	cv = Cvar_Get( "com_hunkMegs", DEF_COMHUNKMEGS, CVAR_LATCH | CVAR_ARCHIVE );
+	cv = Cvar_Get( "com_hunkMegs2", DEF_COMHUNKMEGS, CVAR_LATCH | CVAR_ARCHIVE );
 
 	// if we are not dedicated min allocation is 56, otherwise min is 1
 	if (com_dedicated && com_dedicated->integer) {

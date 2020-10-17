@@ -19,17 +19,19 @@ struct MegaTexture_t {
 
 std::vector<MegaEntry_t> megaEntries;
 MegaTexture_t megaTexture;
+MegaTexture_t megaTextureNormal;
 
 extern ComPtr<ID3D12DescriptorHeap> m_srvUavHeap;
 
 void GL_LoadMegaTexture(D3D12_CPU_DESCRIPTOR_HANDLE& srvPtr) {
-	const int width = 4096;
-	const int height = 4096;
+	int width;
+	int height;
 
-	byte* buffer = new byte[width * height * 4];
-	FILE* f = fopen("baseq3/mega/mega.raw", "rb");
-	fread(buffer, 1, width * height * 4, f);
-	fclose(f);
+	byte* buffer;
+	LoadTGA("mega/mega.tga", &buffer, &width, &height);
+	//FILE* f = fopen("baseq3/mega/mega.raw", "rb");
+	//fread(buffer, 1, width * height * 4, f);
+	//fclose(f);
 
 	// Create the texture.
 	{
@@ -80,10 +82,102 @@ void GL_LoadMegaTexture(D3D12_CPU_DESCRIPTOR_HANDLE& srvPtr) {
 		srvDesc.Texture2D.MipLevels = 1;
 		m_device->CreateShaderResourceView(megaTexture.texture2D.Get(), &srvDesc, srvPtr);
 	}
+
+	ri.Free(buffer);
 }
 
-void GL_FindMegaTile(const char *name, float *x, float *y, float *width, float *height)
+
+void GL_LoadMegaNormalTexture(D3D12_CPU_DESCRIPTOR_HANDLE& srvPtr) {
+	int width;
+	int height;
+
+	byte* buffer;
+	LoadTGA("mega/mega_local.tga", &buffer, &width, &height);
+	//FILE* f = fopen("baseq3/mega/mega.raw", "rb");
+	//fread(buffer, 1, width * height * 4, f);
+	//fclose(f);
+
+	// Create the texture.
+	{
+		// Describe and create a Texture2D.
+		D3D12_RESOURCE_DESC textureDesc = {};
+		textureDesc.MipLevels = 1;
+		textureDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+		textureDesc.Width = width;
+		textureDesc.Height = height;
+		textureDesc.Flags = D3D12_RESOURCE_FLAG_NONE;
+		textureDesc.DepthOrArraySize = 1;
+		textureDesc.SampleDesc.Count = 1;
+		textureDesc.SampleDesc.Quality = 0;
+		textureDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
+
+		ThrowIfFailed(m_device->CreateCommittedResource(
+			&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT),
+			D3D12_HEAP_FLAG_NONE,
+			&textureDesc,
+			D3D12_RESOURCE_STATE_COPY_DEST,
+			nullptr,
+			IID_PPV_ARGS(&megaTextureNormal.texture2D)));
+
+		const UINT64 uploadBufferSize = GetRequiredIntermediateSize(megaTextureNormal.texture2D.Get(), 0, 1);
+
+		// Create the GPU upload buffer.
+		ThrowIfFailed(m_device->CreateCommittedResource(
+			&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
+			D3D12_HEAP_FLAG_NONE,
+			&CD3DX12_RESOURCE_DESC::Buffer(uploadBufferSize),
+			D3D12_RESOURCE_STATE_GENERIC_READ,
+			nullptr,
+			IID_PPV_ARGS(&megaTextureNormal.textureUploadHeap)));
+
+		D3D12_SUBRESOURCE_DATA textureData = {};
+		textureData.pData = &buffer[0];
+		textureData.RowPitch = width * 4;
+		textureData.SlicePitch = textureData.RowPitch * height;
+
+		UpdateSubresources(m_commandList.Get(), megaTextureNormal.texture2D.Get(), megaTextureNormal.textureUploadHeap.Get(), 0, 0, 1, &textureData);
+		m_commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(megaTextureNormal.texture2D.Get(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE));
+
+		// Describe and create a SRV for the texture.
+		D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+		srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+		srvDesc.Format = textureDesc.Format;
+		srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
+		srvDesc.Texture2D.MipLevels = 1;
+		m_device->CreateShaderResourceView(megaTextureNormal.texture2D.Get(), &srvDesc, srvPtr);
+	}
+
+	ri.Free(buffer);
+}
+
+void GL_FindMegaTile(const char *name, float &x, float &y, float &width, float &height)
 {
+	for (int i = 0; i < megaEntries.size(); i++) {
+		if (!strcmp(megaEntries[i].name, name)) {
+			x = megaEntries[i].x;
+			y = megaEntries[i].y;
+			width = megaEntries[i].w;
+			height = megaEntries[i].h;
+			return;
+		}
+	}
+
+	for(int i = 0; i < megaEntries.size(); i++) {
+		if(strstr(megaEntries[i].name, name)) {
+			x = megaEntries[i].x;
+			y = megaEntries[i].y;
+			width = megaEntries[i].w;
+			height = megaEntries[i].h;
+			return;
+		}
+	}
+	x = -1;
+	y = -1;
+	width = -1;
+	height = -1;
+}
+
+void GL_FindMegaTile(const char* name, float* x, float* y, float* width, float* height) {
 	for (int i = 0; i < megaEntries.size(); i++) {
 		if (!strcmp(megaEntries[i].name, name)) {
 			*x = megaEntries[i].x;
@@ -94,8 +188,8 @@ void GL_FindMegaTile(const char *name, float *x, float *y, float *width, float *
 		}
 	}
 
-	for(int i = 0; i < megaEntries.size(); i++) {
-		if(strstr(megaEntries[i].name, name)) {
+	for (int i = 0; i < megaEntries.size(); i++) {
+		if (strstr(megaEntries[i].name, name)) {
 			*x = megaEntries[i].x;
 			*y = megaEntries[i].y;
 			*width = megaEntries[i].w;
@@ -131,7 +225,7 @@ void Tileset_ParseTile(tinyxml2::XMLNode* tile) {
 
 	MegaEntry_t entry;
 
-	COM_StripExtension(attribute->Value(), entry.name);
+	COM_StripExtension((char *)attribute->Value(), entry.name);
 	attribute = attribute->Next();
 	entry.x = atoi(attribute->Value());
 	attribute = attribute->Next();

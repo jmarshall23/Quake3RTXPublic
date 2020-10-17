@@ -48,7 +48,7 @@ buffer needs to be kept until the command list execution is finished.
 Example:
 
 TopLevelASGenerator topLevelAS;
-topLevelAS.AddInstance(instances1, matrix1, instanceId1, hitGroupIndex1);
+topLevelAS.AddInstance(instances1, matrix1, instancebaseq3, hitGroupIndex1);
 topLevelAS.AddInstance(instances2, matrix2, instanceId2, hitGroupIndex2);
 ...
 UINT64 scratchSize, resultSize, instanceDescsSize;

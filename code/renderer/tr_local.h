@@ -1638,8 +1638,8 @@ void create_brush_matrix(float matrix[16], refEntity_t* e, qboolean enable_left_
 void GL_BlitUIImage(int texnum, int srcx, int srcy, int destx, int desty);
 void GL_BlitUIImageUV(int texnum, float u, float v, int destx, int desty, int w, int h);
 void GL_BlitUIImageUVNoScale(int texnum, float u, float v, int destx, int desty, int w, int h);
-void GL_RegisterWorldLight(refEntity_t* ent, float x, float y, float z, float radius, float r, float g, float b, vec3_t lightNormal);
-
+void GL_RegisterWorldAreaLight(vec3_t normal, vec3_t mins, vec3_t maxs, int lightStyle, float radius, float r, float g, float b);
+void GL_RegisterWorldLight(refEntity_t* ent, float x, float y, float z, float radius, int lightStyle, float r, float g, float b);
 void GL_SetUICanvas(float x, float y, float width, float height);
 
 void GL_BeginRendering(int* x, int* y, int* width, int* height);
@@ -1651,6 +1651,8 @@ void GL_FindMegaTile(const char* name, float* x, float* y, float* width, float* 
 void* GL_LoadDXRMesh(msurface_t* surfaces, int numSurfaces);
 
 void* GL_LoadMD3RaytracedMesh(md3Header_t* mod, int frame);
+
+void LoadTGA(const char* name, byte** pic, int* width, int* height);
 
 extern int     r_finishDXRInit;
 

@@ -35,7 +35,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 
 static void LoadBMP( const char *name, byte **pic, int *width, int *height );
-static void LoadTGA( const char *name, byte **pic, int *width, int *height );
 static void LoadJPG( const char *name, byte **pic, int *width, int *height );
 
 static byte			 s_intensitytable[256];
@@ -1118,7 +1117,7 @@ TARGA LOADING
 LoadTGA
 =============
 */
-static void LoadTGA ( const char *name, byte **pic, int *width, int *height)
+void LoadTGA ( const char *name, byte **pic, int *width, int *height)
 {
 	int		columns, rows, numPixels;
 	byte	*pixbuf;

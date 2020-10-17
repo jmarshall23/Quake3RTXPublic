@@ -13,6 +13,8 @@ extern "C" {
 	#include "../../renderer/tr_local.h"
 };
 
+typedef model_t qmodel_t;
+
 using namespace Microsoft::WRL;
 
 #include <exception>
@@ -53,6 +55,7 @@ struct dxrVertex_t {
 	vec3_t st;
 	vec3_t normal;
 	vec4_t vtinfo;
+	vec4_t tangent;
 };
 
 struct dxrSurface_t {
@@ -111,8 +114,9 @@ extern std::vector<dxrMesh_t*> dxrMeshList;
 
 void GL_LoadMegaXML(const char* path);
 void GL_LoadMegaTexture(D3D12_CPU_DESCRIPTOR_HANDLE &srvPtr);
+void GL_LoadMegaNormalTexture(D3D12_CPU_DESCRIPTOR_HANDLE& srvPtr);
 void GL_CreateInstanceInfo(D3D12_CPU_DESCRIPTOR_HANDLE& srvPtr);
-//void GL_FindMegaTile(const char* name, float& x, float& y, float& width, float& height);
+void GL_FindMegaTile(const char* name, float& x, float& y, float& width, float& height);
 
 void GL_InitCompositePass(tr_texture *albedoPass, tr_texture *lightPass, tr_texture* compositeStagingPass, tr_texture *compositePass, tr_texture* uiTexturePass);
 void GL_CompositePass(tr_texture* albedoPass, tr_texture* lightPass, tr_texture* compositeStagingPass, tr_texture* compositePas, ID3D12GraphicsCommandList4* cmdList, ID3D12CommandAllocator *commandAllocator);
@@ -121,13 +125,18 @@ extern tr_renderer *renderer;
 extern std::vector<dxrVertex_t> sceneVertexes;
 
 extern "C" {
-	//byte* SV_FatPVS(vec3_t org, qmodel_t* worldmodel);
-	//mnode_t* SV_GetMapNodes(void);
+	byte* SV_FatPVS(vec3_t org, qmodel_t* worldmodel);
+	mnode_t* SV_GetMapNodes(void);
 	extern cvar_t		scr_fov;
 	extern char map_name[512];
-	extern model_t* loadmodel;
-	extern model_t* currentBrushModel;
+	extern qmodel_t* loadmodel;
 };
 
 void GL_BuildLightList(float x, float y, float z);
 void GL_ClearLights(void);
+void GL_WaitForPreviousFrame(void);
+
+void GL_InitClearPass(tr_texture* lightPass);
+void GL_ClearLightPass(tr_texture* lightPass, ID3D12GraphicsCommandList4* cmdList, ID3D12CommandAllocator* commandAllocator);
+
+extern int numWorldLights;

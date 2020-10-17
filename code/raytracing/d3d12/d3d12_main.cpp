@@ -36,9 +36,11 @@ ComPtr<IDxcBlob> m_rayGenLibrary;
 ComPtr<IDxcBlob> m_hitLibrary;
 ComPtr<IDxcBlob> m_missLibrary;
 ComPtr<IDxcBlob> m_shadowLibrary;
+ComPtr<IDxcBlob> m_secondHitLibrary;
 
 ComPtr<ID3D12RootSignature> m_rayGenSignature;
 ComPtr<ID3D12RootSignature> m_hitSignature;
+ComPtr<ID3D12RootSignature> m_hitSecondSignature;
 ComPtr<ID3D12RootSignature> m_shadowSignature;
 ComPtr<ID3D12RootSignature> m_missSignature;
 
@@ -66,6 +68,7 @@ ComPtr< ID3D12Resource > m_cameraBuffer;
 ComPtr< ID3D12DescriptorHeap > m_constHeap;
 uint32_t m_cameraBufferSize = 0;
 
+bool raytracingDataInit = false;
 byte* uiTextureBuffer = nullptr;
 
 void GL_WaitForPreviousFrame(void) 
@@ -98,6 +101,9 @@ GL_InitRaytracing
 void GL_InitRaytracing(int width, int height) {
 	Com_Printf("------ GL_InitRaytracing -------\n");
 
+	//Cvar_RegisterVariable(&r_pov_x);
+	//Cvar_RegisterVariable(&r_pov_y);
+
 	{
 		nv_helpers_dx12::RootSignatureGenerator rsc;
 		rsc.AddHeapRangesParameter(
@@ -122,12 +128,26 @@ void GL_InitRaytracing(int width, int height) {
 
 	{
 		nv_helpers_dx12::RootSignatureGenerator rsc;
+		rsc.AddHeapRangesParameter(
+			{ 
+			  {1 /*u1*/, 1 /*1 descriptor */, 0 /*use the implicit register space 0*/,
+			  D3D12_DESCRIPTOR_RANGE_TYPE_UAV /* UAV representing the output buffer*/,
+			  1 /*heap slot where the UAV is defined*/}			
+			});
+
+		m_hitSecondSignature = rsc.Generate(m_device.Get(), true);
+	}
+
+	{
+		nv_helpers_dx12::RootSignatureGenerator rsc;
 		rsc.AddRootParameter(D3D12_ROOT_PARAMETER_TYPE_SRV, 0);
 		rsc.AddHeapRangesParameter(
 			{ {1 /*t1*/, 1, 0, D3D12_DESCRIPTOR_RANGE_TYPE_SRV /*megatexture*/, 4},
 			  {2 /*t2*/, 1, 0, D3D12_DESCRIPTOR_RANGE_TYPE_SRV /*megatexture*/, 5},
 			  {3 /*t3*/, 1, 0, D3D12_DESCRIPTOR_RANGE_TYPE_SRV /*Top-level acceleration structure*/, 2},
 			  {4 /*t4*/, 1, 0, D3D12_DESCRIPTOR_RANGE_TYPE_SRV /*Top-level acceleration structure*/, 6},
+			  {0 /*b0*/, 1, 0, D3D12_DESCRIPTOR_RANGE_TYPE_CBV /*Camera parameters*/, 3},
+			  {5 /*t5*/, 1, 0, D3D12_DESCRIPTOR_RANGE_TYPE_SRV /*megatexture*/, 7},
 			});
 		m_hitSignature = rsc.Generate(m_device.Get(), true);
 	}
@@ -140,6 +160,8 @@ void GL_InitRaytracing(int width, int height) {
 			  {2 /*t2*/, 1, 0, D3D12_DESCRIPTOR_RANGE_TYPE_SRV /*megatexture*/, 5},
 			  {3 /*t3*/, 1, 0, D3D12_DESCRIPTOR_RANGE_TYPE_SRV /*Top-level acceleration structure*/, 2},
 			  {4 /*t4*/, 1, 0, D3D12_DESCRIPTOR_RANGE_TYPE_SRV /*Top-level acceleration structure*/, 6},
+			  {0 /*b0*/, 1, 0, D3D12_DESCRIPTOR_RANGE_TYPE_CBV /*Camera parameters*/, 3},
+			  {5 /*t5*/, 1, 0, D3D12_DESCRIPTOR_RANGE_TYPE_SRV /*megatexture*/, 7},
 			});
 		m_shadowSignature = rsc.Generate(m_device.Get(), true);
 	}
@@ -157,6 +179,9 @@ void GL_InitRaytracing(int width, int height) {
 	// #DXR Extra - Another ray type
 	m_shadowLibrary = nv_helpers_dx12::CompileShaderLibrary(L"baseq3/shaders/ShadowRay.hlsl");
 	pipeline.AddLibrary(m_shadowLibrary.Get(),{ L"ShadowClosestHit", L"ShadowMiss" });
+
+	m_secondHitLibrary = nv_helpers_dx12::CompileShaderLibrary(L"baseq3/shaders/HitSecond.hlsl");
+	pipeline.AddLibrary(m_secondHitLibrary.Get(), { L"SecondClosestHit", L"SecondMiss" });
 
 	// In a way similar to DLLs, each library is associated with a number of
 	// exported symbols. This
@@ -187,6 +212,7 @@ void GL_InitRaytracing(int width, int height) {
 	pipeline.AddHitGroup(L"HitGroup", L"ClosestHit");
 	// Hit group for all geometry when hit by a shadow ray
 	pipeline.AddHitGroup(L"ShadowHitGroup", L"ShadowClosestHit");
+	pipeline.AddHitGroup(L"SecondHitGroup", L"SecondClosestHit");
 
 	// The following section associates the root signature to each shader. Note
 	// that we can explicitly show that some shaders share the same root signature
@@ -198,9 +224,12 @@ void GL_InitRaytracing(int width, int height) {
 	pipeline.AddRootSignatureAssociation(m_missSignature.Get(), { L"Miss" });
 	pipeline.AddRootSignatureAssociation(m_hitSignature.Get(), { L"HitGroup" });
 	// #DXR Extra - Another ray type
-	pipeline.AddRootSignatureAssociation(m_shadowSignature.Get(),{ L"ShadowHitGroup" });
+	pipeline.AddRootSignatureAssociation(m_shadowSignature.Get(),{ L"ShadowHitGroup" });	
 	// #DXR Extra - Another ray type
 	pipeline.AddRootSignatureAssociation(m_missSignature.Get(), { L"Miss", L"ShadowMiss" });
+
+	pipeline.AddRootSignatureAssociation(m_hitSecondSignature.Get(), { L"SecondHitGroup" });
+	pipeline.AddRootSignatureAssociation(m_missSignature.Get(), { L"Miss", L"SecondMiss" });
 	
 	// The payload size defines the maximum size of the data carried by the rays,
 	// ie. the the data
@@ -356,16 +385,16 @@ void GL_Init(HWND hwnd, HINSTANCE hinstance, int width, int height)
 #if defined(_DEBUG)
 	// Enable the debug layer (requires the Graphics Tools "optional feature").
 	// NOTE: Enabling the debug layer after device creation will invalidate the active device.
-	{
-		ComPtr<ID3D12Debug> debugController;
-		if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController))))
-		{
-			debugController->EnableDebugLayer();
-
-			// Enable additional debug layers.
-			dxgiFactoryFlags |= DXGI_CREATE_FACTORY_DEBUG;
-		}
-	}
+	//{
+	//	ComPtr<ID3D12Debug> debugController;
+	//	if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController))))
+	//	{
+	//		debugController->EnableDebugLayer();
+	//
+	//		// Enable additional debug layers.
+	//		dxgiFactoryFlags |= DXGI_CREATE_FACTORY_DEBUG;
+	//	}
+	//}
 #endif
 
 	ComPtr<IDXGIFactory4> factory;
@@ -486,27 +515,30 @@ void GL_Init(HWND hwnd, HINSTANCE hinstance, int width, int height)
 		settings.swapchain.color_format = tr_format_b8g8r8a8_unorm;
 		settings.swapchain.depth_stencil_format = tr_format_undefined;
 
-		tr_create_renderer("Quake 3", &settings, &renderer, m_device.Get(), m_swapChain.Get());
+		tr_create_renderer("Darklight", &settings, &renderer, m_device.Get(), m_swapChain.Get());
 	}
 
 	GL_InitRaytracing(width, height);
 
+	GL_InitClearPass(lightTexture);
 	GL_InitCompositePass(albedoTexture, lightTexture, compositeStagingTexture, compositeTexture, uiTexture);
+
 
 	GL_LoadMegaXML("baseq3/mega/mega.xml");
 
 	DXGI_ADAPTER_DESC adapterDesc;	
     hardwareAdapter->GetDesc(&adapterDesc);
 
+	char gl_vendor[512];
 
-	sprintf(glConfig.vendor_string, "%ws", adapterDesc.Description);
-	Com_Printf("GL_GPU: %s\n", glConfig.vendor_string);
+	sprintf(gl_vendor, "%ws", adapterDesc.Description);
+	Com_Printf("GL_GPU: %s\n", gl_vendor);
 
-	strcpy(glConfig.renderer_string, "Direct3D 12");
-	Com_Printf("GL_RENDERER: %s\n", glConfig.renderer_string);
-
-	strcpy(glConfig.version_string, "Direct3D 12");
-	Com_Printf("GL_VERSION: %s\n", glConfig.version_string);
+	//gl_renderer = "Direct3D 12";
+	//Com_Printf("GL_RENDERER: %s\n", gl_renderer);
+	//
+	//gl_version = "DX12";
+	//Com_Printf("GL_VERSION: %s\n", gl_version);
 	//gl_extensions = "";
 	//Com_Printf("GL_EXTENSIONS: %s\n", gl_extensions);
 }
@@ -521,7 +553,7 @@ GL_BeginRendering
 */
 void GL_BeginRendering(int* x, int* y, int* width, int* height)
 {
-	extern cvar_t gl_clear;
+	GL_WaitForPreviousFrame();
 
 	*x = *y = 0;
 	*width = glConfig.vidWidth;
@@ -563,7 +595,7 @@ void GL_BeginRendering(int* x, int* y, int* width, int* height)
 
 void GL_EndRendering(void)
 {
-	//tr_util_update_texture_uint8(renderer->graphics_queue, g_width, g_height, g_width * 4, uiTextureBuffer, 4, uiTexture, NULL, NULL);	
+	//tr_util_update_texture_uint8(renderer->graphics_queue, glConfig.vidWidth, glConfig.vidHeight, glConfig.vidWidth * 4, uiTextureBuffer, 4, uiTexture, NULL, NULL);	
 	{
 		{
 			CD3DX12_RESOURCE_BARRIER transition = CD3DX12_RESOURCE_BARRIER::Transition(
@@ -639,7 +671,6 @@ void GL_EndRendering(void)
 	ThrowIfFailed(m_swapChain->Present(0, 0));
 
 	uiTexture->dx_resource->WriteToSubresource(0, NULL, uiTextureBuffer, glConfig.vidWidth * 4, 1);
-	GL_WaitForPreviousFrame();
 }
 
 void GL_Bind(int texnum)
@@ -652,11 +683,12 @@ void GL_Bind(int texnum)
 
 void RE_FinishDXRLoading(void) {
 	r_finishDXRInit = 1;
+	raytracingDataInit = false;
 }
 
-void GL_FinishDXRLoading(void)
+void GL_FinishDXRLoading(void) 
 {
-	GL_FindMegaTile("killsky_1", &sky_map_x, &sky_map_y, &sky_map_w, &sky_map_h);
+	GL_FindMegaTile("killsky_1", sky_map_x, sky_map_y, sky_map_w, sky_map_h);
 
 	GL_FinishVertexBufferAllocation();
 
@@ -677,7 +709,7 @@ void GL_FinishDXRLoading(void)
 
 	// Create a SRV/UAV/CBV descriptor heap. We need 2 entries - 1 UAV for the
 	// raytracing output and 1 SRV for the TLAS
-	m_srvUavHeap = nv_helpers_dx12::CreateDescriptorHeap( m_device.Get(), 7, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, true);
+	m_srvUavHeap = nv_helpers_dx12::CreateDescriptorHeap( m_device.Get(), 8, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV, true);
 
 	// Get a handle to the heap memory on the CPU side, to be able to write the
 	// descriptors directly
@@ -728,6 +760,8 @@ void GL_FinishDXRLoading(void)
 	GL_CreateInstanceInfo(srvHandle);
 	srvHandle.ptr += m_device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	GL_InitLightInfoBuffer(srvHandle);
+	srvHandle.ptr += m_device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	GL_LoadMegaNormalTexture(srvHandle);
 
 	{
 		// The SBT helper class collects calls to Add*Program.  If called several
@@ -752,10 +786,12 @@ void GL_FinishDXRLoading(void)
 		// communicate their results through the ray payload
 		m_sbtHelper.AddMissProgram(L"Miss", {});
 		m_sbtHelper.AddMissProgram(L"ShadowMiss", {});
+		m_sbtHelper.AddMissProgram(L"SecondMiss", {});
 
 		// Adding the triangle hit shader
 		m_sbtHelper.AddHitGroup(L"HitGroup", { (void*)m_vertexBuffer->GetGPUVirtualAddress(), (UINT64 *) m_srvUavHeap->GetGPUDescriptorHandleForHeapStart().ptr });
 		m_sbtHelper.AddHitGroup(L"ShadowHitGroup", {});
+		m_sbtHelper.AddHitGroup(L"SecondHitGroup", { heapPointer });
 
 		// Compute the size of the SBT given the number of shaders and their
   // parameters
@@ -773,6 +809,7 @@ void GL_FinishDXRLoading(void)
 		// Compile the SBT from the shader and parameters info
 		m_sbtHelper.Generate(m_sbtStorage.Get(), m_rtStateObjectProps.Get());
 	}
+	raytracingDataInit = true;
 }
 
 void GL_CalcFov(float base_fov, float& fov_x, float& fov_y) {
@@ -797,19 +834,37 @@ void GL_CalcFov(float base_fov, float& fov_x, float& fov_y) {
 		fov_x = base_fov;
 		x = ratio_x / tan(fov_x / 360.0f * M_PI);
 		fov_y = atan2(ratio_y, x) * 360.0f / M_PI;
-	}	
+	}
 }
 
 void GL_Render(float x, float y, float z, vec3_t viewaxis[3])
 {
-	std::vector<DirectX::XMMATRIX> matrices(4);
+	// On the last frame, the raytracing output was used as a copy source, to
+	// copy its contents into the render target. Now we need to transition it to
+	// a UAV so that the shaders can write in it.
+	{
+		CD3DX12_RESOURCE_BARRIER transition = CD3DX12_RESOURCE_BARRIER::Transition(
+			albedoTexture->dx_resource, D3D12_RESOURCE_STATE_COPY_SOURCE,
+			D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+		m_commandList->ResourceBarrier(1, &transition);
+	}
 
-	extern bool r_dxrInit;
-	if(!r_dxrInit) {
+	{
+		CD3DX12_RESOURCE_BARRIER transition = CD3DX12_RESOURCE_BARRIER::Transition(
+			lightTexture->dx_resource, D3D12_RESOURCE_STATE_COPY_SOURCE,
+			D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
+		m_commandList->ResourceBarrier(1, &transition);
+	}
+
+
+	if (raytracingDataInit == 0) {
 		return;
 	}
 
+	GL_ClearLightPass(lightTexture, m_commandList.Get(), m_commandAllocator.Get());
 	GL_BuildLightList(x, y, z);
+
+	std::vector<DirectX::XMMATRIX> matrices(4);
 
 	// Update the top level acceleration structs based on new scene data. 
 	GL_CreateTopLevelAccelerationStructs(false);
@@ -826,7 +881,7 @@ void GL_Render(float x, float y, float z, vec3_t viewaxis[3])
 	float vieworg[3] = { x, y, z };
 	create_view_matrix((float*)&matrices[0], vieworg, viewaxis);
 
-	//float m_aspectRatio = g_width / g_height;
+	//float m_aspectRatio = glConfig.vidWidth / glConfig.vidHeight;
 	//float fovAngleY = 45.0f * DirectX::XM_PI / 180.0f;
 	//matrices[1] =
 	//	DirectX::XMMatrixPerspectiveFovRH(fovAngleY, m_aspectRatio, 0.1f, 1000.0f);
@@ -854,6 +909,25 @@ void GL_Render(float x, float y, float z, vec3_t viewaxis[3])
 	frameData[6] = sky_map_w;
 	frameData[7] = sky_map_h;
 
+	//int contents = Mod_PointInLeaf(r_origin, r_worldmodel)->contents;
+	//if (contents == CONTENTS_WATER || contents == CONTENTS_SLIME || contents == CONTENTS_LAVA) {
+	//	frameData[8] = 1000.0f;
+	//	frameData[9] = 50.0f;
+	//	if (contents == CONTENTS_SLIME) {
+	//		frameData[10] = 3;
+	//	}
+	//	else if (contents == CONTENTS_LAVA) {
+	//		frameData[10] = 2;
+	//	}
+	//	else {
+	//		frameData[10] = 1;
+	//	}
+	//}
+	//else {
+		frameData[8] = 1500.0f;
+		frameData[9] = 800.0f;
+		frameData[10] = 0;
+	//}
 
 	// Copy the matrix contents
 	uint8_t* pData;
@@ -867,23 +941,6 @@ void GL_Render(float x, float y, float z, vec3_t viewaxis[3])
 	std::vector<ID3D12DescriptorHeap*> heaps = { m_srvUavHeap.Get() };
 	m_commandList->SetDescriptorHeaps(static_cast<UINT>(heaps.size()),
 		heaps.data());
-
-	// On the last frame, the raytracing output was used as a copy source, to
-	// copy its contents into the render target. Now we need to transition it to
-	// a UAV so that the shaders can write in it.
-	{
-		CD3DX12_RESOURCE_BARRIER transition = CD3DX12_RESOURCE_BARRIER::Transition(
-			albedoTexture->dx_resource, D3D12_RESOURCE_STATE_COPY_SOURCE,
-			D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
-		m_commandList->ResourceBarrier(1, &transition);
-	}
-
-	{
-		CD3DX12_RESOURCE_BARRIER transition = CD3DX12_RESOURCE_BARRIER::Transition(
-			lightTexture->dx_resource, D3D12_RESOURCE_STATE_COPY_SOURCE,
-			D3D12_RESOURCE_STATE_UNORDERED_ACCESS);
-		m_commandList->ResourceBarrier(1, &transition);
-	}
 
 	// Setup the raytracing task
 	D3D12_DISPATCH_RAYS_DESC desc = {};
@@ -923,6 +980,4 @@ void GL_Render(float x, float y, float z, vec3_t viewaxis[3])
 	m_commandList->SetPipelineState1(m_rtStateObject.Get());
 	// Dispatch the rays and write to the raytracing output
 	m_commandList->DispatchRays(&desc);
-
-	GL_ClearLights();
 }
