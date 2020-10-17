@@ -1866,6 +1866,67 @@ void RE_LoadWorldMap( const char *name ) {
 
 	GL_LoadDXRMesh(s_worldData.surfaces, s_worldData.numsurfaces);
 
+	int numAreaLights = 0;
+	for (i = 0; i < s_worldData.numsurfaces; i++) {
+		vec3_t mins, maxs;
+
+		msurface_t* surface = &s_worldData.surfaces[i];
+
+		if(surface->shader == NULL)
+			continue;
+
+		int lightRange = 0;
+		vec3_t lightColor = { 1, 1, 1 };
+
+		if (strstr(surface->shader->name, "light")) {
+			lightRange = 150;
+			lightColor[0] = 233.0f / 255.0f;
+			lightColor[1] = 233.0f / 255.0f;
+			lightColor[2] = 125.0f / 255.0f;
+		}		
+		else if (strstr(surface->shader->name, "sky")) {
+			lightRange = 1000;
+			lightColor[0] = 215.0f / 255.0f;
+			lightColor[1] = 184.0f / 255.0f;
+			lightColor[2] = 120.0f / 255.0f;
+		}
+
+		if (lightRange == 0)
+			continue;
+
+		srfTriangles_t* tri = (srfTriangles_t*)surface->data;
+		if (tri == NULL) {
+			continue;
+		}
+		if (tri->surfaceType == SF_GRID) {
+			continue;
+		}
+
+		ClearBounds(mins, maxs);
+		for (int d = 0; d < tri->numVerts; d++) {
+			AddPointToBounds(tri->verts[d].xyz, mins, maxs);
+		}
+
+		int lightStyle = 0;
+
+		//if (strstr(surface->texinfo->texture->name, "light3_3")) {
+		//	lightStyle = 8;
+		//}
+
+		vec3_t plane_normal;
+
+		plane_normal[0] = tri->verts[0].normal[0];
+		plane_normal[1] = tri->verts[0].normal[1];
+		plane_normal[2] = tri->verts[0].normal[2];
+
+		VectorNormalize(plane_normal);
+
+		GL_RegisterWorldAreaLight(plane_normal, mins, maxs, lightStyle, lightRange, lightColor[0], lightColor[1], lightColor[2]);
+		numAreaLights++;
+	}
+	GL_SetNumMapLights();
+
+
 	R_LoadSubmodels(&header->lumps[LUMP_MODELS]);
 
 	// only set tr.world now that we know the entire level has loaded properly

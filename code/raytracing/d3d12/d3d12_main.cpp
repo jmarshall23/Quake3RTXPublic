@@ -688,7 +688,7 @@ void RE_FinishDXRLoading(void) {
 
 void GL_FinishDXRLoading(void) 
 {
-	GL_FindMegaTile("killsky_1", sky_map_x, sky_map_y, sky_map_w, sky_map_h);
+	GL_FindMegaTile("intelredclouds", sky_map_x, sky_map_y, sky_map_w, sky_map_h);
 
 	GL_FinishVertexBufferAllocation();
 

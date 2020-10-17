@@ -1653,7 +1653,7 @@ void* GL_LoadDXRMesh(msurface_t* surfaces, int numSurfaces);
 void* GL_LoadMD3RaytracedMesh(md3Header_t* mod, int frame);
 
 void LoadTGA(const char* name, byte** pic, int* width, int* height);
-
+void GL_SetNumMapLights(void);
 extern int     r_finishDXRInit;
 
 #endif //TR_LOCAL_H
