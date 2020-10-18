@@ -305,6 +305,9 @@ void GL_LoadBottomLevelAccelStruct(dxrMesh_t* mesh, msurface_t* surfaces, int nu
 			v.xyz[2] = tri->verts[d].xyz[2];
 			v.st[0] = tri->verts[d].st[0];
 			v.st[1] = tri->verts[d].st[1];
+			v.normal[0] = tri->verts[d].normal[0];
+			v.normal[1] = tri->verts[d].normal[1];
+			v.normal[2] = tri->verts[d].normal[2];
 			v.st[2] = materialInfo;
 			v.vtinfo[0] = x;
 			v.vtinfo[1] = y;
@@ -349,12 +352,12 @@ void GL_LoadBottomLevelAccelStruct(dxrMesh_t* mesh, msurface_t* surfaces, int nu
 		for (int i = 0; i < mesh->numSceneVertexes; i += 3)
 		{
 			float* pA = &sceneVertexes[mesh->startSceneVertex + i + 0].xyz[0];
-			float* pB = &sceneVertexes[mesh->startSceneVertex + i + 1].xyz[0];
-			float* pC = &sceneVertexes[mesh->startSceneVertex + i + 2].xyz[0];
+			float* pC = &sceneVertexes[mesh->startSceneVertex + i + 1].xyz[0];
+			float* pB = &sceneVertexes[mesh->startSceneVertex + i + 2].xyz[0];
 
 			float* tA = &sceneVertexes[mesh->startSceneVertex + i + 0].st[0];
-			float* tB = &sceneVertexes[mesh->startSceneVertex + i + 1].st[0];
-			float* tC = &sceneVertexes[mesh->startSceneVertex + i + 2].st[0];
+			float* tC = &sceneVertexes[mesh->startSceneVertex + i + 1].st[0];
+			float* tB = &sceneVertexes[mesh->startSceneVertex + i + 2].st[0];
 
 			vec3_t normal;
 			vec3_t tangent;

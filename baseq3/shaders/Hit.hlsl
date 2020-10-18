@@ -478,7 +478,7 @@ int sideOfPlane(float3 p, float3 pc, float3 pn){
 			
 			float lightDistance = length(centerLightDir);
 			
-			float falloff = attenuation(-lightInfo[i].origin_radius.w, 1.0, lightDistance, normal, normalize(centerLightDir)) - 0.05;  			
+			float falloff = attenuation(-lightInfo[i].origin_radius.w, 1.0, lightDistance, hitNormalMap, normalize(areaLightDir)) - 0.05;  			
 			falloff = clamp(falloff, 0.0, 1.0);
 						
 			if(falloff > 0)
