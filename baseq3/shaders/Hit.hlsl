@@ -502,7 +502,7 @@ int sideOfPlane(float3 p, float3 pc, float3 pn){
   else
   {
 	ndotl = float3(1, 1, 1);
-	emissive = 2;
+	emissive = 1;
   }
 
   ndotl = clamp(ndotl, 0.0, 1.0);

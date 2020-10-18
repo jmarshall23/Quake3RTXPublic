@@ -178,6 +178,13 @@ void GL_FindMegaTile(const char *name, float &x, float &y, float &width, float &
 }
 
 void GL_FindMegaTile(const char* name, float* x, float* y, float* width, float* height) {
+// atlas material hack
+	if (!strcmp(name, "iron01_ndark")) {
+		GL_FindMegaTile("iron01_m", x, y, width, height);
+		return;
+	}
+// atlas material hack
+
 	for (int i = 0; i < megaEntries.size(); i++) {
 		if (!strcmp(megaEntries[i].name, name)) {
 			*x = megaEntries[i].x;

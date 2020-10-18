@@ -274,6 +274,10 @@ void GL_LoadBottomLevelAccelStruct(dxrMesh_t* mesh, msurface_t* surfaces, int nu
 			continue;
 		}
 
+		if (strstr(fa->shader->name, "flame")) {
+			continue;
+		}
+
 		if (strstr(fa->shader->name, "light")) {
 			materialInfo = 2;
 		}

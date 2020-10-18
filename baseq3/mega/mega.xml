@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
-<!-- $TexturePacker:SmartUpdate:335b2c245cb2f509002826c0d3b352b3:2abd422875f1e812176c47dd507239f0:9d96fd588927f5c190040812ca8047ec$ -->
+<!-- $TexturePacker:SmartUpdate:9c81a41d08958bfd0445c625b9ab5f1e:35dabefaeeae2bb45df8352359996c71:c29ac8879a708f426c0ae22c4e938e61$ -->
 <!--Format:
 n  => name of the sprite
 x  => sprite x pos in texture
@@ -24,7 +24,7 @@ triangles  => sprite triangulation, 3 vertex indices per triangle
     <sprite n="archpart2.jpg" x="1072" y="32" w="256" h="64"/>
     <sprite n="archpart6.jpg" x="1290" y="480" w="64" h="256"/>
     <sprite n="archpart7.jpg" x="1354" y="480" w="160" h="256"/>
-    <sprite n="archpart9.jpg" x="896" y="2528" w="226" h="383"/>
+    <sprite n="archpart9.jpg" x="576" y="2528" w="226" h="383"/>
     <sprite n="archpart10.jpg" x="1040" y="32" w="32" h="64"/>
     <sprite n="atech1_a.jpg" x="1514" y="480" w="256" h="256"/>
     <sprite n="atech1_alpha.tga" x="1770" y="480" w="256" h="256"/>
@@ -86,8 +86,8 @@ triangles  => sprite triangulation, 3 vertex indices per triangle
     <sprite n="ceil1_39.blend.jpg" x="2432" y="0" w="32" h="32"/>
     <sprite n="ceil1_39.jpg" x="2464" y="0" w="32" h="32"/>
     <sprite n="ceilingtech01_f.jpg" x="3328" y="736" w="256" h="256"/>
-    <sprite n="ceilingtech02_a.jpg" x="1122" y="2528" w="512" h="512"/>
-    <sprite n="ceilingtech02_b.jpg" x="1634" y="2528" w="512" h="512"/>
+    <sprite n="ceilingtech02_a.jpg" x="802" y="2528" w="512" h="512"/>
+    <sprite n="ceilingtech02_b.jpg" x="1314" y="2528" w="512" h="512"/>
     <sprite n="ceilingtech02_c2.jpg" x="3584" y="736" w="64" h="256"/>
     <sprite n="ceilingtech02_d.jpg" x="888" y="480" w="201" h="204"/>
     <sprite n="ceilingtech03_afinal.jpg" x="1089" y="480" w="201" h="204"/>
@@ -111,7 +111,7 @@ triangles  => sprite triangulation, 3 vertex indices per triangle
     <sprite n="dirt.jpg" x="1600" y="224" w="128" h="128"/>
     <sprite n="dirt2.jpg" x="1728" y="224" w="128" h="128"/>
     <sprite n="eagleban.jpg" x="1856" y="224" w="128" h="128"/>
-    <sprite n="evil2ckillblockglow.jpg" x="2146" y="2528" w="256" h="512"/>
+    <sprite n="evil2ckillblockglow.jpg" x="1826" y="2528" w="256" h="512"/>
     <sprite n="f_machinegun.jpg" x="1984" y="224" w="128" h="128"/>
     <sprite n="f_shotgun.jpg" x="2112" y="224" w="128" h="128"/>
     <sprite n="gargoyle.jpg" x="2304" y="992" w="256" h="256"/>
@@ -143,34 +143,33 @@ triangles  => sprite triangulation, 3 vertex indices per triangle
     <sprite n="iron01_b.jpg" x="1344" y="1248" w="256" h="256"/>
     <sprite n="iron01_e.jpg" x="1600" y="1248" w="256" h="256"/>
     <sprite n="iron01_m.tga" x="1856" y="1248" w="256" h="256"/>
-    <sprite n="iron01_ndark.tga" x="2112" y="1248" w="256" h="256"/>
-    <sprite n="iron01_ntech3.jpg" x="2368" y="1248" w="128" h="256"/>
-    <sprite n="iron01_p2.jpg" x="2496" y="1248" w="256" h="256"/>
+    <sprite n="iron01_ntech3.jpg" x="2112" y="1248" w="128" h="256"/>
+    <sprite n="iron01_p2.jpg" x="2240" y="1248" w="256" h="256"/>
     <sprite n="ironcrosslt2.blend.jpg" x="3088" y="32" w="64" h="64"/>
     <sprite n="ironcrosslt2.jpg" x="3152" y="32" w="64" h="64"/>
-    <sprite n="kc_fogcloud3.jpg" x="2752" y="1248" w="256" h="256"/>
-    <sprite n="killblock.jpg" x="3008" y="1248" w="256" h="256"/>
-    <sprite n="killblock_i.jpg" x="3264" y="1248" w="256" h="256"/>
-    <sprite n="killblock_i4.jpg" x="3520" y="1248" w="256" h="256"/>
-    <sprite n="killblockgeomtrn.tga" x="3776" y="1248" w="256" h="256"/>
-    <sprite n="killsky_1.jpg" x="0" y="1504" w="256" h="256"/>
-    <sprite n="killsky_2.jpg" x="256" y="1504" w="256" h="256"/>
+    <sprite n="kc_fogcloud3.jpg" x="2496" y="1248" w="256" h="256"/>
+    <sprite n="killblock.jpg" x="2752" y="1248" w="256" h="256"/>
+    <sprite n="killblock_i.jpg" x="3008" y="1248" w="256" h="256"/>
+    <sprite n="killblock_i4.jpg" x="3264" y="1248" w="256" h="256"/>
+    <sprite n="killblockgeomtrn.tga" x="3520" y="1248" w="256" h="256"/>
+    <sprite n="killsky_1.jpg" x="3776" y="1248" w="256" h="256"/>
+    <sprite n="killsky_2.jpg" x="0" y="1504" w="256" h="256"/>
     <sprite n="km_arena1archfinalc_top.jpg" x="3216" y="32" w="256" h="64"/>
-    <sprite n="km_arena1archfinald_bot.jpg" x="512" y="1504" w="256" h="256"/>
-    <sprite n="km_arena1archfinald_mid.jpg" x="768" y="1504" w="256" h="256"/>
-    <sprite n="km_arena1columna2R.jpg" x="896" y="3040" w="66" h="640"/>
-    <sprite n="km_arena1tower4.jpg" x="1024" y="1504" w="64" h="256"/>
+    <sprite n="km_arena1archfinald_bot.jpg" x="256" y="1504" w="256" h="256"/>
+    <sprite n="km_arena1archfinald_mid.jpg" x="512" y="1504" w="256" h="256"/>
+    <sprite n="km_arena1columna2R.jpg" x="768" y="3040" w="66" h="640"/>
+    <sprite n="km_arena1tower4.jpg" x="768" y="1504" w="64" h="256"/>
     <sprite n="km_arena1tower4_a.jpg" x="3472" y="32" w="256" h="64"/>
     <sprite n="km_arena1tower_short.tga" x="3728" y="32" w="64" h="64"/>
     <sprite n="kmlamp1.jpg" x="3008" y="224" w="128" h="128"/>
     <sprite n="largeblockfloor3.jpg" x="3136" y="224" w="128" h="128"/>
     <sprite n="largeblockfloor4.jpg" x="3264" y="224" w="128" h="128"/>
     <sprite n="largeblockfloor4broke.jpg" x="3392" y="224" w="128" h="128"/>
-    <sprite n="largerblock3b.jpg" x="2402" y="2528" w="512" h="512"/>
-    <sprite n="largerblock3b3.jpg" x="2914" y="2528" w="512" h="512"/>
-    <sprite n="largerblock3b4.jpg" x="3426" y="2528" w="512" h="512"/>
-    <sprite n="largerblock3b_ow.tga" x="1088" y="1504" w="256" h="256"/>
-    <sprite n="largerblock3blood.tga" x="1344" y="1504" w="256" h="256"/>
+    <sprite n="largerblock3b.jpg" x="2082" y="2528" w="512" h="512"/>
+    <sprite n="largerblock3b3.jpg" x="2594" y="2528" w="512" h="512"/>
+    <sprite n="largerblock3b4.jpg" x="3106" y="2528" w="512" h="512"/>
+    <sprite n="largerblock3b_ow.tga" x="832" y="1504" w="256" h="256"/>
+    <sprite n="largerblock3blood.tga" x="1088" y="1504" w="256" h="256"/>
     <sprite n="lavahell.jpg" x="3520" y="224" w="128" h="128"/>
     <sprite n="lighammo.tga" x="3648" y="224" w="128" h="128"/>
     <sprite n="light1.blend.jpg" x="3792" y="32" w="64" h="64"/>
@@ -178,129 +177,129 @@ triangles  => sprite triangulation, 3 vertex indices per triangle
     <sprite n="light2.blend.jpg" x="3920" y="32" w="64" h="64"/>
     <sprite n="light2.jpg" x="3984" y="32" w="64" h="64"/>
     <sprite n="light5.jpg" x="3776" y="224" w="16" h="128"/>
-    <sprite n="lightning2.jpg" x="1600" y="1504" w="256" h="256"/>
-    <sprite n="lion.jpg" x="1856" y="1504" w="128" h="256"/>
+    <sprite n="lightning2.jpg" x="1344" y="1504" w="256" h="256"/>
+    <sprite n="lion.jpg" x="1600" y="1504" w="128" h="256"/>
     <sprite n="lion_m.tga" x="0" y="96" w="64" h="64"/>
     <sprite n="M_shell.jpg" x="896" y="32" w="64" h="64"/>
     <sprite n="machammo.tga" x="3792" y="224" w="128" h="128"/>
     <sprite n="machammo2.tga" x="64" y="96" w="64" h="64"/>
-    <sprite n="machinegun.jpg" x="1984" y="1504" w="256" h="256"/>
+    <sprite n="machinegun.jpg" x="1728" y="1504" w="256" h="256"/>
     <sprite n="main_q3abanner.tga" x="128" y="96" w="256" h="64"/>
-    <sprite n="major.jpg" x="2240" y="1504" w="256" h="256"/>
+    <sprite n="major.jpg" x="1984" y="1504" w="256" h="256"/>
     <sprite n="major_h.jpg" x="384" y="96" w="128" h="64"/>
     <sprite n="major_h_st.jpg" x="512" y="96" w="128" h="64"/>
-    <sprite n="major_st.jpg" x="2496" y="1504" w="256" h="256"/>
+    <sprite n="major_st.jpg" x="2240" y="1504" w="256" h="256"/>
     <sprite n="medkit_fluid.jpg" x="640" y="96" w="64" h="64"/>
     <sprite n="metal14_1.jpg" x="704" y="96" w="64" h="64"/>
-    <sprite n="metalbase8a_brick.jpg" x="2752" y="1504" w="256" h="256"/>
-    <sprite n="metalblack03.jpg" x="3008" y="1504" w="256" h="256"/>
-    <sprite n="metalbridge06.jpg" x="3264" y="1504" w="256" h="256"/>
-    <sprite n="metalbridge06b.jpg" x="3520" y="1504" w="256" h="256"/>
-    <sprite n="metalbridge06broke.jpg" x="3776" y="1504" w="256" h="256"/>
-    <sprite n="metaldemonkillblock.jpg" x="0" y="1760" w="256" h="256"/>
-    <sprite n="metalfloor_wall_10.jpg" x="256" y="1760" w="256" h="256"/>
-    <sprite n="metalfloor_wall_15.jpg" x="512" y="1760" w="256" h="256"/>
-    <sprite n="metalfloor_wall_15ow.tga" x="768" y="1760" w="256" h="256"/>
-    <sprite n="metalsupport4b.jpg" x="1024" y="1760" w="256" h="256"/>
+    <sprite n="metalbase8a_brick.jpg" x="2496" y="1504" w="256" h="256"/>
+    <sprite n="metalblack03.jpg" x="2752" y="1504" w="256" h="256"/>
+    <sprite n="metalbridge06.jpg" x="3008" y="1504" w="256" h="256"/>
+    <sprite n="metalbridge06b.jpg" x="3264" y="1504" w="256" h="256"/>
+    <sprite n="metalbridge06broke.jpg" x="3520" y="1504" w="256" h="256"/>
+    <sprite n="metaldemonkillblock.jpg" x="3776" y="1504" w="256" h="256"/>
+    <sprite n="metalfloor_wall_10.jpg" x="0" y="1760" w="256" h="256"/>
+    <sprite n="metalfloor_wall_15.jpg" x="256" y="1760" w="256" h="256"/>
+    <sprite n="metalfloor_wall_15ow.tga" x="512" y="1760" w="256" h="256"/>
+    <sprite n="metalsupport4b.jpg" x="768" y="1760" w="256" h="256"/>
     <sprite n="metalsupsolid.jpg" x="3920" y="224" w="128" h="128"/>
-    <sprite n="metaltech06final.jpg" x="1280" y="1760" w="256" h="256"/>
-    <sprite n="metaltech12darkfinal.jpg" x="1536" y="1760" w="256" h="256"/>
-    <sprite n="metaltech12final.jpg" x="1792" y="1760" w="256" h="256"/>
-    <sprite n="metaltech13final.jpg" x="2048" y="1760" w="256" h="256"/>
-    <sprite n="metfloor_block_3.jpg" x="2304" y="1760" w="256" h="256"/>
-    <sprite n="pad.jpg" x="2560" y="1760" w="256" h="256"/>
-    <sprite n="patch10_beatup2.jpg" x="2816" y="1760" w="256" h="256"/>
-    <sprite n="patch10_beatup4.jpg" x="3072" y="1760" w="256" h="256"/>
+    <sprite n="metaltech06final.jpg" x="1024" y="1760" w="256" h="256"/>
+    <sprite n="metaltech12darkfinal.jpg" x="1280" y="1760" w="256" h="256"/>
+    <sprite n="metaltech12final.jpg" x="1536" y="1760" w="256" h="256"/>
+    <sprite n="metaltech13final.jpg" x="1792" y="1760" w="256" h="256"/>
+    <sprite n="metfloor_block_3.jpg" x="2048" y="1760" w="256" h="256"/>
+    <sprite n="pad.jpg" x="2304" y="1760" w="256" h="256"/>
+    <sprite n="patch10_beatup2.jpg" x="2560" y="1760" w="256" h="256"/>
+    <sprite n="patch10_beatup4.jpg" x="2816" y="1760" w="256" h="256"/>
     <sprite n="pentagram_light1.jpg" x="768" y="96" w="64" h="64"/>
     <sprite n="pentagram_light1_blend.jpg" x="832" y="96" w="64" h="64"/>
     <sprite n="pewter_shiney.tga" x="0" y="352" w="128" h="128"/>
-    <sprite n="pitted_rust.jpg" x="3328" y="1760" w="256" h="256"/>
-    <sprite n="pitted_rust2.jpg" x="3584" y="1760" w="256" h="256"/>
-    <sprite n="pitted_rust3.jpg" x="3840" y="1760" w="256" h="256"/>
+    <sprite n="pitted_rust.jpg" x="3072" y="1760" w="256" h="256"/>
+    <sprite n="pitted_rust2.jpg" x="3328" y="1760" w="256" h="256"/>
+    <sprite n="pitted_rust3.jpg" x="3584" y="1760" w="256" h="256"/>
     <sprite n="pjgrate2.tga" x="128" y="352" w="128" h="128"/>
     <sprite n="plasammo.tga" x="256" y="352" w="128" h="128"/>
-    <sprite n="plasma.jpg" x="0" y="2016" w="256" h="256"/>
-    <sprite n="podium.tga" x="256" y="2016" w="256" h="256"/>
+    <sprite n="plasma.jpg" x="3840" y="1760" w="256" h="256"/>
+    <sprite n="podium.tga" x="0" y="2016" w="256" h="256"/>
     <sprite n="podiumfx1.jpg" x="384" y="352" w="128" h="128"/>
     <sprite n="podiumfx1b.jpg" x="512" y="352" w="128" h="128"/>
-    <sprite n="podiumglo.tga" x="512" y="2016" w="256" h="256"/>
-    <sprite n="podskull.tga" x="768" y="2016" w="256" h="256"/>
-    <sprite n="podskullfx.jpg" x="1024" y="2016" w="256" h="256"/>
-    <sprite n="portal_3.jpg" x="1280" y="2016" w="256" h="256"/>
-    <sprite n="portal_3_edge.jpg" x="1536" y="2016" w="64" h="256"/>
-    <sprite n="portal_3_edge_glo.jpg" x="1600" y="2016" w="64" h="256"/>
-    <sprite n="portal_3_glo.jpg" x="1664" y="2016" w="256" h="256"/>
+    <sprite n="podiumglo.tga" x="256" y="2016" w="256" h="256"/>
+    <sprite n="podskull.tga" x="512" y="2016" w="256" h="256"/>
+    <sprite n="podskullfx.jpg" x="768" y="2016" w="256" h="256"/>
+    <sprite n="portal_3.jpg" x="1024" y="2016" w="256" h="256"/>
+    <sprite n="portal_3_edge.jpg" x="1280" y="2016" w="64" h="256"/>
+    <sprite n="portal_3_edge_glo.jpg" x="1344" y="2016" w="64" h="256"/>
+    <sprite n="portal_3_glo.jpg" x="1408" y="2016" w="256" h="256"/>
     <sprite n="proto_gruel3.jpg" x="640" y="352" w="128" h="128"/>
     <sprite n="proto_grueldark2.jpg" x="768" y="352" w="128" h="128"/>
-    <sprite n="protobanner.tga" x="1920" y="2016" w="128" h="256"/>
+    <sprite n="protobanner.tga" x="1664" y="2016" w="128" h="256"/>
     <sprite n="purptileb.jpg" x="896" y="352" w="128" h="128"/>
     <sprite n="q1metal7.jpg" x="1024" y="352" w="128" h="128"/>
-    <sprite n="q1metal7_99.jpg" x="2048" y="2016" w="256" h="256"/>
-    <sprite n="q1metal7_99_broke.jpg" x="2304" y="2016" w="256" h="256"/>
+    <sprite n="q1metal7_99.jpg" x="1792" y="2016" w="256" h="256"/>
+    <sprite n="q1metal7_99_broke.jpg" x="2048" y="2016" w="256" h="256"/>
     <sprite n="q1metal7_99stair.jpg" x="2592" y="0" w="128" h="32"/>
     <sprite n="q1metal7_99stair2.jpg" x="64" y="0" w="128" h="16"/>
     <sprite n="q1metal7_99stair3.jpg" x="2720" y="0" w="32" h="32"/>
     <sprite n="q3banner02.tga" x="1152" y="352" w="256" h="128"/>
     <sprite n="q3banner02x.tga" x="1408" y="352" w="64" h="128"/>
     <sprite n="railammo.tga" x="1472" y="352" w="128" h="128"/>
-    <sprite n="railgun1.jpg" x="2560" y="2016" w="256" h="256"/>
+    <sprite n="railgun1.jpg" x="2304" y="2016" w="256" h="256"/>
     <sprite n="rockammo.tga" x="1600" y="352" w="128" h="128"/>
     <sprite n="rocket.jpg" x="896" y="96" w="64" h="64"/>
     <sprite n="rocketfn.jpg" x="2752" y="0" w="32" h="32"/>
-    <sprite n="rocketl.jpg" x="2816" y="2016" w="256" h="256"/>
+    <sprite n="rocketl.jpg" x="2560" y="2016" w="256" h="256"/>
     <sprite n="rocketl2.jpg" x="960" y="96" w="64" h="64"/>
     <sprite n="s_shell.jpg" x="1024" y="96" w="64" h="64"/>
     <sprite n="shotammo.tga" x="1728" y="352" w="128" h="128"/>
-    <sprite n="shotgun.jpg" x="3072" y="2016" w="256" h="256"/>
+    <sprite n="shotgun.jpg" x="2816" y="2016" w="256" h="256"/>
     <sprite n="shotgun_laser.jpg" x="0" y="0" w="64" h="4"/>
-    <sprite n="skel.tga" x="3328" y="2016" w="256" h="256"/>
-    <sprite n="skin6.jpg" x="3584" y="2016" w="256" h="256"/>
-    <sprite n="skin7_teeth.jpg" x="3840" y="2016" w="256" h="256"/>
+    <sprite n="skel.tga" x="3072" y="2016" w="256" h="256"/>
+    <sprite n="skin6.jpg" x="3328" y="2016" w="256" h="256"/>
+    <sprite n="skin7_teeth.jpg" x="3584" y="2016" w="256" h="256"/>
     <sprite n="skull.jpg" x="1856" y="352" w="128" h="128"/>
-    <sprite n="skull4.jpg" x="0" y="2272" w="256" h="256"/>
-    <sprite n="skull_door_a.tga" x="256" y="2272" w="64" h="256"/>
-    <sprite n="skull_door_b.tga" x="320" y="2272" w="256" h="256"/>
-    <sprite n="skull_door_c.tga" x="576" y="2272" w="64" h="256"/>
+    <sprite n="skull4.jpg" x="3840" y="2016" w="256" h="256"/>
+    <sprite n="skull_door_a.tga" x="0" y="2272" w="64" h="256"/>
+    <sprite n="skull_door_b.tga" x="64" y="2272" w="256" h="256"/>
+    <sprite n="skull_door_c.tga" x="320" y="2272" w="64" h="256"/>
     <sprite n="skull_door_d.tga" x="1984" y="352" w="64" h="128"/>
     <sprite n="skull_door_e.tga" x="2048" y="352" w="256" h="128"/>
     <sprite n="skull_door_f.tga" x="2304" y="352" w="64" h="128"/>
     <sprite n="skullarch_a.tga" x="1088" y="96" w="256" h="64"/>
-    <sprite n="skullarch_b.tga" x="640" y="2272" w="256" h="256"/>
-    <sprite n="skullarch_c.tga" x="896" y="2272" w="256" h="256"/>
+    <sprite n="skullarch_b.tga" x="384" y="2272" w="256" h="256"/>
+    <sprite n="skullarch_c.tga" x="640" y="2272" w="256" h="256"/>
     <sprite n="skullsvertgray02b.jpg" x="2368" y="352" w="128" h="128"/>
-    <sprite n="slateroofc.jpg" x="1152" y="2272" w="256" h="256"/>
+    <sprite n="slateroofc.jpg" x="896" y="2272" w="256" h="256"/>
     <sprite n="spiderbit4.jpg" x="2496" y="352" w="256" h="128"/>
-    <sprite n="spotlamp.tga" x="1408" y="2272" w="128" h="256"/>
+    <sprite n="spotlamp.tga" x="1152" y="2272" w="128" h="256"/>
     <sprite n="spotlamp_l.jpg" x="2784" y="0" w="32" h="32"/>
     <sprite n="steed1ge.jpg" x="2752" y="352" w="128" h="128"/>
     <sprite n="steed1gf.tga" x="1344" y="96" w="128" h="64"/>
     <sprite n="storch.jpg" x="2880" y="352" w="128" h="128"/>
-    <sprite n="storch_tall.jpg" x="1536" y="2272" w="128" h="256"/>
+    <sprite n="storch_tall.jpg" x="1280" y="2272" w="128" h="256"/>
     <sprite n="streetbricks10.jpg" x="3008" y="352" w="128" h="128"/>
     <sprite n="streetbricks11.jpg" x="3136" y="352" w="128" h="128"/>
     <sprite n="stucco7top.jpg" x="3264" y="352" w="128" h="128"/>
-    <sprite n="supportborder.jpg" x="1664" y="2272" w="64" h="256"/>
-    <sprite n="supportborder_blue_b.jpg" x="1728" y="2272" w="64" h="256"/>
-    <sprite n="supportborder_blue_c.jpg" x="1792" y="2272" w="64" h="256"/>
-    <sprite n="supportborderside.jpg" x="1856" y="2272" w="64" h="256"/>
-    <sprite n="surface8.jpg" x="1920" y="2272" w="256" h="256"/>
+    <sprite n="supportborder.jpg" x="1408" y="2272" w="64" h="256"/>
+    <sprite n="supportborder_blue_b.jpg" x="1472" y="2272" w="64" h="256"/>
+    <sprite n="supportborder_blue_c.jpg" x="1536" y="2272" w="64" h="256"/>
+    <sprite n="supportborderside.jpg" x="1600" y="2272" w="64" h="256"/>
+    <sprite n="surface8.jpg" x="1664" y="2272" w="256" h="256"/>
     <sprite n="teleport_fluid.jpg" x="1472" y="96" w="64" h="64"/>
-    <sprite n="teleporter.jpg" x="2176" y="2272" w="128" h="256"/>
-    <sprite n="teleporter_edge.jpg" x="2304" y="2272" w="128" h="256"/>
-    <sprite n="teleporter_edge2.jpg" x="2432" y="2272" w="128" h="256"/>
+    <sprite n="teleporter.jpg" x="1920" y="2272" w="128" h="256"/>
+    <sprite n="teleporter_edge.jpg" x="2048" y="2272" w="128" h="256"/>
+    <sprite n="teleporter_edge2.jpg" x="2176" y="2272" w="128" h="256"/>
     <sprite n="timbutton.jpg" x="1536" y="96" w="64" h="64"/>
     <sprite n="timbutton2.jpg" x="1600" y="96" w="64" h="64"/>
     <sprite n="timbuttonside.jpg" x="1664" y="96" w="32" h="64"/>
     <sprite n="timlamp.tga" x="3392" y="352" w="128" h="128"/>
     <sprite n="tongue.jpg" x="3520" y="352" w="128" h="128"/>
-    <sprite n="tower_front.jpg" x="2560" y="2272" w="256" h="256"/>
-    <sprite n="tower_side2.jpg" x="2816" y="2272" w="64" h="256"/>
-    <sprite n="tower_side2b.jpg" x="2880" y="2272" w="64" h="256"/>
-    <sprite n="tower_top.jpg" x="2944" y="2272" w="256" h="256"/>
+    <sprite n="tower_front.jpg" x="2304" y="2272" w="256" h="256"/>
+    <sprite n="tower_side2.jpg" x="2560" y="2272" w="64" h="256"/>
+    <sprite n="tower_side2b.jpg" x="2624" y="2272" w="64" h="256"/>
+    <sprite n="tower_top.jpg" x="2688" y="2272" w="256" h="256"/>
     <sprite n="transparency.jpg" x="3648" y="352" w="128" h="128"/>
     <sprite n="transparency2.jpg" x="3776" y="352" w="128" h="128"/>
-    <sprite n="visor.jpg" x="3200" y="2272" w="256" h="256"/>
-    <sprite n="visor_st.jpg" x="3456" y="2272" w="256" h="256"/>
+    <sprite n="visor.jpg" x="2944" y="2272" w="256" h="256"/>
+    <sprite n="visor_st.jpg" x="3200" y="2272" w="256" h="256"/>
     <sprite n="wall_lamp3.jpg" x="3904" y="352" w="64" h="128"/>
     <sprite n="wallhead02.jpg" x="3968" y="352" w="128" h="128"/>
     <sprite n="widget.jpg" x="0" y="480" w="128" h="128"/>
@@ -309,22 +308,22 @@ triangles  => sprite triangulation, 3 vertex indices per triangle
     <sprite n="window_a_base.jpg" x="768" y="32" w="128" h="48"/>
     <sprite n="window_a_bottom1.jpg" x="368" y="480" w="200" h="128"/>
     <sprite n="window_a_bottom2.jpg" x="568" y="480" w="64" h="128"/>
-    <sprite n="window_evil6a.jpg" x="3938" y="2528" w="128" h="512"/>
-    <sprite n="window_evil6a_glow.jpg" x="0" y="3040" w="128" h="512"/>
-    <sprite n="windowevil2c_killblock.jpg" x="128" y="3040" w="256" h="512"/>
-    <sprite n="woodceiling1a.jpg" x="3712" y="2272" w="256" h="256"/>
-    <sprite n="woodceiling1b_dark.jpg" x="0" y="2528" w="256" h="256"/>
+    <sprite n="window_evil6a.jpg" x="3618" y="2528" w="128" h="512"/>
+    <sprite n="window_evil6a_glow.jpg" x="3746" y="2528" w="128" h="512"/>
+    <sprite n="windowevil2c_killblock.jpg" x="0" y="3040" w="256" h="512"/>
+    <sprite n="woodceiling1a.jpg" x="3456" y="2272" w="256" h="256"/>
+    <sprite n="woodceiling1b_dark.jpg" x="3712" y="2272" w="256" h="256"/>
     <sprite n="x_noblight.tga" x="632" y="480" w="128" h="128"/>
     <sprite n="x_noblightfx.jpg" x="760" y="480" w="128" h="128"/>
     <sprite n="xian_tourney_trim.jpg" x="1696" y="96" w="256" h="64"/>
-    <sprite n="xian_tourneyarch_bottom2.jpg" x="256" y="2528" w="64" h="256"/>
-    <sprite n="xian_tourneyarch_inside2.jpg" x="320" y="2528" w="256" h="256"/>
-    <sprite n="xian_tourneyarch_med1b.jpg" x="384" y="3040" w="512" h="512"/>
-    <sprite n="xian_tourneyarch_tall1c.jpg" x="1474" y="3040" w="320" h="1024"/>
-    <sprite n="xian_tourneyarch_tall2b.jpg" x="962" y="3040" w="320" h="768"/>
-    <sprite n="xiantourneycolumn_b4.jpg" x="576" y="2528" w="256" h="256"/>
-    <sprite n="xiantourneywall_C1.jpg" x="1282" y="3040" w="128" h="777"/>
-    <sprite n="xiantourneywall_R1.jpg" x="1410" y="3040" w="64" h="780"/>
+    <sprite n="xian_tourneyarch_bottom2.jpg" x="3968" y="2272" w="64" h="256"/>
+    <sprite n="xian_tourneyarch_inside2.jpg" x="0" y="2528" w="256" h="256"/>
+    <sprite n="xian_tourneyarch_med1b.jpg" x="256" y="3040" w="512" h="512"/>
+    <sprite n="xian_tourneyarch_tall1c.jpg" x="1346" y="3040" w="320" h="1024"/>
+    <sprite n="xian_tourneyarch_tall2b.jpg" x="834" y="3040" w="320" h="768"/>
+    <sprite n="xiantourneycolumn_b4.jpg" x="256" y="2528" w="256" h="256"/>
+    <sprite n="xiantourneywall_C1.jpg" x="1154" y="3040" w="128" h="777"/>
+    <sprite n="xiantourneywall_R1.jpg" x="1282" y="3040" w="64" h="780"/>
     <sprite n="xstairtop4.jpg" x="2816" y="0" w="256" h="32"/>
     <sprite n="xstairtop4bbrn.jpg" x="3072" y="0" w="256" h="32"/>
     <sprite n="xstairtop7.jpg" x="3328" y="0" w="256" h="32"/>
@@ -337,5 +336,5 @@ triangles  => sprite triangulation, 3 vertex indices per triangle
     <sprite n="xstepborder10.jpg" x="192" y="0" w="384" h="16"/>
     <sprite n="xstepborder12.jpg" x="0" y="32" w="384" h="32"/>
     <sprite n="xstepborder13.jpg" x="384" y="32" w="384" h="32"/>
-    <sprite n="xsupportborderside_shiney.tga" x="832" y="2528" w="64" h="256"/>
+    <sprite n="xsupportborderside_shiney.tga" x="512" y="2528" w="64" h="256"/>
 </TextureAtlas>
