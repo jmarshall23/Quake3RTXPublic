@@ -347,6 +347,85 @@ void R_AddBrushModelSurfaces ( trRefEntity_t *ent ) {
 =============================================================
 */
 
+static void R_AddRaytacedWorldSurface(msurface_t* surface)
+{
+	vec3_t mins, maxs;
+
+	if (surface->shader == NULL)
+		return;
+
+	int lightRange = 0;
+	vec3_t lightColor = { 1, 1, 1 };
+
+	if (strstr(surface->shader->name, "light")) {
+		lightRange = 100;
+		lightColor[0] = 233.0f / 255.0f;
+		lightColor[1] = 233.0f / 255.0f;
+		lightColor[2] = 125.0f / 255.0f;
+	}
+	else if (strstr(surface->shader->name, "flame1_hell")) {
+		lightRange = 400;
+		lightColor[0] = 226.0f / 255.0f;
+		lightColor[1] = 184.0f / 255.0f;
+		lightColor[2] = 34.0f / 255.0f;
+	}
+	else if (strstr(surface->shader->name, "flame")) {
+		lightRange = 150;
+		lightColor[0] = 226.0f / 255.0f;
+		lightColor[1] = 184.0f / 255.0f;
+		lightColor[2] = 34.0f / 255.0f;
+	}
+	else if (strstr(surface->shader->name, "lava")) {
+		lightRange = 160;
+		lightColor[0] = 128.0f / 255.0f;
+		lightColor[1] = 0.0f / 255.0f;
+		lightColor[2] = 0.0f / 255.0f;
+	}
+	else if (strstr(surface->shader->name, "tim_hell")) {
+		lightRange = 1000;
+		lightColor[0] = 128.0f / 255.0f;
+		lightColor[1] = 50.0f / 255.0f;
+		lightColor[2] = 50.0f / 255.0f;
+	}
+	else if (strstr(surface->shader->name, "sky")) {
+		lightRange = 1000;
+		lightColor[0] = 215.0f / 255.0f;
+		lightColor[1] = 184.0f / 255.0f;
+		lightColor[2] = 120.0f / 255.0f;
+	}
+
+	if (lightRange == 0)
+		return;
+
+	srfTriangles_t* tri = (srfTriangles_t*)surface->data;
+	if (tri == NULL) {
+		return;
+	}
+	if (tri->surfaceType == SF_GRID) {
+		return;
+	}
+
+	ClearBounds(mins, maxs);
+	for (int d = 0; d < tri->numVerts; d++) {
+		AddPointToBounds(tri->verts[d].xyz, mins, maxs);
+	}
+
+	int lightStyle = 0;
+
+	//if (strstr(surface->texinfo->texture->name, "light3_3")) {
+	//	lightStyle = 8;
+	//}
+
+	vec3_t plane_normal;
+
+	plane_normal[0] = tri->verts[0].normal[0];
+	plane_normal[1] = tri->verts[0].normal[1];
+	plane_normal[2] = tri->verts[0].normal[2];
+
+	VectorNormalize(plane_normal);
+
+	GL_RegisterWorldAreaLight(plane_normal, mins, maxs, lightStyle, lightRange, lightColor[0], lightColor[1], lightColor[2]);
+}
 
 /*
 ================
@@ -366,50 +445,50 @@ static void R_RecursiveWorldNode( mnode_t *node, int planeBits, int dlightBits )
 		// if the bounding volume is outside the frustum, nothing
 		// inside can be visible OPTIMIZE: don't do this all the way to leafs?
 
-		if ( !r_nocull->integer ) {
-			int		r;
-
-			if ( planeBits & 1 ) {
-				r = BoxOnPlaneSide(node->mins, node->maxs, &tr.viewParms.frustum[0]);
-				if (r == 2) {
-					return;						// culled
-				}
-				if ( r == 1 ) {
-					planeBits &= ~1;			// all descendants will also be in front
-				}
-			}
-
-			if ( planeBits & 2 ) {
-				r = BoxOnPlaneSide(node->mins, node->maxs, &tr.viewParms.frustum[1]);
-				if (r == 2) {
-					return;						// culled
-				}
-				if ( r == 1 ) {
-					planeBits &= ~2;			// all descendants will also be in front
-				}
-			}
-
-			if ( planeBits & 4 ) {
-				r = BoxOnPlaneSide(node->mins, node->maxs, &tr.viewParms.frustum[2]);
-				if (r == 2) {
-					return;						// culled
-				}
-				if ( r == 1 ) {
-					planeBits &= ~4;			// all descendants will also be in front
-				}
-			}
-
-			if ( planeBits & 8 ) {
-				r = BoxOnPlaneSide(node->mins, node->maxs, &tr.viewParms.frustum[3]);
-				if (r == 2) {
-					return;						// culled
-				}
-				if ( r == 1 ) {
-					planeBits &= ~8;			// all descendants will also be in front
-				}
-			}
-
-		}
+		//if ( !r_nocull->integer ) {
+		//	int		r;
+		//
+		//	if ( planeBits & 1 ) {
+		//		r = BoxOnPlaneSide(node->mins, node->maxs, &tr.viewParms.frustum[0]);
+		//		if (r == 2) {
+		//			return;						// culled
+		//		}
+		//		if ( r == 1 ) {
+		//			planeBits &= ~1;			// all descendants will also be in front
+		//		}
+		//	}
+		//
+		//	if ( planeBits & 2 ) {
+		//		r = BoxOnPlaneSide(node->mins, node->maxs, &tr.viewParms.frustum[1]);
+		//		if (r == 2) {
+		//			return;						// culled
+		//		}
+		//		if ( r == 1 ) {
+		//			planeBits &= ~2;			// all descendants will also be in front
+		//		}
+		//	}
+		//
+		//	if ( planeBits & 4 ) {
+		//		r = BoxOnPlaneSide(node->mins, node->maxs, &tr.viewParms.frustum[2]);
+		//		if (r == 2) {
+		//			return;						// culled
+		//		}
+		//		if ( r == 1 ) {
+		//			planeBits &= ~4;			// all descendants will also be in front
+		//		}
+		//	}
+		//
+		//	if ( planeBits & 8 ) {
+		//		r = BoxOnPlaneSide(node->mins, node->maxs, &tr.viewParms.frustum[3]);
+		//		if (r == 2) {
+		//			return;						// culled
+		//		}
+		//		if ( r == 1 ) {
+		//			planeBits &= ~8;			// all descendants will also be in front
+		//		}
+		//	}
+		//
+		//}
 
 		if ( node->contents != -1 ) {
 			break;
@@ -486,6 +565,7 @@ static void R_RecursiveWorldNode( mnode_t *node, int planeBits, int dlightBits )
 			// spans multiple leafs
 			surf = *mark;
 			//R_AddWorldSurface( surf, dlightBits );
+			R_AddRaytacedWorldSurface(surf);
 			mark++;
 		}
 	}
