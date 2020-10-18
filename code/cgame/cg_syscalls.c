@@ -450,3 +450,7 @@ qboolean trap_R_inPVS( const vec3_t p1, const vec3_t p2 ) {
 void trap_R_FinishDXRLoading(void) {
 	syscall(CG_R_FINISHDXRLOADING);
 }
+
+void trap_R_ShutdownRaytracingMap(void) {
+	syscall(CG_R_SHUTDOWNRAYTRACINGMAP);
+}

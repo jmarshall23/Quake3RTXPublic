@@ -1073,6 +1073,6 @@ refexport_t *GetRefAPI ( int apiVersion, refimport_t *rimp ) {
 	re.GetEntityToken = R_GetEntityToken;
 	re.inPVS = R_inPVS;
 	re.R_FinishDXRLoading = RE_FinishDXRLoading;
-
+	re.ShutdownRaytracingMap = RE_ShutdownRaytracingMap;
 	return &re;
 }

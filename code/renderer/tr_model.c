@@ -702,3 +702,35 @@ void R_ModelBounds( qhandle_t handle, vec3_t mins, vec3_t maxs ) {
 	VectorCopy( frame->bounds[0], mins );
 	VectorCopy( frame->bounds[1], maxs );
 }
+
+
+/*
+================
+Mod_Free
+================
+*/
+void Mod_Free(model_t* mod)
+{
+	//if (mod->md3[0] != NULL) {
+	//	Hunk_Free(mod->md3[0]);
+	//}
+
+	memset(mod, 0, sizeof(*mod));
+}
+
+/*
+================
+Mod_FreeAll
+================
+*/
+void Mod_FreeAll(void)
+{
+	int		i;
+
+	for (i = 0; i < tr.numModels; i++)
+	{
+		Mod_Free(tr.models[i]);			
+	}
+
+	tr.numModels = 0;
+}

@@ -9,20 +9,20 @@
 #include "nv_helpers_dx12/ShaderBindingTableGenerator.h"
 
 extern ComPtr<ID3D12Resource> m_vertexBuffer;
-extern bool r_dxrInit;
+extern bool raytracingDataInit;
 
 /*
 ============================
-GL_ShutdownRaytracingMap
+RE_ShutdownRaytracingMap
 ============================
 */
-void GL_ShutdownRaytracingMap(void) {
+void RE_ShutdownRaytracingMap(void) {
 	r_finishDXRInit = 1;
 
-	r_dxrInit = false;
+	raytracingDataInit = false;
 
 	// Remove all the models.
-	//Mod_ResetAll();
+	Mod_FreeAll();
 
 	// Clear all the lights.
 	GL_ClearLights();

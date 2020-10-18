@@ -1658,5 +1658,9 @@ void GL_SetNumMapLights(void);
 void GL_Upload32(int textureId, unsigned* data, int width, int height, qboolean mipmap, qboolean alpha);
 extern int     r_finishDXRInit;
 
+void RE_ShutdownRaytracingMap(void);
+
+void Mod_FreeAll(void);
+
 #endif //TR_LOCAL_H
 

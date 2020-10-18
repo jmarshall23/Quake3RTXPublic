@@ -1670,3 +1670,4 @@ int CG_NewParticleArea ( int num );
 qboolean trap_R_inPVS(const vec3_t p1, const vec3_t p2);
 
 void trap_R_FinishDXRLoading(void);
+void trap_R_ShutdownRaytracingMap(void);

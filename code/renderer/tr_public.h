@@ -99,6 +99,7 @@ typedef struct {
 	qboolean (*GetEntityToken)( char *buffer, int size );
 	qboolean (*inPVS)( const vec3_t p1, const vec3_t p2 );
 	void	 (*R_FinishDXRLoading)(void);
+	void     (*ShutdownRaytracingMap)(void);
 } refexport_t;
 
 //

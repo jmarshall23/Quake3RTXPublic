@@ -686,6 +686,10 @@ int CL_CgameSystemCalls(intptr_t *args ) {
 		re.R_FinishDXRLoading();
 		return 0;
 
+	case CG_R_SHUTDOWNRAYTRACINGMAP:
+		re.ShutdownRaytracingMap();
+		return 0;
+
 /*
 	case CG_LOADCAMERA:
 		return loadCamera(VMA(1));
