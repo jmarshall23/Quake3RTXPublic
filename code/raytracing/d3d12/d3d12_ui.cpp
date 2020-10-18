@@ -86,6 +86,13 @@ void GL_BlitUIImageUV(int texnum, float u, float v, int destx, int desty, int w,
 	byte* src = textures[texnum].data;
 	int width = textures[texnum].width;
 	int height = textures[texnum].height;
+
+	// Texture not loaded yet. 
+	if (width == -1 || height == -1) {
+		ri.Printf(PRINT_WARNING, "Tried to render a texture that hasn't been registered yet!\n");
+		return;
+	}
+
 	if (w > width || w == -1)
 		w = width;
 

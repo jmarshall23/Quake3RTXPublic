@@ -273,10 +273,9 @@ RE_StretchPic
 void RE_StretchPic ( float x, float y, float w, float h, 
 					  float s1, float t1, float s2, float t2, qhandle_t hShader ) {
 	stretchPicCommand_t	*cmd;
-
-  if (!tr.registered) {
-    return;
-  }
+	if (!tr.registered) {
+	  return;
+	}
 	cmd = R_GetCommandBuffer( sizeof( *cmd ) );
 	if ( !cmd ) {
 		return;

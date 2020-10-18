@@ -586,9 +586,7 @@ void GL_BeginRendering(int* x, int* y, int* width, int* height)
 	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(
 		m_rtvHeap->GetCPUDescriptorHandleForHeapStart(), m_frameIndex,
 		m_rtvDescriptorSize);
-	m_commandList->OMSetRenderTargets(1, &rtvHandle, FALSE, nullptr);
-
-	memset(uiTextureBuffer, 0, sizeof(byte) * 4 * glConfig.vidWidth * glConfig.vidHeight);
+	m_commandList->OMSetRenderTargets(1, &rtvHandle, FALSE, nullptr);	
 }
 
 
@@ -670,6 +668,7 @@ void GL_EndRendering(void)
 	ThrowIfFailed(m_swapChain->Present(0, 0));
 
 	uiTexture->dx_resource->WriteToSubresource(0, NULL, uiTextureBuffer, glConfig.vidWidth * 4, 1);
+	memset(uiTextureBuffer, 0, sizeof(byte) * 4 * glConfig.vidWidth * glConfig.vidHeight);
 }
 
 void GL_Bind(int texnum)

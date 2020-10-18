@@ -498,7 +498,7 @@ Upload32
 ===============
 */
 extern qboolean charSet;
-static void Upload32( unsigned *data, 
+static void Upload32( int textureId, unsigned *data, 
 						  int width, int height, 
 						  qboolean mipmap, 
 						  qboolean picmip, 
@@ -671,30 +671,31 @@ static void Upload32( unsigned *data,
 
 	//qglTexImage2D (GL_TEXTURE_2D, 0, internalFormat, scaled_width, scaled_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, scaledBuffer );
 
-	if (mipmap)
-	{
-		int		miplevel;
-
-		miplevel = 0;
-		while (scaled_width > 1 || scaled_height > 1)
-		{
-			R_MipMap( (byte *)scaledBuffer, scaled_width, scaled_height );
-			scaled_width >>= 1;
-			scaled_height >>= 1;
-			if (scaled_width < 1)
-				scaled_width = 1;
-			if (scaled_height < 1)
-				scaled_height = 1;
-			miplevel++;
-
-			if ( r_colorMipLevels->integer ) {
-				R_BlendOverTexture( (byte *)scaledBuffer, scaled_width * scaled_height, mipBlendColors[miplevel] );
-			}
-
-		//	qglTexImage2D (GL_TEXTURE_2D, miplevel, internalFormat, scaled_width, scaled_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, scaledBuffer );
-		}
-	}
+	//if (mipmap)
+	//{
+	//	int		miplevel;
+	//
+	//	miplevel = 0;
+	//	while (scaled_width > 1 || scaled_height > 1)
+	//	{
+	//		R_MipMap( (byte *)scaledBuffer, scaled_width, scaled_height );
+	//		scaled_width >>= 1;
+	//		scaled_height >>= 1;
+	//		if (scaled_width < 1)
+	//			scaled_width = 1;
+	//		if (scaled_height < 1)
+	//			scaled_height = 1;
+	//		miplevel++;
+	//
+	//		if ( r_colorMipLevels->integer ) {
+	//			R_BlendOverTexture( (byte *)scaledBuffer, scaled_width * scaled_height, mipBlendColors[miplevel] );
+	//		}
+	//
+	//	//	qglTexImage2D (GL_TEXTURE_2D, miplevel, internalFormat, scaled_width, scaled_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, scaledBuffer );
+	//	}
+	//}	
 done:
+	GL_Upload32(textureId, data, width, height, qfalse, qfalse);
 
 	if (mipmap)
 	{
@@ -741,7 +742,7 @@ image_t *R_CreateImage( const char *name, const byte *pic, int width, int height
 	}
 
 	image = tr.images[tr.numImages] = ri.Hunk_Alloc( sizeof( image_t ), h_low );
-	image->texnum = 1024 + tr.numImages;
+	image->texnum = tr.numImages;
 	tr.numImages++;
 
 	image->mipmap = mipmap;
@@ -766,7 +767,7 @@ image_t *R_CreateImage( const char *name, const byte *pic, int width, int height
 
 	GL_Bind(image);
 
-	Upload32( (unsigned *)pic, image->width, image->height, 
+	Upload32( image->texnum, (unsigned *)pic, image->width, image->height, 
 								image->mipmap,
 								allowPicmip,
 								isLightmap,

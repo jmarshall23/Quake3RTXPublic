@@ -1654,6 +1654,8 @@ void* GL_LoadMD3RaytracedMesh(md3Header_t* mod, int frame);
 
 void LoadTGA(const char* name, byte** pic, int* width, int* height);
 void GL_SetNumMapLights(void);
+
+void GL_Upload32(int textureId, unsigned* data, int width, int height, qboolean mipmap, qboolean alpha);
 extern int     r_finishDXRInit;
 
 #endif //TR_LOCAL_H
