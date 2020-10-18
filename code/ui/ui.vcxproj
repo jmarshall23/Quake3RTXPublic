@@ -366,7 +366,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </ClCompile>
     <Link>
-      <OutputFile>../../uix64.dll</OutputFile>
+      <OutputFile>../../baseq3/uix64.dll</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <ModuleDefinitionFile>.\ui.def</ModuleDefinitionFile>
       <ProgramDatabaseFile>.\Release/uix86.pdb</ProgramDatabaseFile>

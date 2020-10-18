@@ -473,7 +473,7 @@ static void LerpMeshVertexes(md3Surface_t* surf, float backlerp, int frame, int 
 
 		vertexes->st[0] = texCoords[0];
 		vertexes->st[1] = texCoords[1];
-		vertexes->st[2] = 0;
+		vertexes->st[2] = 1;
 
 		vertexes->vtinfo[0] = x;
 		vertexes->vtinfo[1] = y;

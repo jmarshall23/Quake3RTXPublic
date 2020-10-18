@@ -372,7 +372,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>../../cgamex64.dll</OutputFile>
+      <OutputFile>../../baseq3/cgamex64.dll</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <ModuleDefinitionFile>.\cgame.def</ModuleDefinitionFile>
       <ProgramDatabaseFile>.\Release/cgamex86.pdb</ProgramDatabaseFile>

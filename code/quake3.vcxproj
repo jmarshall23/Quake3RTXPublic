@@ -566,7 +566,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>dxcompiler.lib;dxgi.lib;d3d12.lib;winmm.lib;wsock32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>.\Release/quake3.exe</OutputFile>
+      <OutputFile>../Quake3RTX.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>.\Release/quake3.pdb</ProgramDatabaseFile>
