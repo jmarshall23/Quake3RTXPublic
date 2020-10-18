@@ -8,7 +8,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LocalDebuggerCommand>D:\projects\Quake3RTXPublic\quake3.exe</LocalDebuggerCommand>
-    <LocalDebuggerCommandArguments>+set r_fullscreen 0 +set r_mode -1 +set r_customwidth 1920 +set r_customheight 1080 +set in_mouse -1 +set sv_pure 0 +map q3dm7</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>+set r_fullscreen 0 +set r_mode -1 +set r_customwidth 1920 +set r_customheight 1080 +set in_mouse -1 +set sv_pure 0</LocalDebuggerCommandArguments>
     <LocalDebuggerWorkingDirectory>D:\projects\Quake3RTXPublic</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>

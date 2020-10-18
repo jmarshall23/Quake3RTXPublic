@@ -6,6 +6,13 @@
 #include "nv_helpers_dx12/TopLevelASGenerator.h"
 #include <vector>
 
+template<class T>
+constexpr const T& clamp(const T& v, const T& lo, const T& hi)
+{
+	assert(!(hi < lo));
+	return (v < lo) ? lo : (hi < v) ? hi : v;
+}
+
 #define MAX_LOADED_TEXTURES			10000
 
 extern byte* uiTextureBuffer;
@@ -127,6 +134,12 @@ void GL_BlitUIImageUV(int texnum, float u, float v, float u2, float v2, int dest
 		ri.Printf(PRINT_WARNING, "Tried to render a texture that hasn't been registered yet!\n");
 		return;
 	}
+
+	u = clamp<float>(u, 0.0, 1.0f);
+	v = clamp<float>(v, 0.0, 1.0f);
+
+	u2 = clamp<float>(u2, 0.0, 1.0f);
+	v2 = clamp<float>(v2, 0.0, 1.0f);
 
 	float target_x = u * width;
 	float target_y = v * height;
