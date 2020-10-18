@@ -287,6 +287,11 @@ void GL_LoadBottomLevelAccelStruct(dxrMesh_t* mesh, msurface_t* surfaces, int nu
 		w = fa->shader->atlas_width;
 		h = fa->shader->atlas_height;
 
+
+		if (strstr(fa->shader->name, "lavahelldark")) {
+			GL_FindMegaTile("lavahell", x, y, w, h);
+		}
+
 		//if (w == 0 || h == 0) {
 		//	continue;
 		//}

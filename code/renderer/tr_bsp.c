@@ -1890,6 +1890,12 @@ void RE_LoadWorldMap( const char *name ) {
 			lightColor[1] = 184.0f / 255.0f;
 			lightColor[2] = 34.0f / 255.0f;
 		}
+		else if (strstr(surface->shader->name, "lava")) {
+			lightRange = 160;
+			lightColor[0] = 128.0f / 255.0f;
+			lightColor[1] = 0.0f / 255.0f;
+			lightColor[2] = 0.0f / 255.0f;
+		}
 		else if (strstr(surface->shader->name, "sky")) {
 			lightRange = 1000;
 			lightColor[0] = 215.0f / 255.0f;
