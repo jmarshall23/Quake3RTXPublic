@@ -1636,7 +1636,7 @@ void create_entity_matrix(float matrix[16], refEntity_t* e, qboolean enable_left
 void create_brush_matrix(float matrix[16], refEntity_t* e, qboolean enable_left_hand);
 
 void GL_BlitUIImage(int texnum, int srcx, int srcy, int destx, int desty);
-void GL_BlitUIImageUV(int texnum, float u, float v, int destx, int desty, int w, int h);
+void GL_BlitUIImageUV(int texnum, float u, float v, float u2, float v2, int destx, int desty, int w, int h);
 void GL_BlitUIImageUVNoScale(int texnum, float u, float v, int destx, int desty, int w, int h);
 void GL_RegisterWorldAreaLight(vec3_t normal, vec3_t mins, vec3_t maxs, int lightStyle, float radius, float r, float g, float b);
 void GL_RegisterWorldLight(refEntity_t* ent, float x, float y, float z, float radius, int lightStyle, float r, float g, float b);

@@ -60,6 +60,39 @@ void R_CopyImage(byte* source, int sourceX, int sourceY, int sourceWidth, byte* 
 }
 
 /*
+==============
+R_Dropsample
+==============
+*/
+unsigned char* R_Dropsample(const unsigned char* in, int inwidth, int inheight, int outwidth, int outheight) {
+	int		i, j, k;
+	const unsigned char* inrow;
+	const unsigned char* pix1;
+	unsigned char* out, * out_p;
+	static unsigned char ViewportPixelBuffer[4096 * 4096 * 4];
+
+	out = &ViewportPixelBuffer[0];
+	out_p = out;
+
+	int bpp = 4;	
+	for (i = 0; i < outheight; i++, out_p += outwidth * bpp) {
+		inrow = in + bpp * inwidth * (int)((i + 0.25) * inheight / outheight);
+		for (j = 0; j < outwidth; j++) {
+			k = j * inwidth / outwidth;
+			pix1 = inrow + k * bpp;
+			out_p[j * 4 + 0] = pix1[0];
+			out_p[j * 4 + 1] = pix1[1];
+			out_p[j * 4 + 2] = pix1[2];
+			out_p[j * 4 + 3] = pix1[3];
+			//out_p[j * 3 + 1] = pix1[1];
+			//out_p[j * 3 + 2] = pix1[2];
+		}
+	}
+
+	return out;
+}
+
+/*
 =================
 GL_BlitUIImage
 =================
@@ -79,8 +112,10 @@ void GL_BlitUIImage(int texnum, int srcx, int srcy, int destx, int desty) {
 GL_BlitUIImage
 =================
 */
-void GL_BlitUIImageUV(int texnum, float u, float v, int destx, int desty, int w, int h) {
-	if (destx < 0 || desty < 0 || destx + w > glConfig.vidWidth || desty + h > glConfig.vidHeight)
+void GL_BlitUIImageUV(int texnum, float u, float v, float u2, float v2, int destx, int desty, int w, int h) {
+	static byte blit_temp[4096 * 4096 * 4];
+
+	if (destx < 0 || desty < 0 || destx + w > glConfig.vidWidth || desty + h > glConfig.vidHeight || w <= 0 || h <= 0)
 		return;
 
 	byte* src = textures[texnum].data;
@@ -88,18 +123,26 @@ void GL_BlitUIImageUV(int texnum, float u, float v, int destx, int desty, int w,
 	int height = textures[texnum].height;
 
 	// Texture not loaded yet. 
-	if (width == -1 || height == -1) {
+	if (width == -1 || height == -1 || w == -1 || h == -1) {
 		ri.Printf(PRINT_WARNING, "Tried to render a texture that hasn't been registered yet!\n");
 		return;
 	}
 
-	if (w > width || w == -1)
-		w = width;
+	float target_x = u * width;
+	float target_y = v * height;
+	float target_x2 = u2 * width;
+	float target_y2 = v2 * height;
 
-	if (h > height || h == -1)
-		h = height;
+	int target_width = target_x2 - target_x;
+	int target_height = target_y2 - target_y;
 
-	R_CopyImage(src, u * width, v * height, width, (byte*)uiTextureBuffer, destx, desty, glConfig.vidWidth, w, h);
+	if (target_width == 0 || target_height == 0)
+		return;
+	
+	// Copy the segment of the texture to blit_temp.
+	R_CopyImage(src, target_x, target_y, width, (byte*)blit_temp, 0, 0, target_width, target_width, target_height);
+	unsigned char* new_src = R_Dropsample(blit_temp, target_width, target_height, w, h);
+	R_CopyImage(new_src, 0, 0, w, (byte*)uiTextureBuffer, destx, desty, glConfig.vidWidth, w, h);
 }
 
 /*

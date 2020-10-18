@@ -841,7 +841,7 @@ const void *RB_StretchPic ( const void *data ) {
 	cmd = (const stretchPicCommand_t *)data;
 
 	shader = cmd->shader;	
-	GL_BlitUIImageUV(shader->stages[0]->bundle[0].image[0]->texnum, cmd->s1, cmd->t1, cmd->x, cmd->y, (int)cmd->w, (int)cmd->h);
+	GL_BlitUIImageUV(shader->stages[0]->bundle[0].image[0]->texnum, cmd->s1, cmd->t1, cmd->s2, cmd->t2, cmd->x, cmd->y, (int)cmd->w, (int)cmd->h);
 
 	return (const void *)(cmd + 1);
 }
