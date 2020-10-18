@@ -159,6 +159,7 @@ float getFogFactor(float d)
 		float3 sky = CalculateClouds();
 		gOutput[launchIndex] = float4(sky.x, sky.y, sky.z, 1.0);
 		gLightOutput[launchIndex] = float4(1, 1, 1, 1);
+		gLightOutput[launchIndex] = float4(1, 1, 1, 1);
 	}
 	else if(hit.lightColor.w > 0 && false)
 	{		 

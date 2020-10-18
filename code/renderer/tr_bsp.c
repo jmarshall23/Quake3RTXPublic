@@ -1883,7 +1883,13 @@ void RE_LoadWorldMap( const char *name ) {
 			lightColor[0] = 233.0f / 255.0f;
 			lightColor[1] = 233.0f / 255.0f;
 			lightColor[2] = 125.0f / 255.0f;
-		}		
+		}
+		else if (strstr(surface->shader->name, "flame1_hell")) {
+			lightRange = 400;
+			lightColor[0] = 226.0f / 255.0f;
+			lightColor[1] = 184.0f / 255.0f;
+			lightColor[2] = 34.0f / 255.0f;
+		}
 		else if (strstr(surface->shader->name, "flame")) {
 			lightRange = 150;
 			lightColor[0] = 226.0f / 255.0f;
@@ -1895,6 +1901,12 @@ void RE_LoadWorldMap( const char *name ) {
 			lightColor[0] = 128.0f / 255.0f;
 			lightColor[1] = 0.0f / 255.0f;
 			lightColor[2] = 0.0f / 255.0f;
+		}
+		else if (strstr(surface->shader->name, "tim_hell")) {
+			lightRange = 1000;
+			lightColor[0] = 128.0f / 255.0f;
+			lightColor[1] = 50.0f / 255.0f;
+			lightColor[2] = 50.0f / 255.0f;
 		}
 		else if (strstr(surface->shader->name, "sky")) {
 			lightRange = 1000;

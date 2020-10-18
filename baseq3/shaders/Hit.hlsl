@@ -525,20 +525,20 @@ int sideOfPlane(float3 p, float3 pc, float3 pn){
 
 
 	// Fire the secondary bounce
-	{
-		int r = 1;
-		float3 bounce = float3(0, 0, 0);
-		for(int i = 1; i < 10; i++)
-		{
-			float3 worldDir = getCosHemisphereSample(r , orig_normal);
-			bounce += FireSecondRay(worldOrigin, 250, worldDir);
-		}
-		if(length(bounce) > 0)
-		{
-			ndotl += (bounce / 10);
-		}
-		//ndotl += FireSecondRay(worldOrigin, 500, orig_normal);
-	}
+	//{
+	//	int r = 1;
+	//	float3 bounce = float3(0, 0, 0);
+	//	for(int i = 1; i < 10; i++)
+	//	{
+	//		float3 worldDir = getCosHemisphereSample(r , orig_normal);
+	//		bounce += FireSecondRay(worldOrigin, 250, worldDir);
+	//	}
+	//	if(length(bounce) > 0)
+	//	{
+	//		ndotl += (bounce / 10);
+	//	}
+	//	//ndotl += FireSecondRay(worldOrigin, 500, orig_normal);
+	//}
 
   //hitColor = float3(InstanceID(), 0, 0);
   float3 spec_final = pow(spec_lit, 0.5);

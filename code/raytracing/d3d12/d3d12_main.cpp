@@ -11,7 +11,6 @@
 
 int m_frameIndex = 0;
 
-
 float sky_map_x, sky_map_y, sky_map_w, sky_map_h;
 
 tr_renderer *renderer;
