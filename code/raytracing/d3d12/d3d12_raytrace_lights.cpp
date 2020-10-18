@@ -135,7 +135,7 @@ void GL_RegisterWorldLight(refEntity_t* ent, float x, float y, float z, float ra
 	light.num_leafs = 0;
 	//GL_FindTouchedLeafs(&light, loadmodel->nodes);
 
-	//worldLights[numWorldLights++] = light;
+	worldLights[numWorldLights++] = light;
 }
 
 void GL_RegisterWorldAreaLight(vec3_t normal, vec3_t mins, vec3_t maxs, int lightStyle, float radius, float r, float g, float b) {
