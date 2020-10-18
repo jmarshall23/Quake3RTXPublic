@@ -535,7 +535,7 @@ int sideOfPlane(float3 p, float3 pc, float3 pn){
 		}
 		if(length(bounce) > 0)
 		{
-			ndotl += (bounce / 10) * 1.4;
+			ndotl += (bounce / 10);
 		}
 		//ndotl += FireSecondRay(worldOrigin, 500, orig_normal);
 	}

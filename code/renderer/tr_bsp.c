@@ -1879,7 +1879,7 @@ void RE_LoadWorldMap( const char *name ) {
 		vec3_t lightColor = { 1, 1, 1 };
 
 		if (strstr(surface->shader->name, "light")) {
-			lightRange = 150;
+			lightRange = 100;
 			lightColor[0] = 233.0f / 255.0f;
 			lightColor[1] = 233.0f / 255.0f;
 			lightColor[2] = 125.0f / 255.0f;
