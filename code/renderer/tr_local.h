@@ -1648,7 +1648,7 @@ void GL_EndRendering(void);
 void GL_Init(HWND hwnd, HINSTANCE hinstance, int width, int height);
 void GL_FindMegaTile(const char* name, float* x, float* y, float* width, float* height);
 
-void* GL_LoadDXRMesh(msurface_t* surfaces, int numSurfaces);
+void* GL_LoadDXRMesh(msurface_t* surfaces, int numSurfaces, int bModelIndex);
 
 void* GL_LoadMD3RaytracedMesh(md3Header_t* mod, int frame);
 

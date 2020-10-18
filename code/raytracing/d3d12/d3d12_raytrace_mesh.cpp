@@ -242,7 +242,7 @@ void GL_RaytraceSurfaceGrid(dxrMesh_t* mesh, msurface_t* fa, srfGridMesh_t* cv) 
 }
 
 
-void GL_LoadBottomLevelAccelStruct(dxrMesh_t* mesh, msurface_t* surfaces, int numSurfaces) {
+void GL_LoadBottomLevelAccelStruct(dxrMesh_t* mesh, msurface_t* surfaces, int numSurfaces, int bModelIndex) {
 	mesh->startSceneVertex = sceneVertexes.size();
 
 	for (int i = 0; i < numSurfaces; i++)
@@ -296,9 +296,9 @@ void GL_LoadBottomLevelAccelStruct(dxrMesh_t* mesh, msurface_t* surfaces, int nu
 		//	continue;
 		//}
 
-		//if(fa->bmodelindex > 0 && (currentBrushModel == NULL || currentBrushModel->name[0] != '*')) {
-		//	continue;
-		//}
+		if((fa->bmodelindex > 2 && bModelIndex == -1) || (bModelIndex >= 0 && fa->bmodelindex != bModelIndex)) {
+			continue;
+		}
 
 		surf.startVertex = mesh->meshVertexes.size();
 		surf.numVertexes = 0;
@@ -409,12 +409,12 @@ void GL_LoadBottomLevelAccelStruct(dxrMesh_t* mesh, msurface_t* surfaces, int nu
 	}
 }
 
-void *GL_LoadDXRMesh(msurface_t *surfaces, int numSurfaces)  {
+void *GL_LoadDXRMesh(msurface_t *surfaces, int numSurfaces, int bModelIndex)  {
 	dxrMesh_t* mesh = new dxrMesh_t();
 	
 	//mesh->meshId = dxrMeshList.size();
 	
-	GL_LoadBottomLevelAccelStruct(mesh, surfaces, numSurfaces);
+	GL_LoadBottomLevelAccelStruct(mesh, surfaces, numSurfaces, bModelIndex);
 
 	dxrMeshList.push_back(mesh);
 
