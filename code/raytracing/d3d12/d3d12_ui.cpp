@@ -45,6 +45,10 @@ void GL_SetUICanvas(float x, float y, float width, float height) {
 	canvas_y = y;
 }
 
+#ifdef _DEBUG
+#pragma optimize( "", on )
+#endif
+
 /*
 ==============
 R_CopyImage
@@ -98,6 +102,10 @@ unsigned char* R_Dropsample(const unsigned char* in, int inwidth, int inheight, 
 
 	return out;
 }
+
+#ifdef _DEBUG
+#pragma optimize( "", off )
+#endif
 
 /*
 =================

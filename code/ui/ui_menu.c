@@ -138,7 +138,7 @@ MainMenu_Cache
 ===============
 */
 void MainMenu_Cache( void ) {
-	s_main.bannerModel = trap_R_RegisterModel( MAIN_BANNER_MODEL );
+//	s_main.bannerModel = trap_R_RegisterModel( MAIN_BANNER_MODEL );
 }
 
 sfxHandle_t ErrorMessage_Key(int key)
