@@ -1655,10 +1655,12 @@ void* GL_LoadMD3RaytracedMesh(md3Header_t* mod, int frame);
 void LoadTGA(const char* name, byte** pic, int* width, int* height);
 void GL_SetNumMapLights(void);
 
-void GL_Upload32(int textureId, unsigned* data, int width, int height, qboolean mipmap, qboolean alpha);
+void GL_Upload32(int textureId, unsigned* data, int width, int height, int mipmap, int alpha);
 extern int     r_finishDXRInit;
 
 void RE_ShutdownRaytracingMap(void);
+
+void GL_RenderUISurface(int numIndexes, drawVert_t* verts, int* indexes, const shader_t* material, vec4_t color);
 
 void Mod_FreeAll(void);
 

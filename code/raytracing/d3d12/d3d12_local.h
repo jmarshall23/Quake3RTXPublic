@@ -132,11 +132,17 @@ extern "C" {
 	extern qmodel_t* loadmodel;
 };
 
+void GL_RenderUI(ID3D12GraphicsCommandList4* cmdList, ID3D12CommandAllocator* commandAllocator);
+extern tr_render_target* uiRenderTarget;
+void GL_UpdateUI(void);
+
 void GL_BuildLightList(float x, float y, float z);
 void GL_ClearLights(void);
 void GL_WaitForPreviousFrame(void);
 
 void GL_InitClearPass(tr_texture* lightPass);
 void GL_ClearLightPass(tr_texture* lightPass, ID3D12GraphicsCommandList4* cmdList, ID3D12CommandAllocator* commandAllocator);
+
+void GL_InitUI(void);
 
 extern int numWorldLights;

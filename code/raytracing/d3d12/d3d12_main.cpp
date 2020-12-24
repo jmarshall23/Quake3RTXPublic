@@ -53,6 +53,7 @@ tr_texture* lightTexture;
 tr_texture* uiTexture;
 tr_texture* compositeTexture;
 tr_texture* compositeStagingTexture;
+tr_render_target* uiRenderTarget;
 ComPtr<ID3D12DescriptorHeap> m_srvUavHeap;
 
 // Ray tracing pipeline state properties, retaining the shader identifiers
@@ -68,7 +69,6 @@ ComPtr< ID3D12DescriptorHeap > m_constHeap;
 uint32_t m_cameraBufferSize = 0;
 
 bool raytracingDataInit = false;
-byte* uiTextureBuffer = nullptr;
 
 void GL_WaitForPreviousFrame(void) 
 {
@@ -265,8 +265,8 @@ void GL_InitRaytracing(int width, int height) {
 	tr_create_texture_2d(renderer, width, height, tr_sample_count_1, tr_format_r8g8b8a8_unorm, 1, NULL, false, tr_texture_usage_sampled_image | tr_texture_usage_storage_image, &compositeTexture);
 	tr_create_texture_2d(renderer, width, height, tr_sample_count_1, tr_format_r8g8b8a8_unorm, 1, NULL, false, tr_texture_usage_sampled_image | tr_texture_usage_storage_image, &compositeStagingTexture);
 	tr_create_texture_2d(renderer, width, height, tr_sample_count_1, tr_format_r8g8b8a8_unorm, 1, NULL, true, tr_texture_usage_sampled_image | tr_texture_usage_storage_image, &uiTexture);
-
-	uiTextureBuffer = new byte[width * height * 4];
+	tr_create_render_target(renderer, width, height, tr_sample_count_1, tr_format_r8g8b8a8_unorm, 1, NULL, tr_format_undefined, NULL, &uiRenderTarget);
+	uiTexture = uiRenderTarget->color_attachments[0];
 
 	//{
 	//	D3D12_RESOURCE_DESC resDesc = {};
@@ -520,6 +520,7 @@ void GL_Init(HWND hwnd, HINSTANCE hinstance, int width, int height)
 	GL_InitRaytracing(width, height);
 
 	GL_InitClearPass(lightTexture);
+	GL_InitUI();
 	GL_InitCompositePass(albedoTexture, lightTexture, compositeStagingTexture, compositeTexture, uiTexture);
 
 
@@ -553,6 +554,7 @@ GL_BeginRendering
 void GL_BeginRendering(int* x, int* y, int* width, int* height)
 {
 	GL_WaitForPreviousFrame();
+	GL_UpdateUI();
 
 	*x = *y = 0;
 	*width = glConfig.vidWidth;
@@ -608,6 +610,7 @@ void GL_EndRendering(void)
 			m_commandList->ResourceBarrier(1, &transition);
 		}
 
+		GL_RenderUI(m_commandList.Get(), m_commandAllocator.Get());
 		GL_CompositePass(albedoTexture, lightTexture, compositeStagingTexture, compositeTexture, m_commandList.Get(), m_commandAllocator.Get());
 
 		{
@@ -666,9 +669,6 @@ void GL_EndRendering(void)
 
 	// Present the frame.
 	ThrowIfFailed(m_swapChain->Present(0, 0));
-
-	uiTexture->dx_resource->WriteToSubresource(0, NULL, uiTextureBuffer, glConfig.vidWidth * 4, 1);
-	memset(uiTextureBuffer, 0, sizeof(byte) * 4 * glConfig.vidWidth * glConfig.vidHeight);
 }
 
 void GL_Bind(int texnum)

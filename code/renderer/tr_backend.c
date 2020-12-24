@@ -841,7 +841,49 @@ const void *RB_StretchPic ( const void *data ) {
 	cmd = (const stretchPicCommand_t *)data;
 
 	shader = cmd->shader;	
-	GL_BlitUIImageUV(shader->stages[0]->bundle[0].image[0]->texnum, cmd->s1, cmd->t1, cmd->s2, cmd->t2, cmd->x, cmd->y, (int)cmd->w, (int)cmd->h);
+//	GL_BlitUIImageUV(shader->stages[0]->bundle[0].image[0]->texnum, cmd->s1, cmd->t1, cmd->s2, cmd->t2, cmd->x, cmd->y, (int)cmd->w, (int)cmd->h);
+
+
+	int indexes[6];
+	indexes[0] = 3;
+	indexes[1] = 0;
+	indexes[2] = 2;
+	indexes[3] = 2;
+	indexes[4] = 0;
+	indexes[5] = 1;
+	
+	drawVert_t verts[4];
+	
+	verts[0].xyz[0] = cmd->x;
+	verts[0].xyz[1] = cmd->y;
+	verts[0].xyz[2] = 0;
+	verts[0].st[0] = cmd->s1;
+	verts[0].st[1] = cmd->t1;
+
+	verts[1].xyz[0] = cmd->x + cmd->w;
+	verts[1].xyz[1] = cmd->y;
+	verts[1].xyz[2] = 0;
+	verts[1].st[0] = cmd->s2;
+	verts[1].st[1] = cmd->t1;
+
+	verts[2].xyz[0] = cmd->x + cmd->w;
+	verts[2].xyz[1] = cmd->y + cmd->h;
+	verts[2].xyz[2] = 0;
+	verts[2].st[0] = cmd->s2;
+	verts[2].st[1] = cmd->t2;
+
+	verts[3].xyz[0] = cmd->x;
+	verts[3].xyz[1] = cmd->y + cmd->h;
+	verts[3].xyz[2] = 0;
+	verts[3].st[0] = cmd->s1;
+	verts[3].st[1] = cmd->t2;
+
+	vec4_t color;
+	color[0] = 1;
+	color[1] = 1;
+	color[2] = 1;
+	color[3] = 1;
+	GL_RenderUISurface(6, &verts[0], &indexes[0], shader, color);
 
 	return (const void *)(cmd + 1);
 }
