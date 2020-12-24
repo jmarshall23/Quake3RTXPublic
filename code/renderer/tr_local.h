@@ -1645,9 +1645,8 @@ void GL_SetUICanvas(float x, float y, float width, float height);
 void GL_BeginRendering(int* x, int* y, int* width, int* height);
 void GL_EndRendering(void);
 
+void GL_InitMegaTextures(void);
 void GL_Init(HWND hwnd, HINSTANCE hinstance, int width, int height);
-void GL_FindMegaTile(const char* name, float* x, float* y, float* width, float* height);
-
 void* GL_LoadDXRMesh(msurface_t* surfaces, int numSurfaces, int bModelIndex);
 
 void* GL_LoadMD3RaytracedMesh(md3Header_t* mod, int frame);
@@ -1656,6 +1655,11 @@ void LoadTGA(const char* name, byte** pic, int* width, int* height);
 void GL_SetNumMapLights(void);
 
 void GL_Upload32(int textureId, unsigned* data, int width, int height, int mipmap, int alpha);
+void GL_RegisterTexture(const char* texturePath, int width, int height, byte* data);
+void GL_FindMegaTile(const char* name, float* x, float* y, float* width, float* height);
+
+const char* R_GetCurrentShaderName(void);
+
 extern int     r_finishDXRInit;
 
 void RE_ShutdownRaytracingMap(void);

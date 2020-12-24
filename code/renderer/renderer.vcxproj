@@ -2146,6 +2146,7 @@
     <ClCompile Include="..\raytracing\d3d12\d3d12_raytrace_mega.cpp" />
     <ClCompile Include="..\raytracing\d3d12\d3d12_raytrace_mesh.cpp" />
     <ClCompile Include="..\raytracing\d3d12\d3d12_ui.cpp" />
+    <ClCompile Include="..\raytracing\d3d12\ImagePacker.cpp" />
     <ClCompile Include="..\raytracing\d3d12\nv_helpers_dx12\BottomLevelASGenerator.cpp" />
     <ClCompile Include="..\raytracing\d3d12\nv_helpers_dx12\RaytracingPipelineGenerator.cpp" />
     <ClCompile Include="..\raytracing\d3d12\nv_helpers_dx12\RootSignatureGenerator.cpp" />
@@ -3273,6 +3274,7 @@
     <ClInclude Include="..\raytracing\d3d12\d3dx12.h" />
     <ClInclude Include="..\raytracing\d3d12\DXRHelper.h" />
     <ClInclude Include="..\raytracing\d3d12\DXSampleHelper.h" />
+    <ClInclude Include="..\raytracing\d3d12\ImagePacker.h" />
     <ClInclude Include="..\raytracing\d3d12\nv_helpers_dx12\BottomLevelASGenerator.h" />
     <ClInclude Include="..\raytracing\d3d12\nv_helpers_dx12\RaytracingPipelineGenerator.h" />
     <ClInclude Include="..\raytracing\d3d12\nv_helpers_dx12\RootSignatureGenerator.h" />

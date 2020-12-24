@@ -202,7 +202,7 @@ static	void R_LoadLightmaps( lump_t *l ) {
 				image[j*4+3] = 255;
 			}
 		}
-		tr.lightmaps[i] = R_CreateImage( va("*lightmap%d",i), image, LIGHTMAP_SIZE, LIGHTMAP_SIZE, qfalse, qfalse, 0 );
+	//	tr.lightmaps[i] = R_CreateImage( va("*lightmap%d",i), image, LIGHTMAP_SIZE, LIGHTMAP_SIZE, qfalse, qfalse, 0 );
 	}
 
 	if ( r_lightmap->integer == 2 )	{
@@ -1805,6 +1805,8 @@ void RE_LoadWorldMap( const char *name ) {
 	if ( tr.worldMapLoaded ) {
 		ri.Error( ERR_DROP, "ERROR: attempted to redundantly load world map\n" );
 	}
+
+	GL_InitMegaTextures();
 
 	// set default sun direction to be used if it isn't
 	// overridden by a shader

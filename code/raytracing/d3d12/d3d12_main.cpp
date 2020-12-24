@@ -523,9 +523,6 @@ void GL_Init(HWND hwnd, HINSTANCE hinstance, int width, int height)
 	GL_InitUI();
 	GL_InitCompositePass(albedoTexture, lightTexture, compositeStagingTexture, compositeTexture, uiTexture);
 
-
-	GL_LoadMegaXML("baseq3/mega/mega.xml");
-
 	DXGI_ADAPTER_DESC adapterDesc;	
     hardwareAdapter->GetDesc(&adapterDesc);
 

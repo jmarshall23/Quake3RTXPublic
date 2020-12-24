@@ -498,7 +498,7 @@ Upload32
 ===============
 */
 extern qboolean charSet;
-static void Upload32( int textureId, unsigned *data, 
+static void Upload32( const char *name, int textureId, unsigned *data, 
 						  int width, int height, 
 						  qboolean mipmap, 
 						  qboolean picmip, 
@@ -522,10 +522,10 @@ static void Upload32( int textureId, unsigned *data,
 		;
 	for (scaled_height = 1 ; scaled_height < height ; scaled_height<<=1)
 		;
-	if ( r_roundImagesDown->integer && scaled_width > width )
-		scaled_width >>= 1;
-	if ( r_roundImagesDown->integer && scaled_height > height )
-		scaled_height >>= 1;
+	//if ( r_roundImagesDown->integer && scaled_width > width )
+	//	scaled_width >>= 1;
+	//if ( r_roundImagesDown->integer && scaled_height > height )
+	//	scaled_height >>= 1;
 
 	if ( scaled_width != width || scaled_height != height ) {
 		resampledBuffer = ri.Hunk_AllocateTempMemory( scaled_width * scaled_height * 4 );
@@ -558,11 +558,11 @@ static void Upload32( int textureId, unsigned *data,
 	// scale both axis down equally so we don't have to
 	// deal with a half mip resampling
 	//
-	while ( scaled_width > glConfig.maxTextureSize
-		|| scaled_height > glConfig.maxTextureSize ) {
-		scaled_width >>= 1;
-		scaled_height >>= 1;
-	}
+	//while ( scaled_width > glConfig.maxTextureSize
+	//	|| scaled_height > glConfig.maxTextureSize ) {
+	//	scaled_width >>= 1;
+	//	scaled_height >>= 1;
+	//}
 
 	scaledBuffer = ri.Hunk_AllocateTempMemory( sizeof( unsigned ) * scaled_width * scaled_height );
 
@@ -696,6 +696,7 @@ static void Upload32( int textureId, unsigned *data,
 	//}	
 done:
 	GL_Upload32(textureId, data, width, height, qfalse, qfalse);
+	GL_RegisterTexture(name, scaled_width, scaled_height, scaledBuffer);
 
 	if (mipmap)
 	{
@@ -767,13 +768,15 @@ image_t *R_CreateImage( const char *name, const byte *pic, int width, int height
 
 	GL_Bind(image);
 
-	Upload32( image->texnum, (unsigned *)pic, image->width, image->height, 
+	Upload32(name, image->texnum, (unsigned *)pic, image->width, image->height, 
 								image->mipmap,
 								allowPicmip,
 								isLightmap,
 								&image->internalFormat,
 								&image->uploadWidth,
 								&image->uploadHeight );
+
+	
 
 	//qglTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, glWrapClampMode );
 	//qglTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, glWrapClampMode );

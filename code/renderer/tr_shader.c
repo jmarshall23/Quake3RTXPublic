@@ -1737,15 +1737,15 @@ static qboolean CollapseMultitexture( void ) {
 
 	for (int i = 0; i < MAX_SHADER_STAGES; i++) {
 		if (stages[i].active && strlen(stages[i].bundle[0].imageName[0]) > 0) {
-			COM_StripExtension(COM_SkipPath(stages[i].bundle[0].imageName[0]), fixedPath);
+			//COM_StripExtension(COM_SkipPath(stages[i].bundle[0].imageName[0]), fixedPath);
 			float atlas_x, atlas_y, atlas_width, atlas_height;
-			GL_FindMegaTile(fixedPath, &atlas_x, &atlas_y, &atlas_width, &atlas_height);
+			GL_FindMegaTile(stages[i].bundle[0].imageName[0], &atlas_x, &atlas_y, &atlas_width, &atlas_height);
 			if (atlas_x != -1) {
 				shader.atlas_x = atlas_x;
 				shader.atlas_y = atlas_y;
 				shader.atlas_width = atlas_width;
 				shader.atlas_height = atlas_height;
-				Com_Printf("Found %s\n", fixedPath);
+				Com_Printf("Found %s\n", stages[i].bundle[0].imageName[0]);
 				break;
 			}
 		}
@@ -2277,6 +2277,19 @@ shader_t *R_FindShaderByName( const char *name ) {
 	return tr.defaultShader;
 }
 
+qboolean r_processingShader = qfalse;
+
+/*
+=================
+R_GetCurrentShaderName
+=================
+*/
+const char* R_GetCurrentShaderName(void) {
+	if (r_processingShader == qfalse)
+		return NULL;
+
+	return shader.name;
+}
 
 /*
 ===============
@@ -2341,7 +2354,7 @@ shader_t *R_FindShader( const char *name, int lightmapIndex, qboolean mipRawImag
 			// match found
 			return sh;
 		}
-	}
+	}	
 
 	// make sure the render thread is stopped, because we are probably
 	// going to have to upload an image
@@ -2383,7 +2396,7 @@ shader_t *R_FindShader( const char *name, int lightmapIndex, qboolean mipRawImag
 		return sh;
 	}
 
-
+	r_processingShader = qtrue;
 	//
 	// if not defined in the in-memory shader descriptions,
 	// look for a single TGA, BMP, or PCX
@@ -2394,6 +2407,7 @@ shader_t *R_FindShader( const char *name, int lightmapIndex, qboolean mipRawImag
 	if ( !image ) {
 		ri.Printf( PRINT_DEVELOPER, "Couldn't find image for shader %s\n", name );
 		shader.defaultShader = qtrue;
+		r_processingShader = qfalse;
 		return FinishShader();
 	}
 
@@ -2452,7 +2466,9 @@ shader_t *R_FindShader( const char *name, int lightmapIndex, qboolean mipRawImag
 
 	CollapseMultitexture();
 
-	return FinishShader();
+	shader_t *shader = FinishShader();
+	r_processingShader = qfalse;
+	return shader;
 }
 
 

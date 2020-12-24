@@ -377,6 +377,9 @@
     <ClCompile Include="..\raytracing\d3d12\d3d12_clear.cpp">
       <Filter>Raytracing\d3d12</Filter>
     </ClCompile>
+    <ClCompile Include="..\raytracing\d3d12\ImagePacker.cpp">
+      <Filter>Raytracing\d3d12</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\jpeg-6\jchuff.h">
@@ -480,6 +483,9 @@
     </ClInclude>
     <ClInclude Include="..\raytracing\d3d12\nv_helpers_dx12\TopLevelASGenerator.h">
       <Filter>Raytracing\d3d12\nv_helpers_dx12</Filter>
+    </ClInclude>
+    <ClInclude Include="..\raytracing\d3d12\ImagePacker.h">
+      <Filter>Raytracing\d3d12</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

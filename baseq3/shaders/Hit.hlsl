@@ -377,21 +377,21 @@ int sideOfPlane(float3 p, float3 pc, float3 pn){
 			v += BTriVertex[vertId + i].st.y * barycentrics[i];
 	  }
 	  
-	  u = frac(u) / 4096;
-	  v = frac(v) / 4096;
+	  u = frac(u) / 16384;
+	  v = frac(v) / 16384;
 	  
 	  u = u * BTriVertex[vertId + 0].vtinfo.z;
 	  v = v * BTriVertex[vertId + 0].vtinfo.w;
 	  
-	  u = u + (BTriVertex[vertId + 0].vtinfo.x / 4096);
-	  v = v + (BTriVertex[vertId + 0].vtinfo.y / 4096);
+	  u = u + (BTriVertex[vertId + 0].vtinfo.x / 16384);
+	  v = v + (BTriVertex[vertId + 0].vtinfo.y / 16384);
 	  
 
-	  //u *= BTriVertex[vertId + 0].vtinfo.z + (BTriVertex[vertId + 0].vtinfo.x / 4096);
-	  //v *= BTriVertex[vertId + 0].vtinfo.w + (BTriVertex[vertId + 0].vtinfo.y / 4096);
+	  //u *= BTriVertex[vertId + 0].vtinfo.z + (BTriVertex[vertId + 0].vtinfo.x / 16384);
+	  //v *= BTriVertex[vertId + 0].vtinfo.w + (BTriVertex[vertId + 0].vtinfo.y / 16384);
 	  //hitColor = float3(u, v, 0);
-	  hitColor = MegaTexture.Load(int3(u * 4096, v * 4096, 0)).rgb; //normalize(BTriVertex[vertId + 0].vertex) * 4;
-	  hitNormalMap = MegaTextureNormal.Load(int3(u * 4096, v * 4096, 0)).rgb * 2.0 - 1.0;
+	  hitColor = MegaTexture.Load(int3(u * 16384, v * 16384, 0)).rgb; //normalize(BTriVertex[vertId + 0].vertex) * 4;
+//	  hitNormalMap = MegaTextureNormal.Load(int3(u * 16384, v * 16384, 0)).rgb * 2.0 - 1.0;
   }
   else
   {
@@ -551,9 +551,9 @@ int sideOfPlane(float3 p, float3 pc, float3 pn){
 	//}
 
   //hitColor = float3(InstanceID(), 0, 0);
-  float3 spec_final = pow(spec_lit, 0.5);
-  ndotl = lerp(ndotl, spec_final, length(spec_final) * 1.5);
-  ndotl += 0.05;
+ // float3 spec_final = pow(spec_lit, 0.5);
+  //ndotl = lerp(ndotl, spec_final, length(spec_final) * 1.5);
+ // ndotl += 0.05;
   //ndotl = max(ndotl, 0.1);
   //ndotl *= float3(227.0 / 255.0, 107.0 / 255.0, 0.0);  
 

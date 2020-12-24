@@ -8,6 +8,7 @@
 #include <dxgi1_4.h>
 #include "DXRHelper.h"
 #include "tinydx.h"
+#include <vector>
 
 extern "C" {
 	#include "../../renderer/tr_local.h"
@@ -112,10 +113,10 @@ void GL_CreateTopLevelAccelerationStructs(bool forceUpdate);
 
 extern std::vector<dxrMesh_t*> dxrMeshList;
 
-void GL_LoadMegaXML(const char* path);
 void GL_LoadMegaTexture(D3D12_CPU_DESCRIPTOR_HANDLE &srvPtr);
 void GL_LoadMegaNormalTexture(D3D12_CPU_DESCRIPTOR_HANDLE& srvPtr);
 void GL_CreateInstanceInfo(D3D12_CPU_DESCRIPTOR_HANDLE& srvPtr);
+void GL_FindMegaTile(const char* name, float* x, float* y, float* width, float* height);
 void GL_FindMegaTile(const char* name, float& x, float& y, float& width, float& height);
 
 void GL_InitCompositePass(tr_texture *albedoPass, tr_texture *lightPass, tr_texture* compositeStagingPass, tr_texture *compositePass, tr_texture* uiTexturePass);
@@ -146,3 +147,38 @@ void GL_ClearLightPass(tr_texture* lightPass, ID3D12GraphicsCommandList4* cmdLis
 void GL_InitUI(void);
 
 extern int numWorldLights;
+
+class idImagePacker;
+
+//
+// iceMegaEntry
+//
+struct iceMegaEntry {
+	char texturePath[512];
+	int width;
+	int height;
+	int x;
+	int y;
+	byte* data_copy;
+};
+
+//
+// iceMegaTexture
+//
+class iceMegaTexture {
+public:
+	iceMegaTexture();
+	~iceMegaTexture();
+
+	void				InitTexture(void);
+	void				RegisterTexture(const char* texturePath, int width, int height, byte* data);
+	void				BuildMegaTexture(void);
+	void				FindMegaTile(const char* name, float& x, float& y, float& width, float& height);
+
+	byte* GetMegaBuffer(void) { return megaTextureBuffer; }
+private:
+	byte* megaTextureBuffer;
+	bool				isRegistered;
+	std::vector<iceMegaEntry> megaEntries;
+	idImagePacker* imagePacker;
+};
