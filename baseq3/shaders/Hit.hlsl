@@ -423,7 +423,7 @@ int sideOfPlane(float3 p, float3 pc, float3 pn){
   float3 spec_lit = 0;
   if(BTriVertex[vertId + 0].st.z != 2 && BTriVertex[vertId + 0].st.z != 3)
   {
-	for(int i = 0; i < 64; i++)
+	for(int i = 0; i < 120; i++)
 	{	 		
 		if(lightInfo[i].origin_radius.w == 0)
 			continue;

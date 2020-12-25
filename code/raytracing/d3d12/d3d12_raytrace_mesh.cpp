@@ -300,7 +300,7 @@ void GL_LoadBottomLevelAccelStruct(dxrMesh_t* mesh, msurface_t* surfaces, int nu
 			continue;
 		}
 
-		if (strstr(fa->shader->name, "light")) {
+		if (strstr(fa->shader->name, "light") || strstr(fa->shader->name, "lava")) {
 			materialInfo = 2;
 		}
 
@@ -310,6 +310,7 @@ void GL_LoadBottomLevelAccelStruct(dxrMesh_t* mesh, msurface_t* surfaces, int nu
 
 		if (fa->shader->hasRaytracingReflection)
 			materialInfo = 5;
+
 
 		x = fa->shader->atlas_x;
 		y = fa->shader->atlas_y;

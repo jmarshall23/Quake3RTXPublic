@@ -4,7 +4,7 @@
 #include "d3d12_local.h"
 #include "../math/vectormath.h"
 
-#define MAX_DRAW_LIGHTS 80
+#define MAX_DRAW_LIGHTS 120
 #define MAX_WORLD_LIGHTS 512
 
 struct glLight_t {

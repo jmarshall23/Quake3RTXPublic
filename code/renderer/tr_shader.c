@@ -632,6 +632,8 @@ static qboolean ParseStage( shaderStage_t *stage, char **text )
 				} else {
 					stage->bundle[0].image[0] = tr.lightmaps[shader.lightmapIndex];
 				}
+
+				shader.isLitSurface = qtrue;
 				continue;
 			}
 			else
