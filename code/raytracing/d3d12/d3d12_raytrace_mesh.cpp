@@ -288,10 +288,6 @@ void GL_LoadBottomLevelAccelStruct(dxrMesh_t* mesh, msurface_t* surfaces, int nu
 		if (fa->shader->defaultShader)
 			continue;
 
-		if (strstr(fa->shader->name, "skies")) {
-			continue;
-		}
-
 		if (strstr(fa->shader->name, "fog")) {
 			continue;
 		}
@@ -300,7 +296,7 @@ void GL_LoadBottomLevelAccelStruct(dxrMesh_t* mesh, msurface_t* surfaces, int nu
 			continue;
 		}
 
-		if (strstr(fa->shader->name, "light") || strstr(fa->shader->name, "lava")) {
+		if (strstr(fa->shader->name, "skies") || strstr(fa->shader->name, "light") || strstr(fa->shader->name, "lava")) {
 			materialInfo = 2;
 		}
 

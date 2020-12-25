@@ -393,6 +393,12 @@ static void R_AddRaytacedWorldSurface(msurface_t* surface)
 		lightColor[1] = 184.0f / 255.0f;
 		lightColor[2] = 120.0f / 255.0f;
 	}
+	else if (strstr(surface->shader->name, "skies")) {
+		lightRange = 300;
+		lightColor[0] = 215.0f / 255.0f;
+		lightColor[1] = 184.0f / 255.0f;
+		lightColor[2] = 120.0f / 255.0f;
+	}
 
 	if (lightRange == 0)
 		return;
