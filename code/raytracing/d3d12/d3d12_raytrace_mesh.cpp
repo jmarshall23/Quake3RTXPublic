@@ -267,6 +267,10 @@ void GL_LoadBottomLevelAccelStruct(dxrMesh_t* mesh, msurface_t* surfaces, int nu
 		if (tri == NULL) {
 			continue;
 		}
+		if (tri->surfaceType == SF_SKIP) {
+			continue;
+		}
+
 		if (tri->surfaceType == SF_GRID) {
 			GL_RaytraceSurfaceGrid(mesh, fa, (srfGridMesh_t*)fa->data);
 			continue;
@@ -298,6 +302,10 @@ void GL_LoadBottomLevelAccelStruct(dxrMesh_t* mesh, msurface_t* surfaces, int nu
 
 		if (strstr(fa->shader->name, "light")) {
 			materialInfo = 2;
+		}
+
+		if (strstr(fa->shader->name, "sfx/beam")) {
+			continue;
 		}
 
 		if (fa->shader->hasRaytracingReflection)
