@@ -1440,7 +1440,7 @@ void R_GenerateDrawSurfs( void ) {
 	// matrix for lod calculation
 	R_SetupProjection ();
 
-	R_AddEntitySurfaces ();
+	//R_AddEntitySurfaces ();
 }
 
 /*

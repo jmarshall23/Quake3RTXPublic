@@ -1736,7 +1736,7 @@ static qboolean CollapseMultitexture( void ) {
 	}
 
 	for (int i = 0; i < MAX_SHADER_STAGES; i++) {
-		if (stages[i].active && strlen(stages[i].bundle[0].imageName[0]) > 0) {
+		if (stages[i].active && strlen(stages[i].bundle[0].imageName[0]) > 0 && (stages[i].bundle[0].tcGen == TCGEN_TEXTURE || stages[i].bundle[0].tcGen == TCGEN_BAD)) {
 			//COM_StripExtension(COM_SkipPath(stages[i].bundle[0].imageName[0]), fixedPath);
 			float atlas_x, atlas_y, atlas_width, atlas_height;
 			GL_FindMegaTile(stages[i].bundle[0].imageName[0], &atlas_x, &atlas_y, &atlas_width, &atlas_height);
@@ -1750,6 +1750,10 @@ static qboolean CollapseMultitexture( void ) {
 			}
 		}
 
+		if (stages[i].bundle[0].tcGen == TCGEN_ENVIRONMENT_MAPPED)
+		{
+			shader.hasRaytracingReflection = qtrue;
+		}
 	}
 
 

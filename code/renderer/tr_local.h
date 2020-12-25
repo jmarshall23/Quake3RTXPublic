@@ -396,6 +396,8 @@ typedef struct shader_s {
 	qboolean	needsST2;
 	qboolean	needsColor;
 
+	qboolean	hasRaytracingReflection;
+
 	float		atlas_x;
 	float		atlas_y;
 	float		atlas_width;
