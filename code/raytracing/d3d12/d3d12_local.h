@@ -57,6 +57,7 @@ struct dxrVertex_t {
 	vec3_t normal;
 	vec4_t vtinfo;
 	vec4_t tangent;
+	vec4_t binormal;
 };
 
 struct dxrSurface_t {

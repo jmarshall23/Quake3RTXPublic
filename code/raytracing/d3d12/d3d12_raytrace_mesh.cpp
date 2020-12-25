@@ -17,6 +17,77 @@ std::vector<dxrVertex_t> sceneVertexes;
 
 /*
 =============
+GL_CalcTangentSpace
+Tr3B - recoded from Nvidia's SDK
+=============
+*/
+void GL_CalcTangentSpace(vec3_t tangent, vec3_t binormal, vec3_t normal,
+	const vec3_t v0, const vec3_t v1, const vec3_t v2, const vec2_t t0, const vec2_t t1, const vec2_t t2)
+{
+	vec3_t          cp, e0, e1;
+	vec3_t          faceNormal;
+
+	VectorSet(e0, v1[0] - v0[0], t1[0] - t0[0], t1[1] - t0[1]);
+	VectorSet(e1, v2[0] - v0[0], t2[0] - t0[0], t2[1] - t0[1]);
+
+	CrossProduct(e0, e1, cp);
+	if (fabs(cp[0]) > 10e-6)
+	{
+		tangent[0] = -cp[1] / cp[0];
+		binormal[0] = -cp[2] / cp[0];
+	}
+
+	e0[0] = v1[1] - v0[1];
+	e1[0] = v2[1] - v0[1];
+
+	CrossProduct(e0, e1, cp);
+	if (fabs(cp[0]) > 10e-6)
+	{
+		tangent[1] = -cp[1] / cp[0];
+		binormal[1] = -cp[2] / cp[0];
+	}
+
+	e0[0] = v1[2] - v0[2];
+	e1[0] = v2[2] - v0[2];
+
+	CrossProduct(e0, e1, cp);
+	if (fabs(cp[0]) > 10e-6)
+	{
+		tangent[2] = -cp[1] / cp[0];
+		binormal[2] = -cp[2] / cp[0];
+	}
+
+	VectorNormalizeFast(tangent);
+	VectorNormalizeFast(binormal);
+
+	// normal...
+	// compute the cross product TxB
+	CrossProduct(tangent, binormal, normal);
+	VectorNormalizeFast(normal);
+
+	// Gram-Schmidt orthogonalization process for B
+	// compute the cross product B=NxT to obtain 
+	// an orthogonal basis
+	CrossProduct(normal, tangent, binormal);
+
+	// compute the face normal based on vertex points
+	VectorSubtract(v2, v0, e0);
+	VectorSubtract(v1, v0, e1);
+	CrossProduct(e0, e1, faceNormal);
+
+	VectorNormalizeFast(faceNormal);
+
+	if (DotProduct(normal, faceNormal) < 0)
+	{
+		VectorInverse(normal);
+		//VectorInverse(tangent);
+		//VectorInverse(binormal);
+	}
+}
+
+
+/*
+=============
 GL_RaytraceSurfaceGrid
 =============
 */
@@ -180,63 +251,7 @@ void GL_RaytraceSurfaceGrid(dxrMesh_t* mesh, msurface_t* fa, srfGridMesh_t* cv) 
 		}
 
 		used += rows - 1;
-	}
-
-	// Calculate the normals
-	{
-		for (int i = 0; i < mesh->numSceneVertexes; i += 3)
-		{
-			float* pA = &sceneVertexes[mesh->startSceneVertex + i + 0].xyz[0];
-			float* pB = &sceneVertexes[mesh->startSceneVertex + i + 1].xyz[0];
-			float* pC = &sceneVertexes[mesh->startSceneVertex + i + 2].xyz[0];
-
-			float* tA = &sceneVertexes[mesh->startSceneVertex + i + 0].st[0];
-			float* tB = &sceneVertexes[mesh->startSceneVertex + i + 1].st[0];
-			float* tC = &sceneVertexes[mesh->startSceneVertex + i + 2].st[0];
-
-			vec3_t normal;
-			vec3_t tangent;
-
-			{
-				vec3_t dP0, dP1;
-				VectorSubtract(pB, pA, dP0);
-				VectorSubtract(pC, pA, dP1);
-
-				vec2_t dt0, dt1;
-				Vector2Subtract(tB, tA, dt0);
-				Vector2Subtract(tC, tA, dt1);
-
-				float r = 1.f / (dt0[0] * dt1[1] - dt1[0] * dt0[1]);
-
-				vec3_t sdir = {
-					(dt1[1] * dP0[0] - dt0[1] * dP1[0]) * r,
-					(dt1[1] * dP0[1] - dt0[1] * dP1[1]) * r,
-					(dt1[1] * dP0[2] - dt0[1] * dP1[2]) * r };
-
-				vec3_t tdir = {
-					(dt0[0] * dP1[0] - dt1[0] * dP0[0]) * r,
-					(dt0[0] * dP1[1] - dt1[0] * dP0[1]) * r,
-					(dt0[0] * dP1[2] - dt1[0] * dP0[2]) * r };
-
-				CrossProduct(dP0, dP1, normal);
-				VectorNormalize(normal);
-
-				vec3_t t;
-				VectorScale(normal, DotProduct(normal, sdir), t);
-				VectorSubtract(sdir, t, t);
-				VectorNormalize2(t, tangent); // Graham-Schmidt : t = normalize(t - n * (n.t))
-
-			}
-
-			memcpy(sceneVertexes[mesh->startSceneVertex + i + 0].normal, normal, sizeof(float) * 3);
-			memcpy(sceneVertexes[mesh->startSceneVertex + i + 1].normal, normal, sizeof(float) * 3);
-			memcpy(sceneVertexes[mesh->startSceneVertex + i + 2].normal, normal, sizeof(float) * 3);
-
-			memcpy(sceneVertexes[mesh->startSceneVertex + i + 0].tangent, tangent, sizeof(float) * 3);
-			memcpy(sceneVertexes[mesh->startSceneVertex + i + 1].tangent, tangent, sizeof(float) * 3);
-			memcpy(sceneVertexes[mesh->startSceneVertex + i + 2].tangent, tangent, sizeof(float) * 3);
-		}
-	}
+	}	
 
 	mesh->meshSurfaces.push_back(surf);
 }
@@ -334,6 +349,38 @@ void GL_LoadBottomLevelAccelStruct(dxrMesh_t* mesh, msurface_t* surfaces, int nu
 		mesh->meshSurfaces.push_back(surf);
 	}
 
+	// Calculate the normals
+	for (int i = 0; i < mesh->meshSurfaces.size(); i++)
+	{
+		mesh->meshSurfaces[i].startMegaVertex = mesh->meshTriVertexes.size();
+
+		for (int d = 0; d < mesh->meshSurfaces[i].numIndexes; d+=3)
+		{			
+			int idx0 = mesh->meshIndexes[mesh->meshSurfaces[i].startIndex + d + 0];
+			int idx1 = mesh->meshIndexes[mesh->meshSurfaces[i].startIndex + d + 1];
+			int idx2 = mesh->meshIndexes[mesh->meshSurfaces[i].startIndex + d + 2];
+
+			dxrVertex_t* vert0 = &mesh->meshVertexes[idx0];
+			dxrVertex_t* vert1 = &mesh->meshVertexes[idx1];
+			dxrVertex_t* vert2 = &mesh->meshVertexes[idx2];
+
+			vec3_t tangent, binormal, normal;
+			GL_CalcTangentSpace(tangent, binormal, normal, vert0->xyz, vert1->xyz, vert2->xyz, vert0->st, vert1->st, vert2->st);
+
+			memcpy(vert0->normal, normal, sizeof(float) * 3);
+			memcpy(vert1->normal, normal, sizeof(float) * 3);
+			memcpy(vert2->normal, normal, sizeof(float) * 3);
+
+			memcpy(vert0->binormal, binormal, sizeof(float) * 3);
+			memcpy(vert1->binormal, binormal, sizeof(float) * 3);
+			memcpy(vert2->binormal, binormal, sizeof(float) * 3);
+
+			memcpy(vert0->tangent, tangent, sizeof(float) * 3);
+			memcpy(vert1->tangent, tangent, sizeof(float) * 3);
+			memcpy(vert2->tangent, tangent, sizeof(float) * 3);
+		}
+	}
+
 	// TODO: Use a index buffer here : )
 	{
 		for (int i = 0; i < mesh->meshSurfaces.size(); i++)
@@ -350,63 +397,7 @@ void GL_LoadBottomLevelAccelStruct(dxrMesh_t* mesh, msurface_t* surfaces, int nu
 				mesh->numSceneVertexes++;
 			}
 		}
-	}
-
-	// Calculate the normals
-	{
-		for (int i = 0; i < mesh->numSceneVertexes; i += 3)
-		{
-			float* pA = &sceneVertexes[mesh->startSceneVertex + i + 0].xyz[0];
-			float* pC = &sceneVertexes[mesh->startSceneVertex + i + 1].xyz[0];
-			float* pB = &sceneVertexes[mesh->startSceneVertex + i + 2].xyz[0];
-
-			float* tA = &sceneVertexes[mesh->startSceneVertex + i + 0].st[0];
-			float* tC = &sceneVertexes[mesh->startSceneVertex + i + 1].st[0];
-			float* tB = &sceneVertexes[mesh->startSceneVertex + i + 2].st[0];
-
-			vec3_t normal;
-			vec3_t tangent;
-
-			{
-				vec3_t dP0, dP1;
-				VectorSubtract(pB, pA, dP0);
-				VectorSubtract(pC, pA, dP1);
-
-				vec2_t dt0, dt1;
-				Vector2Subtract(tB, tA, dt0);
-				Vector2Subtract(tC, tA, dt1);
-
-				float r = 1.f / (dt0[0] * dt1[1] - dt1[0] * dt0[1]);
-
-				vec3_t sdir = {
-					(dt1[1] * dP0[0] - dt0[1] * dP1[0]) * r,
-					(dt1[1] * dP0[1] - dt0[1] * dP1[1]) * r,
-					(dt1[1] * dP0[2] - dt0[1] * dP1[2]) * r };
-
-				vec3_t tdir = {
-					(dt0[0] * dP1[0] - dt1[0] * dP0[0]) * r,
-					(dt0[0] * dP1[1] - dt1[0] * dP0[1]) * r,
-					(dt0[0] * dP1[2] - dt1[0] * dP0[2]) * r };
-
-				CrossProduct(dP0, dP1, normal);
-				VectorNormalize(normal);
-
-				vec3_t t;
-				VectorScale(normal, DotProduct(normal, sdir), t);
-				VectorSubtract(sdir, t, t);
-				VectorNormalize2(t, tangent); // Graham-Schmidt : t = normalize(t - n * (n.t))
-
-			}
-
-			memcpy(sceneVertexes[mesh->startSceneVertex + i + 0].normal, normal, sizeof(float) * 3);
-			memcpy(sceneVertexes[mesh->startSceneVertex + i + 1].normal, normal, sizeof(float) * 3);
-			memcpy(sceneVertexes[mesh->startSceneVertex + i + 2].normal, normal, sizeof(float) * 3);
-
-			memcpy(sceneVertexes[mesh->startSceneVertex + i + 0].tangent, tangent, sizeof(float) * 3);
-			memcpy(sceneVertexes[mesh->startSceneVertex + i + 1].tangent, tangent, sizeof(float) * 3);
-			memcpy(sceneVertexes[mesh->startSceneVertex + i + 2].tangent, tangent, sizeof(float) * 3);
-		}
-	}
+	}	
 }
 
 void *GL_LoadDXRMesh(msurface_t *surfaces, int numSurfaces, int bModelIndex)  {
@@ -661,50 +652,24 @@ void* GL_LoadMD3RaytracedMesh(md3Header_t* mod, int frame) {
 		for (int i = 0; i < mesh->numSceneVertexes; i += 3)
 		{
 			float* pA = &sceneVertexes[mesh->startSceneVertex + i + 0].xyz[0];
-			float* pB = &sceneVertexes[mesh->startSceneVertex + i + 1].xyz[0];
-			float* pC = &sceneVertexes[mesh->startSceneVertex + i + 2].xyz[0];
+			float* pC = &sceneVertexes[mesh->startSceneVertex + i + 1].xyz[0];
+			float* pB = &sceneVertexes[mesh->startSceneVertex + i + 2].xyz[0];
 
 			float* tA = &sceneVertexes[mesh->startSceneVertex + i + 0].st[0];
-			float* tB = &sceneVertexes[mesh->startSceneVertex + i + 1].st[0];
-			float* tC = &sceneVertexes[mesh->startSceneVertex + i + 2].st[0];
+			float* tC = &sceneVertexes[mesh->startSceneVertex + i + 1].st[0];
+			float* tB = &sceneVertexes[mesh->startSceneVertex + i + 2].st[0];
 
-			vec3_t normal;
-			vec3_t tangent;
-
-			{
-				vec3_t dP0, dP1;
-				VectorSubtract(pB, pA, dP0);
-				VectorSubtract(pC, pA, dP1);
-
-				vec2_t dt0, dt1;
-				Vector2Subtract(tB, tA, dt0);
-				Vector2Subtract(tC, tA, dt1);
-
-				float r = 1.f / (dt0[0] * dt1[1] - dt1[0] * dt0[1]);
-
-				vec3_t sdir = {
-					(dt1[1] * dP0[0] - dt0[1] * dP1[0]) * r,
-					(dt1[1] * dP0[1] - dt0[1] * dP1[1]) * r,
-					(dt1[1] * dP0[2] - dt0[1] * dP1[2]) * r };
-
-				vec3_t tdir = {
-					(dt0[0] * dP1[0] - dt1[0] * dP0[0]) * r,
-					(dt0[0] * dP1[1] - dt1[0] * dP0[1]) * r,
-					(dt0[0] * dP1[2] - dt1[0] * dP0[2]) * r };
-
-				CrossProduct(dP0, dP1, normal);
-				VectorNormalize(normal);
-
-				vec3_t t;
-				VectorScale(normal, DotProduct(normal, sdir), t);
-				VectorSubtract(sdir, t, t);
-				VectorNormalize2(t, tangent); // Graham-Schmidt : t = normalize(t - n * (n.t))
-
-			}
+			vec3_t tangent, binormal, normal;
+			GL_CalcTangentSpace(tangent, binormal, normal, sceneVertexes[mesh->startSceneVertex + i + 0].xyz, sceneVertexes[mesh->startSceneVertex + i + 1].xyz, sceneVertexes[mesh->startSceneVertex + i + 2].xyz,
+				sceneVertexes[mesh->startSceneVertex + i + 0].st, sceneVertexes[mesh->startSceneVertex + i + 1].st, sceneVertexes[mesh->startSceneVertex + i + 2].st);
 
 			memcpy(sceneVertexes[mesh->startSceneVertex + i + 0].normal, normal, sizeof(float) * 3);
 			memcpy(sceneVertexes[mesh->startSceneVertex + i + 1].normal, normal, sizeof(float) * 3);
 			memcpy(sceneVertexes[mesh->startSceneVertex + i + 2].normal, normal, sizeof(float) * 3);
+
+			memcpy(sceneVertexes[mesh->startSceneVertex + i + 0].binormal, binormal, sizeof(float) * 3);
+			memcpy(sceneVertexes[mesh->startSceneVertex + i + 1].binormal, binormal, sizeof(float) * 3);
+			memcpy(sceneVertexes[mesh->startSceneVertex + i + 2].binormal, binormal, sizeof(float) * 3);
 
 			memcpy(sceneVertexes[mesh->startSceneVertex + i + 0].tangent, tangent, sizeof(float) * 3);
 			memcpy(sceneVertexes[mesh->startSceneVertex + i + 1].tangent, tangent, sizeof(float) * 3);

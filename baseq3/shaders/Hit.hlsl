@@ -11,6 +11,7 @@ struct STriVertex {
   float3 normal;
   float4 vtinfo;
   float4 tangent;
+  float4 binormal;
 };
 
 struct SInstanceProperties
@@ -237,7 +238,7 @@ float3 FireSecondRay(float3 worldOrigin, float distance, float3 normal)
     float3 bounceWorldOrigin = payload.payload_color.xyz;	
 	float3 result = float3(0, 0, 0);
 	int numLights = 0;
-	for(int i = 0; i < 64; i++)
+	for(int i = 0; i < 80; i++)
 	{	 		
 		if(lightInfo[i].origin_radius.w == 0)
 			continue;
@@ -414,7 +415,7 @@ int sideOfPlane(float3 p, float3 pc, float3 pn){
 	normal = -normal;
 	
   float3 tangent = BTriVertex[vertId + 0].tangent;
-  float3 binormal = cross(tangent, orig_normal);
+  float3 binormal = BTriVertex[vertId + 0].binormal; 
   
   // 2 is emissive
   float spec_contrib = 0.0;
