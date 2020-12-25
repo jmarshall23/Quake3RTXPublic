@@ -63,48 +63,44 @@ Lights pointed at a target will be spotlights.
 "radius" overrides the default 64 unit radius of a spotlight at the target point.
 */
 void SP_light( gentity_t *ent ) {
-	G_FreeEntity(ent); // Were using area lights.
-	//ent->s.eType = ET_LIGHT;
-	//
-	//
-	//
-	//if (ent->spawnflags & 1 && !ent->target) {
-	//	ent->s.lightRadius = -ent->light;
-	//}
-	//else {
-	//	ent->s.lightRadius = ent->light;
-	//}
-	//
-	//ent->s.angles2[0] = 0.0f;
-	//ent->s.angles2[1] = 0.0f;
-	//ent->s.angles2[2] = 0.0f;
-	//
-	//// Light color can't be all black!
-	//if (ent->s.origin2[0] == 0 && ent->s.origin2[1] == 0 && ent->s.origin2[2] == 0) {
-	//	ent->s.origin2[0] = 1.0f;
-	//	ent->s.origin2[1] = 1.0f;
-	//	ent->s.origin2[2] = 1.0f;		
-	//}
-	//
-	//if (ent->target != NULL) {
-	//	gentity_t* target_ent = G_Find(NULL, FOFS(targetname), ent->target);
-	//	vec3_t lightNormal;
-	//
-	//	if(target_ent != NULL) {
-	//		VectorSubtract(ent->s.origin, target_ent->s.origin, lightNormal);
-	//		VectorNormalize(lightNormal);
-	//		ent->s.angles2[0] = lightNormal[0];
-	//		ent->s.angles2[1] = lightNormal[1];
-	//		ent->s.angles2[2] = lightNormal[2];
-	//	}
-	//}
-	//
-	//VectorSet(ent->r.mins, -16, -16, -16);
-	//VectorSet(ent->r.maxs, 16, 16, 16);
-	//trap_LinkEntity(ent);
-	//
-	//G_SetOrigin(ent, ent->s.origin);
-	//VectorCopy(ent->s.angles, ent->s.apos.trBase);
+	if (ent->spawnflags & 1 && !ent->target) {
+		G_FreeEntity(ent); // Were using area lights.
+		return;
+	}
+	ent->s.eType = ET_LIGHT;
+		
+	ent->s.lightRadius = ent->light;
+	
+	ent->s.angles2[0] = 0.0f;
+	ent->s.angles2[1] = 0.0f;
+	ent->s.angles2[2] = 0.0f;
+	
+	// Light color can't be all black!
+	if (ent->s.origin2[0] == 0 && ent->s.origin2[1] == 0 && ent->s.origin2[2] == 0) {
+		ent->s.origin2[0] = 1.0f;
+		ent->s.origin2[1] = 1.0f;
+		ent->s.origin2[2] = 1.0f;		
+	}
+	
+	if (ent->target != NULL) {
+		gentity_t* target_ent = G_Find(NULL, FOFS(targetname), ent->target);
+		vec3_t lightNormal;
+	
+		if(target_ent != NULL) {
+			VectorSubtract(ent->s.origin, target_ent->s.origin, lightNormal);
+			VectorNormalize(lightNormal);
+			ent->s.angles2[0] = lightNormal[0];
+			ent->s.angles2[1] = lightNormal[1];
+			ent->s.angles2[2] = lightNormal[2];
+		}
+	}
+	
+	VectorSet(ent->r.mins, -16, -16, -16);
+	VectorSet(ent->r.maxs, 16, 16, 16);
+	trap_LinkEntity(ent);
+	
+	G_SetOrigin(ent, ent->s.origin);
+	VectorCopy(ent->s.angles, ent->s.apos.trBase);
 }
 
 

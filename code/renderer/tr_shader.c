@@ -1543,7 +1543,7 @@ static qboolean ParseShader( char **text )
 		// portal
 		else if ( !Q_stricmp(token, "portal") )
 		{
-			shader.sort = SS_PORTAL;
+			shader.hasRaytracingReflection = qtrue;
 			continue;
 		}
 		// skyparms <cloudheight> <outerbox> <innerbox>
