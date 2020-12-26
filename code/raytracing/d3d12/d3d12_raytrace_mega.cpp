@@ -339,7 +339,7 @@ iceMegaTexture::FindMegaTile
 void iceMegaTexture::FindMegaTile(const char* name, float& x, float& y, float& width, float& height)
 {
 	for (int i = 0; i < megaEntries.size(); i++) {
-		if (megaEntries[i].texturePath == name) {
+		if (!strcmp(megaEntries[i].texturePath, name)) {
 			x = megaEntries[i].x;
 			y = megaEntries[i].y;
 			width = megaEntries[i].width;
