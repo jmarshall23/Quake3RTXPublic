@@ -509,10 +509,11 @@ int sideOfPlane(float3 p, float3 pc, float3 pn){
 			}
 		}
 	}
+	ndotl += 0.05;
   }
   else
   {
-	ndotl = float3(1, 1, 1);
+	ndotl = float3(1, 1, 1) / 3.5;
 	emissive = 1;
   }  
 
@@ -551,8 +552,7 @@ int sideOfPlane(float3 p, float3 pc, float3 pn){
 
   //hitColor = float3(InstanceID(), 0, 0);
  // float3 spec_final = pow(spec_lit, 0.5);
-  //ndotl = lerp(ndotl, spec_final, length(spec_final) * 1.5);
-  ndotl += 0.05;
+  //ndotl = lerp(ndotl, spec_final, length(spec_final) * 1.5);  
   //ndotl = max(ndotl, 0.1);
   //ndotl *= float3(227.0 / 255.0, 107.0 / 255.0, 0.0);  
 
