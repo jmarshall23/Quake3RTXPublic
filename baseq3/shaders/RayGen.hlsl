@@ -52,6 +52,7 @@ HitInfo FirePrimaryRay() {
 	// Initialize the ray payload
   HitInfo payload;
   payload.colorAndDistance = float4(0, 0, 0, 0);
+  payload.lightColor = float4(0, 0, 0, 0);
   
   // Get the location within the dispatched 2D grid of work items
   // (often maps to pixels, so this could represent a pixel coordinate).
@@ -79,7 +80,7 @@ HitInfo FirePrimaryRay() {
 
       // Parameter name: RayFlags
       // Flags can be used to specify the behavior upon hitting a surface
-      RAY_FLAG_NONE,
+      RAY_FLAG_CULL_FRONT_FACING_TRIANGLES,
 
       // Parameter name: InstanceInclusionMask
       // Instance inclusion mask, which can be used to mask out some geometry to

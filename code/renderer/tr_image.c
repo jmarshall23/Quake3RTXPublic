@@ -531,7 +531,7 @@ R_ImageAdd
 ===================
 */
 void R_ImageAdd(byte* data1, int width1, int height1, byte* data2, int width2, int height2) {
-	int		i, j;
+	int		i, j, d;
 	int		c;
 	byte* newMap;
 
@@ -544,14 +544,17 @@ void R_ImageAdd(byte* data1, int width1, int height1, byte* data2, int width2, i
 		newMap = NULL;
 	}
 
-	c = width1 * height1 * 4;
+	c = width1 * height1;
 
 	for (i = 0; i < c; i++) {
-		j = data1[i] + data2[i];
-		if (j > 255) {
-			j = 255;
+		for(d = 0; d < 3; d++)
+		{
+			j = data1[(i * 4) + d] + data2[(i * 4) + d];
+			if (j > 255) {
+				j = 255;
+			}
+			data1[(i * 4) + d] = j;
 		}
-		data1[i] = j;
 	}
 }
 
@@ -787,7 +790,7 @@ static void Upload32( const char *name, int textureId, unsigned *data,
 	//}	
 done:
 	GL_Upload32(textureId, data, width, height, qfalse, qfalse);
-	GL_RegisterTexture(name, scaled_width, scaled_height, scaledBuffer);
+	//GL_RegisterTexture(name, scaled_width, scaled_height, scaledBuffer);
 
 	if (mipmap)
 	{

@@ -320,6 +320,9 @@ typedef struct {
 
 	unsigned		stateBits;					// GLS_xxxx mask
 
+	int				srcBlendMode;
+	int				dstBlendMode;
+
 	acff_t			adjustColorsForFog;
 
 	qboolean		isDetail;
@@ -399,6 +402,7 @@ typedef struct shader_s {
 
 	qboolean	hasRaytracingReflection;
 	qboolean	isLitSurface;
+	qboolean	alphaSurface;
 
 	float		atlas_x;
 	float		atlas_y;

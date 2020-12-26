@@ -87,6 +87,8 @@ struct dxrMesh_t {
 	int startSceneVertex;
 	int numSceneVertexes;
 
+	qboolean alphaSurface;
+
 	AccelerationStructureBuffers buffers;
 };
 

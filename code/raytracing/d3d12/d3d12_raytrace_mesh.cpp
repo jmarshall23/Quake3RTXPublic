@@ -122,6 +122,10 @@ void GL_RaytraceSurfaceGrid(dxrMesh_t* mesh, msurface_t* fa, srfGridMesh_t* cv) 
 	w = fa->shader->atlas_width;
 	h = fa->shader->atlas_height;
 
+	if (!mesh->alphaSurface)
+	{
+		mesh->alphaSurface = fa->shader->alphaSurface;
+	}
 
 	dlightBits = cv->dlightBits[backEnd.smpFrame];
 	tess.dlightBits |= dlightBits;
@@ -313,6 +317,10 @@ void GL_LoadBottomLevelAccelStruct(dxrMesh_t* mesh, msurface_t* surfaces, int nu
 		w = fa->shader->atlas_width;
 		h = fa->shader->atlas_height;
 
+		if (!mesh->alphaSurface)
+		{
+			mesh->alphaSurface = fa->shader->alphaSurface;
+		}
 
 		if (strstr(fa->shader->name, "lavahelldark")) {
 			GL_FindMegaTile("lavahell", x, y, w, h);
@@ -620,6 +628,8 @@ static void LerpMeshVertexes(md3Surface_t* surf, float backlerp, int frame, int 
 void* GL_LoadMD3RaytracedMesh(md3Header_t* mod, int frame) {
 	dxrMesh_t* mesh = new dxrMesh_t();
 
+	mesh->alphaSurface = qtrue;
+
 	//mesh->meshId = dxrMeshList.size();
 	mesh->startSceneVertex = sceneVertexes.size();
 	mesh->numSceneVertexes = 0;
@@ -631,6 +641,11 @@ void* GL_LoadMD3RaytracedMesh(md3Header_t* mod, int frame) {
 
 	for (int i = 0; i < mod->numSurfaces; i++) {
 		md3Shader_t* shader = (md3Shader_t*)((byte*)surf + surf->ofsShaders);
+
+		//if (!mesh->alphaSurface)
+		//{
+		//	mesh->alphaSurface = shader->alphaSurface;
+		//}
 
 		COM_StripExtension(COM_SkipPath((char*)shader->name), textureName);
 		GL_FindMegaTile(textureName, &x, &y, &w, &h);
@@ -730,7 +745,7 @@ void GL_FinishVertexBufferAllocation(void) {
 		dxrMesh_t* mesh = dxrMeshList[i];
 
 		nv_helpers_dx12::BottomLevelASGenerator bottomLevelAS;
-		bottomLevelAS.AddVertexBuffer(m_vertexBuffer.Get(), mesh->startSceneVertex * sizeof(dxrVertex_t), mesh->numSceneVertexes, sizeof(dxrVertex_t), NULL, 0);
+		bottomLevelAS.AddVertexBuffer(m_vertexBuffer.Get(), mesh->startSceneVertex * sizeof(dxrVertex_t), mesh->numSceneVertexes, sizeof(dxrVertex_t), NULL, 0, !mesh->alphaSurface);
 
 		// Adding all vertex buffers and not transforming their position.
 		//for (const auto& buffer : vVertexBuffers) {

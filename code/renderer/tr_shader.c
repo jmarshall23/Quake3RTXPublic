@@ -1050,6 +1050,9 @@ static qboolean ParseStage( shaderStage_t *stage, char **text )
 					   atestBits | 
 					   depthFuncBits;
 
+	stage->srcBlendMode = blendSrcBits;
+	stage->dstBlendMode = blendDstBits;
+
 	return qtrue;
 }
 
@@ -1721,24 +1724,46 @@ static qboolean CollapseMultitexture( void ) {
 	int numLitStages = 0;
 	for (int i = 0; i < MAX_SHADER_STAGES; i++) {
 		if (stages[i].active && strlen(stages[i].bundle[0].imageName[0]) > 0 && (stages[i].bundle[0].tcGen == TCGEN_TEXTURE || stages[i].bundle[0].tcGen == TCGEN_BAD)) {
+			qboolean validBlendMode = qfalse;
 			numLitStages++;
 		}
 	}
 
 	if (numLitStages == 1 || shader.isSky)
 	{
+		int image_program_width = 0;
+		int image_program_height = 0;
+		byte* image_program_buffer = NULL;
+
+
 		for (int i = 0; i < MAX_SHADER_STAGES; i++) {
 			if (stages[i].active && strlen(stages[i].bundle[0].imageName[0]) > 0 && (stages[i].bundle[0].tcGen == TCGEN_TEXTURE || stages[i].bundle[0].tcGen == TCGEN_BAD)) {
-				//COM_StripExtension(COM_SkipPath(stages[i].bundle[0].imageName[0]), fixedPath);
-				float atlas_x, atlas_y, atlas_width, atlas_height;
-				GL_FindMegaTile(stages[i].bundle[0].imageName[0], &atlas_x, &atlas_y, &atlas_width, &atlas_height);
-				if (atlas_x != -1) {
-					shader.atlas_x = atlas_x;
-					shader.atlas_y = atlas_y;
-					shader.atlas_width = atlas_width;
-					shader.atlas_height = atlas_height;
-					Com_Printf("Found %s\n", stages[i].bundle[0].imageName[0]);
-					break;
+				int scaled_width, scaled_height;
+				if (stages[i].bundle[0].image[0] == NULL || stages[i].bundle[0].image[0]->cpu_image_buffer == NULL)
+					continue;
+
+				byte* scaled_buffer = R_ScalePowerOfTwo(stages[i].bundle[0].image[0]->cpu_image_buffer, stages[i].bundle[0].image[0]->width, stages[i].bundle[0].image[0]->height, &scaled_width, &scaled_height);
+
+				image_program_width = scaled_width;
+				image_program_height = scaled_height;
+
+				image_program_buffer = malloc(image_program_width * image_program_height * 4);
+
+				if (stages[i].srcBlendMode == GLS_SRCBLEND_ONE && stages[i].dstBlendMode == GLS_DSTBLEND_ONE)
+				{
+					for (int d = 0; d < image_program_width * image_program_height; d++)
+					{
+						float alpha = scaled_buffer[(d * 4) + 0] + scaled_buffer[(d * 4) + 1] + scaled_buffer[(d * 4) + 2];
+						alpha = alpha / 3;
+						image_program_buffer[(d * 4) + 0] = scaled_buffer[(d * 4) + 0];
+						image_program_buffer[(d * 4) + 1] = scaled_buffer[(d * 4) + 1];
+						image_program_buffer[(d * 4) + 2] = scaled_buffer[(d * 4) + 2];
+						image_program_buffer[(d * 4) + 3] = (byte)alpha;
+					}
+				}
+				else
+				{
+					memcpy(image_program_buffer, scaled_buffer, image_program_width * image_program_height * 4);
 				}
 			}
 
@@ -1746,6 +1771,17 @@ static qboolean CollapseMultitexture( void ) {
 			{
 				shader.hasRaytracingReflection = qtrue;
 			}
+		}
+
+		float atlas_x, atlas_y, atlas_width, atlas_height;
+		GL_RegisterTexture(shader.name, image_program_width, image_program_height, image_program_buffer);
+		GL_FindMegaTile(shader.name, &atlas_x, &atlas_y, &atlas_width, &atlas_height);
+		if (atlas_x != -1) {
+			shader.atlas_x = atlas_x;
+			shader.atlas_y = atlas_y;
+			shader.atlas_width = atlas_width;
+			shader.atlas_height = atlas_height;
+			Com_Printf("Found program %s\n", shader.name);
 		}
 	}
 	else
@@ -1766,7 +1802,23 @@ static qboolean CollapseMultitexture( void ) {
 					image_program_height = scaled_height;
 
 					image_program_buffer = malloc(image_program_width * image_program_height * 4);
-					memcpy(image_program_buffer, scaled_buffer, image_program_width * image_program_height * 4);
+
+					if (stages[i].srcBlendMode == GLS_SRCBLEND_ONE && stages[i].dstBlendMode == GLS_DSTBLEND_ONE)
+					{
+						for (int d = 0; d < image_program_width * image_program_height; d++)
+						{
+							float alpha = scaled_buffer[(d * 4) + 0] + scaled_buffer[(d * 4) + 1] + scaled_buffer[(d * 4) + 2];
+							alpha = alpha / 3;
+							image_program_buffer[(d * 4) + 0] = scaled_buffer[(d * 4) + 0];
+							image_program_buffer[(d * 4) + 1] = scaled_buffer[(d * 4) + 1];
+							image_program_buffer[(d * 4) + 2] = scaled_buffer[(d * 4) + 2];
+							image_program_buffer[(d * 4) + 3] = (byte)alpha;
+						}
+					}
+					else
+					{
+						memcpy(image_program_buffer, scaled_buffer, image_program_width * image_program_height * 4);
+					}
 
 					numLitStages++;
 				}
@@ -2198,9 +2250,7 @@ static shader_t *FinishShader( void ) {
 	//
 	// look for multitexture potential
 	//
-	if ( stage > 1 && CollapseMultitexture() ) {
-		stage--;
-	}
+	CollapseMultitexture();
 
 	if ( shader.lightmapIndex >= 0 && !hasLightmapStage ) {
 		if (vertexLightmap) {
@@ -2422,6 +2472,11 @@ shader_t *R_FindShader( const char *name, int lightmapIndex, qboolean mipRawImag
 	shader.needsST2 = qtrue;
 	shader.needsColor = qtrue;
 
+	if (!strcmp(name, "textures/gothic_trim/metalsupport4i"))
+	{
+		name = name;
+	}
+
 	//
 	// attempt to define shader from an explicit parameter file
 	//
@@ -2461,55 +2516,10 @@ shader_t *R_FindShader( const char *name, int lightmapIndex, qboolean mipRawImag
 	//
 	// create the default shading commands
 	//
-	if ( shader.lightmapIndex == LIGHTMAP_NONE ) {
-		// dynamic colors at vertexes
-		stages[0].bundle[0].image[0] = image;
-		stages[0].active = qtrue;
-		stages[0].rgbGen = CGEN_LIGHTING_DIFFUSE;
-		stages[0].stateBits = GLS_DEFAULT;
-	} else if ( shader.lightmapIndex == LIGHTMAP_BY_VERTEX ) {
-		// explicit colors at vertexes
-		stages[0].bundle[0].image[0] = image;
-		stages[0].active = qtrue;
-		stages[0].rgbGen = CGEN_EXACT_VERTEX;
-		stages[0].alphaGen = AGEN_SKIP;
-		stages[0].stateBits = GLS_DEFAULT;
-	} else if ( shader.lightmapIndex == LIGHTMAP_2D ) {
-		// GUI elements
-		stages[0].bundle[0].image[0] = image;
-		stages[0].active = qtrue;
-		stages[0].rgbGen = CGEN_VERTEX;
-		stages[0].alphaGen = AGEN_VERTEX;
-		stages[0].stateBits = GLS_DEPTHTEST_DISABLE |
-			  GLS_SRCBLEND_SRC_ALPHA |
-			  GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA;
-	} else if ( shader.lightmapIndex == LIGHTMAP_WHITEIMAGE ) {
-		// fullbright level
-		stages[0].bundle[0].image[0] = tr.whiteImage;
-		stages[0].active = qtrue;
-		stages[0].rgbGen = CGEN_IDENTITY_LIGHTING;
-		stages[0].stateBits = GLS_DEFAULT;
-
-		stages[1].bundle[0].image[0] = image;
-		stages[1].active = qtrue;
-		stages[1].rgbGen = CGEN_IDENTITY;
-		stages[1].stateBits |= GLS_SRCBLEND_DST_COLOR | GLS_DSTBLEND_ZERO;
-	} else {
-		// two pass lightmap
-		stages[0].bundle[0].image[0] = tr.lightmaps[shader.lightmapIndex];
-		stages[0].bundle[0].isLightmap = qtrue;
-		stages[0].active = qtrue;
-		stages[0].rgbGen = CGEN_IDENTITY;	// lightmaps are scaled on creation
-													// for identitylight
-		stages[0].stateBits = GLS_DEFAULT;
-
-		stages[1].bundle[0].image[0] = image;
-		stages[1].active = qtrue;
-		stages[1].rgbGen = CGEN_IDENTITY;
-		stages[1].stateBits |= GLS_SRCBLEND_DST_COLOR | GLS_DSTBLEND_ZERO;
-	}
-
-	CollapseMultitexture();
+	stages[0].bundle[0].image[0] = image;
+	stages[0].active = qtrue;
+	stages[0].rgbGen = CGEN_IDENTITY;
+	stages[0].stateBits |= GLS_SRCBLEND_DST_COLOR | GLS_DSTBLEND_ZERO;
 
 	shader_t *shader = FinishShader();
 	r_processingShader = qfalse;

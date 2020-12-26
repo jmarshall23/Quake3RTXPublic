@@ -21,3 +21,17 @@ struct SecondHitInfo {
    float4 payload_color;
    float4 payload_vert_info; 
 };
+
+struct STriVertex {
+  float3 vertex;
+  float3 st;
+  float3 normal;
+  float4 vtinfo;
+  float4 tangent;
+  float4 binormal;
+};
+
+struct SInstanceProperties
+{
+	int startVertex;
+};

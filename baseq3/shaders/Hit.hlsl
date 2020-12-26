@@ -5,20 +5,6 @@ struct ShadowHitInfo {
   float4 vertinfo;
 };
 
-struct STriVertex {
-  float3 vertex;
-  float3 st;
-  float3 normal;
-  float4 vtinfo;
-  float4 tangent;
-  float4 binormal;
-};
-
-struct SInstanceProperties
-{
-	int startVertex;
-};
-
 struct sceneLightInfo_t {
 	float4 origin_radius;
 	float4 light_color;
@@ -556,8 +542,8 @@ int sideOfPlane(float3 p, float3 pc, float3 pn){
   //ndotl = max(ndotl, 0.1);
   //ndotl *= float3(227.0 / 255.0, 107.0 / 255.0, 0.0);  
 
-  payload.colorAndDistance = float4(hitColor, 1.0);//float4(hitColor * ndotl * debug, RayTCurrent());
-  payload.lightColor = float4(ndotl, BTriVertex[vertId + 0].st.z);
+  payload.colorAndDistance += float4(hitColor, 1.0);//float4(hitColor * ndotl * debug, RayTCurrent());
+  payload.lightColor += float4(ndotl, BTriVertex[vertId + 0].st.z);
   payload.worldOrigin.xyz = worldOrigin.xyz;
   payload.worldOrigin.w = spec_contrib;
 
