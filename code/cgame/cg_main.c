@@ -834,6 +834,15 @@ static void CG_RegisterGraphics( void ) {
 	// precache status bar pics
 	CG_LoadingString( "game media" );
 
+// jmarshall
+	gitem_t* item = &bg_itemlist[1];
+	while (item != NULL && item->classname != NULL)
+	{
+		trap_R_RegisterModel(item->world_model[0]);
+		item++;
+	}
+// jmarshall end
+
 	for ( i=0 ; i<11 ; i++) {
 		cgs.media.numberShaders[i] = trap_R_RegisterShader( sb_nums[i] );
 	}
