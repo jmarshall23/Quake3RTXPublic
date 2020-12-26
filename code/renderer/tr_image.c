@@ -492,6 +492,97 @@ byte	mipBlendColors[16][4] = {
 
 
 /*
+==============
+R_Dropsample
+==============
+*/
+unsigned char* R_Dropsample(const unsigned char* in, int inwidth, int inheight, int outwidth, int outheight) {
+	int		i, j, k;
+	const unsigned char* inrow;
+	const unsigned char* pix1;
+	unsigned char* out, * out_p;
+	static unsigned char ViewportPixelBuffer[4096 * 4096 * 4];
+
+	out = &ViewportPixelBuffer[0];
+	out_p = out;
+
+	int bpp = 4;
+	for (i = 0; i < outheight; i++, out_p += outwidth * bpp) {
+		inrow = in + bpp * inwidth * (int)((i + 0.25) * inheight / outheight);
+		for (j = 0; j < outwidth; j++) {
+			k = j * inwidth / outwidth;
+			pix1 = inrow + k * bpp;
+			out_p[j * 4 + 0] = pix1[0];
+			out_p[j * 4 + 1] = pix1[1];
+			out_p[j * 4 + 2] = pix1[2];
+			out_p[j * 4 + 3] = pix1[3];
+			//out_p[j * 3 + 1] = pix1[1];
+			//out_p[j * 3 + 2] = pix1[2];
+		}
+	}
+
+	return out;
+}
+
+/*
+===================
+R_ImageAdd
+
+===================
+*/
+void R_ImageAdd(byte* data1, int width1, int height1, byte* data2, int width2, int height2) {
+	int		i, j;
+	int		c;
+	byte* newMap;
+
+	// resample pic2 to the same size as pic1
+	if (width2 != width1 || height2 != height1) {
+		newMap = R_Dropsample(data2, width2, height2, width1, height1);
+		data2 = newMap;
+	}
+	else {
+		newMap = NULL;
+	}
+
+	c = width1 * height1 * 4;
+
+	for (i = 0; i < c; i++) {
+		j = data1[i] + data2[i];
+		if (j > 255) {
+			j = 255;
+		}
+		data1[i] = j;
+	}
+}
+
+/*
+===================
+R_ScalePowerOfTwo
+===================
+*/
+byte *R_ScalePowerOfTwo(byte* data, int width, int height, int *outWidth, int *outHeight)
+{
+	int			scaled_width, scaled_height;
+
+	//
+	// convert to exact power of 2 sizes
+	//
+	for (scaled_width = 1; scaled_width < width; scaled_width <<= 1)
+		;
+	for (scaled_height = 1; scaled_height < height; scaled_height <<= 1)
+		;
+
+	*outWidth = scaled_width;
+	*outHeight = scaled_height;
+
+	if (scaled_width != width || scaled_height != height) {
+		return R_Dropsample(data, width, height, scaled_width, scaled_height);
+	}
+
+	return data;
+}
+
+/*
 ===============
 Upload32
 
@@ -538,10 +629,10 @@ static void Upload32( const char *name, int textureId, unsigned *data,
 	//
 	// perform optional picmip operation
 	//
-	if ( picmip ) {
-		scaled_width >>= r_picmip->integer;
-		scaled_height >>= r_picmip->integer;
-	}
+	//if ( picmip ) {
+	//	scaled_width >>= r_picmip->integer;
+	//	scaled_height >>= r_picmip->integer;
+	//}
 
 	//
 	// clamp to minimum size
@@ -776,7 +867,8 @@ image_t *R_CreateImage( const char *name, const byte *pic, int width, int height
 								&image->uploadWidth,
 								&image->uploadHeight );
 
-	
+	image->cpu_image_buffer = (byte *)ri.Hunk_Alloc(image->width * image->height * 4, h_low);
+	memcpy(image->cpu_image_buffer, pic, image->width * image->height * 4);
 
 	//qglTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, glWrapClampMode );
 	//qglTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, glWrapClampMode );

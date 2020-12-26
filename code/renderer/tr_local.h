@@ -107,6 +107,7 @@ typedef struct image_s {
 	qboolean	mipmap;
 	qboolean	allowPicmip;
 	int			wrapClampMode;		// GL_CLAMP or GL_REPEAT
+	byte*		cpu_image_buffer;
 
 	struct image_s*	next;
 } image_t;
@@ -1670,6 +1671,9 @@ void RE_ShutdownRaytracingMap(void);
 void GL_RenderUISurface(int numIndexes, drawVert_t* verts, int* indexes, const shader_t* material, vec4_t color);
 
 void Mod_FreeAll(void);
+
+void R_ImageAdd(byte* data1, int width1, int height1, byte* data2, int width2, int height2);
+byte* R_ScalePowerOfTwo(byte* data, int width, int height, int* outWidth, int* outHeight);
 
 #endif //TR_LOCAL_H
 

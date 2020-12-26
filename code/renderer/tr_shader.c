@@ -1718,46 +1718,85 @@ FIXME: I think modulated add + modulated add collapses incorrectly
 static qboolean CollapseMultitexture( void ) {
 	char fixedPath[256];
 	int abits, bbits;
-
-	int lightmapStage = -1;
-	//for(int i = 0; i < MAX_SHADER_STAGES; i++) {
-	//	if(stages[i].active && stages[i].bundle[0].isLightmap) {
-	//		lightmapStage = 1;
-	//		break;
-	//	}
-	//}
-	//
-	//// make sure both stages are active
-	//if (lightmapStage == -1) {
-	//	return qfalse;
-	//}
-
-	if(strstr(shader.name, "killblock")) {
-		static int fuckyou = 1;
-		fuckyou++;
-	}
-
+	int numLitStages = 0;
 	for (int i = 0; i < MAX_SHADER_STAGES; i++) {
 		if (stages[i].active && strlen(stages[i].bundle[0].imageName[0]) > 0 && (stages[i].bundle[0].tcGen == TCGEN_TEXTURE || stages[i].bundle[0].tcGen == TCGEN_BAD)) {
-			//COM_StripExtension(COM_SkipPath(stages[i].bundle[0].imageName[0]), fixedPath);
-			float atlas_x, atlas_y, atlas_width, atlas_height;
-			GL_FindMegaTile(stages[i].bundle[0].imageName[0], &atlas_x, &atlas_y, &atlas_width, &atlas_height);
-			if (atlas_x != -1) {
-				shader.atlas_x = atlas_x;
-				shader.atlas_y = atlas_y;
-				shader.atlas_width = atlas_width;
-				shader.atlas_height = atlas_height;
-				Com_Printf("Found %s\n", stages[i].bundle[0].imageName[0]);
-				break;
+			numLitStages++;
+		}
+	}
+
+	if (numLitStages == 1 || shader.isSky)
+	{
+		for (int i = 0; i < MAX_SHADER_STAGES; i++) {
+			if (stages[i].active && strlen(stages[i].bundle[0].imageName[0]) > 0 && (stages[i].bundle[0].tcGen == TCGEN_TEXTURE || stages[i].bundle[0].tcGen == TCGEN_BAD)) {
+				//COM_StripExtension(COM_SkipPath(stages[i].bundle[0].imageName[0]), fixedPath);
+				float atlas_x, atlas_y, atlas_width, atlas_height;
+				GL_FindMegaTile(stages[i].bundle[0].imageName[0], &atlas_x, &atlas_y, &atlas_width, &atlas_height);
+				if (atlas_x != -1) {
+					shader.atlas_x = atlas_x;
+					shader.atlas_y = atlas_y;
+					shader.atlas_width = atlas_width;
+					shader.atlas_height = atlas_height;
+					Com_Printf("Found %s\n", stages[i].bundle[0].imageName[0]);
+					break;
+				}
+			}
+
+			if (stages[i].bundle[0].tcGen == TCGEN_ENVIRONMENT_MAPPED)
+			{
+				shader.hasRaytracingReflection = qtrue;
+			}
+		}
+	}
+	else
+	{
+		int image_program_width = 0;
+		int image_program_height = 0;
+		byte* image_program_buffer = NULL;
+
+		numLitStages = 0;
+		for (int i = 0; i < MAX_SHADER_STAGES; i++) {
+			if (stages[i].active && strlen(stages[i].bundle[0].imageName[0]) > 0 && (stages[i].bundle[0].tcGen == TCGEN_TEXTURE || stages[i].bundle[0].tcGen == TCGEN_BAD)) {
+				if (numLitStages == 0)
+				{
+					int scaled_width, scaled_height;
+					byte* scaled_buffer = R_ScalePowerOfTwo(stages[i].bundle[0].image[0]->cpu_image_buffer, stages[i].bundle[0].image[0]->width, stages[i].bundle[0].image[0]->height, &scaled_width, &scaled_height);
+
+					image_program_width = scaled_width;
+					image_program_height = scaled_height;
+
+					image_program_buffer = malloc(image_program_width * image_program_height * 4);
+					memcpy(image_program_buffer, scaled_buffer, image_program_width * image_program_height * 4);
+
+					numLitStages++;
+				}
+				else if(stages[i].stateBits & GLS_DSTBLEND_ONE)
+				{
+					int scaled_width, scaled_height;
+					byte* scaled_buffer = R_ScalePowerOfTwo(stages[i].bundle[0].image[0]->cpu_image_buffer, stages[i].bundle[0].image[0]->width, stages[i].bundle[0].image[0]->height, &scaled_width, &scaled_height);
+					R_ImageAdd(image_program_buffer, image_program_width, image_program_height, scaled_buffer, scaled_width, scaled_height);
+				}
+			}
+
+			if (stages[i].bundle[0].tcGen == TCGEN_ENVIRONMENT_MAPPED)
+			{
+				shader.hasRaytracingReflection = qtrue;
 			}
 		}
 
-		if (stages[i].bundle[0].tcGen == TCGEN_ENVIRONMENT_MAPPED)
-		{
-			shader.hasRaytracingReflection = qtrue;
+		float atlas_x, atlas_y, atlas_width, atlas_height;
+		GL_RegisterTexture(shader.name, image_program_width, image_program_height, image_program_buffer);
+		GL_FindMegaTile(shader.name, &atlas_x, &atlas_y, &atlas_width, &atlas_height);
+		if (atlas_x != -1) {
+			shader.atlas_x = atlas_x;
+			shader.atlas_y = atlas_y;
+			shader.atlas_width = atlas_width;
+			shader.atlas_height = atlas_height;
+			Com_Printf("Found program %s\n", shader.name);
 		}
-	}
 
+		free(image_program_buffer);
+	}
 
 	return qfalse;
 }

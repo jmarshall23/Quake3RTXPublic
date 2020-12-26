@@ -100,7 +100,7 @@ void vblur_main(uint3 gid : SV_GroupID, uint gindex : SV_GroupIndex, uint3 dispa
   }
   float4 uiTexture = uiTextureBuffer.Load(int3(coord, 0));
   float4 albeodTexture = AlbedoBufferIn.Load(int3(coord, 0));
-  
+
   BufferOut[coord] = (value * 3.5 * AlbedoBufferIn.Load(int3(coord, 0)) * (1.0 - uiTexture.w)) + (uiTexture * uiTexture.w);
 
 }

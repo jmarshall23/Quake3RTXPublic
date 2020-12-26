@@ -280,6 +280,13 @@ void iceMegaTexture::RegisterTexture(const char* texturePath, int width, int hei
 		return;
 	}
 
+	// Check to see if this entry is already registered.
+	for (int i = 0; i < megaEntries.size(); i++)
+	{
+		if (!strcmp(megaEntries[i].texturePath, texturePath))
+			return;
+	}
+
 	//common->Printf("RegisterTexture: %s\n", texturePath);
 
 	idSubImage subImage = imagePacker->PackImage(width, height, false);
