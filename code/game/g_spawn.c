@@ -98,7 +98,7 @@ typedef struct
 field_t fields[] = {
 	{"classname", FOFS(classname), F_LSTRING},
 	{"origin", FOFS(s.origin), F_VECTOR},
-	{"_color", FOFS(s.origin2), F_VECTOR},
+	{"_color", FOFS(color), F_VECTOR},
 	{"model", FOFS(model), F_LSTRING},
 	{"model2", FOFS(model2), F_LSTRING},
 	{"spawnflags", FOFS(spawnflags), F_INT},
