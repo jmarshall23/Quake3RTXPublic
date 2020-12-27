@@ -43,11 +43,7 @@ float attenuation(float r, float f, float d, float3 normal, float3 dir) {
 }
 float attenuation_arealight(float r, float f, float d, float3 normal, float3 dir) {
 	float angle = dot (dir, normal);
-	//float scalecos = 0.5;
-	//angle = (1.0-scalecos) + scalecos*angle;
-	//return pow(max(0.0, (r - d) / 128), 1.0) * angle;
-	
-	return (r / pow(d, 1.3));
+	return (r / pow(d, 1.3)) * angle;
 }
 
 // Utility function to get a vector perpendicular to an input vector 
@@ -468,10 +464,10 @@ int sideOfPlane(float3 p, float3 pc, float3 pn){
 			float falloff = 0;
 			
 			if(BTriVertex[vertId + 0].st.z == 0) {
-				falloff = attenuation(-lightInfo[i].origin_radius.w, 1.0, lightDistance, hitNormalMap, normalize(areaLightDir)) - 0.05;  			
+				falloff = attenuation_arealight(-lightInfo[i].origin_radius.w, 1.0, lightDistance, hitNormalMap, normalize(areaLightDir)) - 0.05;  			
 			}
 			else {
-				falloff = attenuation(-lightInfo[i].origin_radius.w, 1.0, lightDistance, normal, normalize(centerLightDir)) - 0.05;  			
+				falloff = attenuation_arealight(-lightInfo[i].origin_radius.w, 1.0, lightDistance, normal, normalize(centerLightDir)) - 0.05;  			
 			}
 			falloff = clamp(falloff, 0.0, 1.0);
 						

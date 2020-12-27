@@ -81,6 +81,10 @@ void SP_light( gentity_t *ent ) {
 	if (ent->spawnflags & 2) {
 		ent->s.generic1 = LDAT_NOSCALE;
 	}
+
+	ent->s.origin2[0] = ent->color[0];
+	ent->s.origin2[1] = ent->color[1];
+	ent->s.origin2[2] = ent->color[2];
 	
 	// Light color can't be all black!
 	if (ent->s.origin2[0] == 0 && ent->s.origin2[1] == 0 && ent->s.origin2[2] == 0) {
