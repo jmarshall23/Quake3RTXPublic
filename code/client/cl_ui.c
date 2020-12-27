@@ -864,7 +864,7 @@ int CL_UISystemCalls( intptr_t *args ) {
 		return 0;
 
 	case UI_R_ADDLIGHTTOSCENE:
-		re.AddLightToScene( VMA(1), VMF(2), VMF(3), VMF(4), VMF(5) );
+		re.AddLightToScene( VMA(1), VMF(2), VMF(3), VMF(4), VMF(5), LDAT_QUADRAT );
 		return 0;
 
 	case UI_R_RENDERSCENE:

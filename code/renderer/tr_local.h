@@ -65,6 +65,8 @@ typedef struct dlight_s {
 
 	vec3_t	transformed;		// origin in local coordinate system
 	int		additive;			// texture detail is lost tho when the lightmap is dark
+
+	lightDistanceType_t attenuation;
 } dlight_t;
 
 
@@ -1440,7 +1442,7 @@ void R_ToggleSmpFrame( void );
 void RE_ClearScene( void );
 void RE_AddRefEntityToScene( const refEntity_t *ent );
 void RE_AddPolyToScene( qhandle_t hShader , int numVerts, const polyVert_t *verts, int num );
-void RE_AddLightToScene( const vec3_t org, float intensity, float r, float g, float b );
+void RE_AddLightToScene( const vec3_t org, float intensity, float r, float g, float b, lightDistanceType_t attenuation);
 void RE_AddAdditiveLightToScene( const vec3_t org, float intensity, float r, float g, float b );
 void RE_AddSpotLightToScene(const vec3_t org, float intensity, float r, float g, float b, vec3_t lightNormal);
 void RE_RenderScene( const refdef_t *fd );
@@ -1647,7 +1649,7 @@ void GL_BlitUIImage(int texnum, int srcx, int srcy, int destx, int desty);
 void GL_BlitUIImageUV(int texnum, float u, float v, float u2, float v2, int destx, int desty, int w, int h);
 void GL_BlitUIImageUVNoScale(int texnum, float u, float v, int destx, int desty, int w, int h);
 void GL_RegisterWorldAreaLight(vec3_t normal, vec3_t mins, vec3_t maxs, int lightStyle, float radius, float r, float g, float b);
-void GL_RegisterWorldLight(refEntity_t* ent, float x, float y, float z, float radius, int lightStyle, float r, float g, float b);
+void GL_RegisterWorldLight(refEntity_t* ent, float x, float y, float z, float radius, int lightStyle, float r, float g, float b, lightDistanceType_t attenuation);
 void GL_SetUICanvas(float x, float y, float width, float height);
 
 void GL_BeginRendering(int* x, int* y, int* width, int* height);

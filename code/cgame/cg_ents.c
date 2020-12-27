@@ -148,7 +148,7 @@ static void CG_EntityEffects( centity_t *cent ) {
 		g = ( cl >> 8 ) & 255;
 		b = ( cl >> 16 ) & 255;
 		i = ( ( cl >> 24 ) & 255 ) * 4;
-		trap_R_AddLightToScene( cent->lerpOrigin, i, r, g, b );
+		trap_R_AddLightToScene( cent->lerpOrigin, i, r, g, b, LDAT_QUADRAT);
 	}
 
 }
@@ -159,24 +159,10 @@ static void CG_EntityEffects( centity_t *cent ) {
 CG_Light
 ==================
 */
-static void CG_Light(centity_t* cent) {
-	refEntity_t			ent;
+static void CG_Light(centity_t* cent) {	
 	entityState_t* s1;
-
 	s1 = &cent->currentState;
-
-	memset(&ent, 0, sizeof(ent));
-
-	//if(!trap_R_inPVS(cg.refdef.vieworg, cent->lerpOrigin)) {
-	//	return;
-	//}
-
-	if (s1->angles2[0] != 0 && s1->angles2[1] != 0 && s1->angles2[2] != 0) {
-		trap_R_AddSpotLightToScene(cent->lerpOrigin, s1->lightRadius, s1->origin2[0], s1->origin2[1], s1->origin2[2], s1->angles2);
-	}
-	else {
-		trap_R_AddLightToScene(cent->lerpOrigin, s1->lightRadius, s1->origin2[0], s1->origin2[1], s1->origin2[2]);
-	}
+	trap_R_AddLightToScene(cent->lerpOrigin, s1->lightRadius, s1->origin2[0], s1->origin2[1], s1->origin2[2], s1->generic1);
 }
 
 
@@ -468,7 +454,7 @@ static void CG_Missile( centity_t *cent ) {
 	// add dynamic light
 	if ( weapon->missileDlight ) {
 		trap_R_AddLightToScene(cent->lerpOrigin, weapon->missileDlight, 
-			weapon->missileDlightColor[0], weapon->missileDlightColor[1], weapon->missileDlightColor[2] );
+			weapon->missileDlightColor[0], weapon->missileDlightColor[1], weapon->missileDlightColor[2], LDAT_QUADRAT);
 	}
 
 	// add missile sound

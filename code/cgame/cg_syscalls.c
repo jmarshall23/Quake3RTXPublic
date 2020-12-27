@@ -267,8 +267,8 @@ int		trap_R_LightForPoint( vec3_t point, vec3_t ambientLight, vec3_t directedLig
 	return syscall( CG_R_LIGHTFORPOINT, point, ambientLight, directedLight, lightDir );
 }
 
-void	trap_R_AddLightToScene( const vec3_t org, float intensity, float r, float g, float b ) {
-	syscall( CG_R_ADDLIGHTTOSCENE, org, PASSFLOAT(intensity), PASSFLOAT(r), PASSFLOAT(g), PASSFLOAT(b) );
+void	trap_R_AddLightToScene( const vec3_t org, float intensity, float r, float g, float b, int attenuation ) {
+	syscall( CG_R_ADDLIGHTTOSCENE, org, PASSFLOAT(intensity), PASSFLOAT(r), PASSFLOAT(g), PASSFLOAT(b), attenuation);
 }
 
 void trap_R_AddSpotLightToScene(const vec3_t org, float intensity, float r, float g, float b, vec3_t lightNormal) {

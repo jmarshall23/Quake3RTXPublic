@@ -38,11 +38,8 @@ float3 QuakeCoords(float3 xyz) {
 
 float attenuation(float r, float f, float d, float3 normal, float3 dir) {
 	float angle = dot (dir, normal);
-	//float scalecos = 0.5;
-	//angle = (1.0-scalecos) + scalecos*angle;
-	//return pow(max(0.0, (r - d) / 128), 1.0) * angle;
 	
-	return (r / pow(d, 1.3)) * angle;
+	return ((r * 3) / pow(d, 1.45)) * angle;
 }
 float attenuation_arealight(float r, float f, float d, float3 normal, float3 dir) {
 	float angle = dot (dir, normal);
@@ -419,7 +416,10 @@ int sideOfPlane(float3 p, float3 pc, float3 pn){
 			float3 lightPos = (lightInfo[i].origin_radius.xyz);
 			float3 centerLightDir = lightPos - worldOrigin;
 			float lightDistance = length(centerLightDir);
-			float falloff = attenuation(lightInfo[i].origin_radius.w, 1.0, lightDistance, normal, normalize(centerLightDir)) - 0.1;  
+			float falloff = attenuation(lightInfo[i].origin_radius.w, 1.0, lightDistance, normal, normalize(centerLightDir));
+			float attentype = lightInfo[i].light_color.w;
+
+			falloff = falloff - 0.1;  
 			
 			falloff = clamp(falloff, 0.0, 1.0);
 			

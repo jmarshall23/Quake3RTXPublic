@@ -229,7 +229,7 @@ RE_AddDynamicLightToScene
 
 =====================
 */
-void RE_AddDynamicLightToScene( const vec3_t org, float intensity, float r, float g, float b, int additive, vec3_t lightNormal ) {
+void RE_AddDynamicLightToScene( const vec3_t org, float intensity, float r, float g, float b, int additive, vec3_t lightNormal, lightDistanceType_t attenuation) {
 	dlight_t	*dl;
 
 	if ( !tr.registered ) {
@@ -241,10 +241,7 @@ void RE_AddDynamicLightToScene( const vec3_t org, float intensity, float r, floa
 	if (intensity == 0) {
 		return;
 	}
-	// these cards don't have the correct blend mode
-	if ( glConfig.hardwareType == GLHW_RIVA128 || glConfig.hardwareType == GLHW_PERMEDIA2 ) {
-		return;
-	}
+
 	dl = &backEndData[tr.smpFrame]->dlights[r_numdlights++];
 	VectorCopy (org, dl->origin);
 	dl->radius = intensity;
@@ -255,6 +252,7 @@ void RE_AddDynamicLightToScene( const vec3_t org, float intensity, float r, floa
 	dl->lightNormal[1] = lightNormal[1];
 	dl->lightNormal[2] = lightNormal[2];
 	dl->additive = additive;
+	dl->attenuation = attenuation;
 }
 
 vec3_t global_zero_vec = { 0, 0, 0 };
@@ -265,8 +263,8 @@ RE_AddLightToScene
 
 =====================
 */
-void RE_AddLightToScene( const vec3_t org, float intensity, float r, float g, float b ) {
-	RE_AddDynamicLightToScene( org, intensity, r, g, b, qfalse, global_zero_vec);
+void RE_AddLightToScene( const vec3_t org, float intensity, float r, float g, float b, lightDistanceType_t attenuation) {
+	RE_AddDynamicLightToScene( org, intensity, r, g, b, qfalse, global_zero_vec, attenuation);
 }
 
 /*
@@ -276,7 +274,7 @@ RE_AddAdditiveLightToScene
 =====================
 */
 void RE_AddAdditiveLightToScene( const vec3_t org, float intensity, float r, float g, float b ) {
-	RE_AddDynamicLightToScene( org, intensity, r, g, b, qtrue, global_zero_vec);
+	RE_AddDynamicLightToScene( org, intensity, r, g, b, qtrue, global_zero_vec, LDAT_QUADRAT);
 }
 
 /*
@@ -285,7 +283,7 @@ RE_AddSpotLightToScene
 =====================
 */
 void RE_AddSpotLightToScene(const vec3_t org, float intensity, float r, float g, float b, vec3_t lightNormal) {
-	RE_AddDynamicLightToScene(org, intensity, r, g, b, qtrue, lightNormal);
+	RE_AddDynamicLightToScene(org, intensity, r, g, b, qtrue, lightNormal, LDAT_QUADRAT);
 }
 
 /*
@@ -373,7 +371,7 @@ void RE_RenderScene( const refdef_t *fd ) {
 	tr.refdef.polys = &backEndData[tr.smpFrame]->polys[r_firstScenePoly];
 
 	for (int i = 0; i < tr.refdef.num_dlights; i++) {
-		GL_RegisterWorldLight(NULL, tr.refdef.dlights[i].origin[0], tr.refdef.dlights[i].origin[1], tr.refdef.dlights[i].origin[2], tr.refdef.dlights[i].radius, 0, tr.refdef.dlights[i].color[0], tr.refdef.dlights[i].color[1], tr.refdef.dlights[i].color[2]);
+		GL_RegisterWorldLight(NULL, tr.refdef.dlights[i].origin[0], tr.refdef.dlights[i].origin[1], tr.refdef.dlights[i].origin[2], tr.refdef.dlights[i].radius, 0, tr.refdef.dlights[i].color[0], tr.refdef.dlights[i].color[1], tr.refdef.dlights[i].color[2], tr.refdef.dlights[i].attenuation);
 	}
 
 	// turn off dynamic lighting globally by clearing all the

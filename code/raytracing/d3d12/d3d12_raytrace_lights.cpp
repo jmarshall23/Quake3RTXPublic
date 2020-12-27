@@ -14,6 +14,7 @@ struct glLight_t {
 	vec3_t absmin;
 	vec3_t absmax;
 	vec4_t light_clamp;
+	lightDistanceType_t attenuation;
 
 	//entity_t* ent;
 	int leafnums[16];
@@ -110,7 +111,7 @@ void GL_FindTouchedLeafs(glLight_t* ent, mnode_t* node)
 	//	GL_FindTouchedLeafs(ent, node->children[1]);
 }
 
-void GL_RegisterWorldLight(refEntity_t* ent, float x, float y, float z, float radius, int lightStyle, float r, float g, float b) {
+void GL_RegisterWorldLight(refEntity_t* ent, float x, float y, float z, float radius, int lightStyle, float r, float g, float b, lightDistanceType_t attenuation) {
 	glLight_t light = { };
 	light.origin_radius[0] = x;
 	light.origin_radius[1] = y;
@@ -130,6 +131,7 @@ void GL_RegisterWorldLight(refEntity_t* ent, float x, float y, float z, float ra
 	light.absmax[2] = z;
 
 	light.lightStyle = lightStyle;
+	light.attenuation = attenuation;
 
 	//light.ent = ent;
 	light.num_leafs = 0;
@@ -267,6 +269,7 @@ void GL_BuildLightList(float x, float y, float z) {
 			sceneLights[numVisLights].light_color[0] = ent->light_color[0];
 			sceneLights[numVisLights].light_color[1] = ent->light_color[1];
 			sceneLights[numVisLights].light_color[2] = ent->light_color[2];
+			sceneLights[numVisLights].light_color[3] = ent->attenuation;
 		//}
 
 		sceneLights[numVisLights].light_clamp[0] = ent->light_clamp[0];

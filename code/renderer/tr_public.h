@@ -65,7 +65,7 @@ typedef struct {
 	void	(*AddRefEntityToScene)( const refEntity_t *re );
 	void	(*AddPolyToScene)( qhandle_t hShader , int numVerts, const polyVert_t *verts, int num );
 	int		(*LightForPoint)( vec3_t point, vec3_t ambientLight, vec3_t directedLight, vec3_t lightDir );
-	void	(*AddLightToScene)( const vec3_t org, float intensity, float r, float g, float b );
+	void	(*AddLightToScene)( const vec3_t org, float intensity, float r, float g, float b, lightDistanceType_t attenuation );
 	void	(*AddAdditiveLightToScene)( const vec3_t org, float intensity, float r, float g, float b );
 	void    (*AddSpotLightToScene)(const vec3_t org, float intensity, float r, float g, float b, vec3_t lightNormal);
 	void	(*RenderScene)( const refdef_t *fd );

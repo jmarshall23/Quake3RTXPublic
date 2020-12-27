@@ -1439,5 +1439,11 @@ static ID_INLINE float _vmf(intptr_t x)
 }
 #define	VMF(x)	_vmf(args[x])
 
+typedef enum 
+{
+	LDAT_QUADRAT = 0,
+	LDAT_LINEAR	 = 1,
+	LDAT_NOSCALE = 2
+} lightDistanceType_t;
 
 #endif	// __Q_SHARED_H
