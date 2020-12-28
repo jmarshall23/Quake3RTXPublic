@@ -103,7 +103,7 @@ bool IsLightShadowed(float3 worldOrigin, float3 lightDir, float distance, float3
      RayDesc ray;
      ray.Origin = worldOrigin;
      ray.Direction = lightDir;
-     ray.TMin = 3.0;
+     ray.TMin = 0.01;
      ray.TMax = distance;
      bool hit = true;
      
@@ -116,7 +116,7 @@ bool IsLightShadowed(float3 worldOrigin, float3 lightDir, float distance, float3
      	// Acceleration structure
      	SceneBVH,
      	// Flags can be used to specify the behavior upon hitting a surface
-     	RAY_FLAG_ACCEPT_FIRST_HIT_AND_END_SEARCH,
+     	RAY_FLAG_CULL_NON_OPAQUE | RAY_FLAG_ACCEPT_FIRST_HIT_AND_END_SEARCH | RAY_FLAG_CULL_FRONT_FACING_TRIANGLES,
      	// Instance inclusion mask, which can be used to mask out some geometry to
      	// this ray by and-ing the mask with a geometry mask. The 0xFF flag then
      	// indicates no geometry will be masked
@@ -411,6 +411,8 @@ int sideOfPlane(float3 p, float3 pc, float3 pn){
 		{
 			float3 lightPos = (lightInfo[i].origin_radius.xyz);
 			float3 centerLightDir = lightPos - worldOrigin;
+			float3 shadowLightDir = (worldOrigin + (normal * 5)) - lightPos;
+			float shadowDistance = length(shadowLightDir);
 			float lightDistance = length(centerLightDir);
 			float falloff = attenuation(lightInfo[i].origin_radius.w, 1.0, lightDistance, normal, normalize(centerLightDir));
 			float attentype = lightInfo[i].light_color.w;
@@ -423,7 +425,7 @@ int sideOfPlane(float3 p, float3 pc, float3 pn){
 			//if(!isShadowed)
 			if(falloff > 0)
 			{
-					if(!IsLightShadowed(worldOrigin, normalize(centerLightDir), lightDistance, normal))
+					if(!IsLightShadowed(lightPos, normalize(shadowLightDir), shadowDistance, normal))
 					{
 						float3 V = viewPos - worldOrigin;
 						float spec = CalcPBR(V, normal, normalize(centerLightDir), 0.5, float3(1, 1, 1), float3(0.5, 0.5, 0.5));
