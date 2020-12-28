@@ -387,14 +387,38 @@ int sideOfPlane(float3 p, float3 pc, float3 pn){
 	  hitColor = float3(u, v, 0);
   }
   
-  float3 normal = BTriVertex[vertId + 0].normal;
-  float3 orig_normal = BTriVertex[vertId + 0].normal;
+  float3 vnormal = float3(0, 0, 0);
+  for(int i = 0; i < 3; i++)
+  {
+		vnormal.x += BTriVertex[vertId + i].normal.x * barycentrics[i];
+		vnormal.y += BTriVertex[vertId + i].normal.y * barycentrics[i];
+		vnormal.z += BTriVertex[vertId + i].normal.z * barycentrics[i];
+  }
+
+  float4 vtangent = float4(0, 0, 0, 1);
+  for(int i = 0; i < 3; i++)
+  {
+		vtangent.x += BTriVertex[vertId + i].tangent.x * barycentrics[i];
+		vtangent.y += BTriVertex[vertId + i].tangent.y * barycentrics[i];
+		vtangent.z += BTriVertex[vertId + i].tangent.z * barycentrics[i];
+  }
+  
+  float4 vbinormal = float4(0, 0, 0, 1);
+  for(int i = 0; i < 3; i++)
+  {
+		vbinormal.x += BTriVertex[vertId + i].binormal.x * barycentrics[i];
+		vbinormal.y += BTriVertex[vertId + i].binormal.y * barycentrics[i];
+		vbinormal.z += BTriVertex[vertId + i].binormal.z * barycentrics[i];
+  }
+
+  float3 normal = normalize(vnormal);
+  float3 orig_normal = normalize(vnormal);
   bool isBackFacing = dot(normal, WorldRayDirection()) > 0.f;
   if (isBackFacing)
 	normal = -normal;
 	
-  float3 tangent = BTriVertex[vertId + 0].tangent;
-  float3 binormal = BTriVertex[vertId + 0].binormal; 
+  float3 tangent = normalize(vtangent);
+  float3 binormal = normalize(vbinormal); 
   
   // 2 is emissive
   float spec_contrib = 0.0;
