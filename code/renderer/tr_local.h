@@ -757,8 +757,15 @@ typedef enum {
 	MOD_BAD,
 	MOD_BRUSH,
 	MOD_MESH,
-	MOD_MD4
+	MOD_MD4,
+	MOD_POLY
 } modtype_t;
+
+typedef struct {		
+	shader_t* shader;
+	int numVerts;
+	polyVert_t verts[1];
+} polyModel_t;
 
 #define MAX_DXR_FRAMES 3000
 
@@ -771,6 +778,7 @@ typedef struct model_s {
 	bmodel_t	*bmodel;			// only if type == MOD_BRUSH
 	md3Header_t	*md3[MD3_MAX_LODS];	// only if type == MOD_MESH
 	md4Header_t	*md4;				// only if type == MOD_MD4
+	polyModel_t* polymesh;          // only if type == MOD_POLY
 
 	void*		dxrMesh[MAX_DXR_FRAMES];
 
@@ -1199,6 +1207,7 @@ void		RE_BeginRegistration( glconfig_t *glconfig );
 void		RE_LoadWorldMap( const char *mapname );
 void		RE_SetWorldVisData( const byte *vis );
 qhandle_t	RE_RegisterModel( const char *name );
+qhandle_t	RE_RegisterCustomModel(const char* name, qhandle_t shader, polyVert_t* verts, int numVertexes);
 qhandle_t	RE_RegisterSkin( const char *name );
 void		RE_Shutdown( qboolean destroyWindow );
 
@@ -1660,6 +1669,7 @@ void GL_Init(HWND hwnd, HINSTANCE hinstance, int width, int height);
 void* GL_LoadDXRMesh(msurface_t* surfaces, int numSurfaces, int bModelIndex);
 
 void* GL_LoadMD3RaytracedMesh(md3Header_t* mod, int frame);
+void* GL_LoadPolyRaytracedMesh(shader_t* shader, polyVert_t* verts, int numVertexes);
 
 void LoadTGA(const char* name, byte** pic, int* width, int* height);
 void GL_SetNumMapLights(void);

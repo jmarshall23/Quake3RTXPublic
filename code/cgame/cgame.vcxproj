@@ -1020,6 +1020,7 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIN32;NDEBUG;_WINDOWS</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">WIN32;NDEBUG;_WINDOWS</PreprocessorDefinitions>
     </ClCompile>
+    <ClCompile Include="cg_sprite.c" />
     <ClCompile Include="cg_syscalls.c">
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug TA|Win32'">Disabled</Optimization>
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug TA|x64'">Disabled</Optimization>
@@ -1091,8 +1092,10 @@
     <ClInclude Include="..\game\bg_public.h" />
     <ClInclude Include="..\game\q_shared.h" />
     <ClInclude Include="..\game\surfaceflags.h" />
+    <ClInclude Include="..\renderer\tr_public.h" />
     <ClInclude Include="cg_local.h" />
     <ClInclude Include="cg_public.h" />
+    <ClInclude Include="tr_types.h" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="cgame.def">

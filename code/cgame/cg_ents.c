@@ -472,11 +472,14 @@ static void CG_Missile( centity_t *cent ) {
 	VectorCopy( cent->lerpOrigin, ent.oldorigin);
 
 	if ( cent->currentState.weapon == WP_PLASMAGUN ) {
-		ent.reType = RT_SPRITE;
-		ent.radius = 16;
-		ent.rotation = 0;
-		ent.customShader = cgs.media.plasmaBallShader;
-		trap_R_AddRefEntityToScene( &ent );
+// jmarshall
+		//ent.reType = RT_SPRITE;
+		//ent.radius = 16;
+		//ent.rotation = 0;
+		//ent.customShader = cgs.media.plasmaBallShader;
+		//trap_R_AddRefEntityToScene( &ent );
+		CG_SpawnSprite(ent.origin, 16, cgs.media.plasmaBallModel);
+// jmarshall end
 		return;
 	}
 

@@ -708,6 +708,75 @@ void* GL_LoadMD3RaytracedMesh(md3Header_t* mod, int frame) {
 	return mesh;
 }
 
+void* GL_LoadPolyRaytracedMesh(shader_t *shader, polyVert_t* verts, int numVertexes) {
+	dxrMesh_t* mesh = new dxrMesh_t();
+
+	mesh->alphaSurface = qtrue;
+
+	//mesh->meshId = dxrMeshList.size();
+	mesh->startSceneVertex = sceneVertexes.size();
+	mesh->numSceneVertexes = 0;
+
+	float x, y, w, h;
+	char textureName[512];
+	COM_StripExtension(COM_SkipPath((char*)shader->name), textureName);
+	GL_FindMegaTile(textureName, &x, &y, &w, &h);
+
+
+	for (int j = 0; j < numVertexes; j++) {
+		dxrVertex_t v;
+
+		v.xyz[0] = verts[j].xyz[0];
+		v.xyz[1] = verts[j].xyz[1];
+		v.xyz[2] = verts[j].xyz[2];
+		v.st[0] = verts[j].st[0];
+		v.st[1] = verts[j].st[1];
+		v.st[2] = 1;
+		v.vtinfo[0] = x;
+		v.vtinfo[1] = y;
+		v.vtinfo[2] = w;
+		v.vtinfo[3] = h;
+
+		mesh->meshTriVertexes.push_back(v);
+		sceneVertexes.push_back(v);
+		mesh->numSceneVertexes++;
+	}
+
+	// Calculate the normals
+	{
+		for (int i = 0; i < mesh->numSceneVertexes; i += 3)
+		{
+			float* pA = &sceneVertexes[mesh->startSceneVertex + i + 0].xyz[0];
+			float* pC = &sceneVertexes[mesh->startSceneVertex + i + 1].xyz[0];
+			float* pB = &sceneVertexes[mesh->startSceneVertex + i + 2].xyz[0];
+
+			float* tA = &sceneVertexes[mesh->startSceneVertex + i + 0].st[0];
+			float* tC = &sceneVertexes[mesh->startSceneVertex + i + 1].st[0];
+			float* tB = &sceneVertexes[mesh->startSceneVertex + i + 2].st[0];
+
+			vec3_t tangent, binormal, normal;
+			GL_CalcTangentSpace(tangent, binormal, normal, sceneVertexes[mesh->startSceneVertex + i + 0].xyz, sceneVertexes[mesh->startSceneVertex + i + 1].xyz, sceneVertexes[mesh->startSceneVertex + i + 2].xyz,
+				sceneVertexes[mesh->startSceneVertex + i + 0].st, sceneVertexes[mesh->startSceneVertex + i + 1].st, sceneVertexes[mesh->startSceneVertex + i + 2].st);
+
+			memcpy(sceneVertexes[mesh->startSceneVertex + i + 0].normal, normal, sizeof(float) * 3);
+			memcpy(sceneVertexes[mesh->startSceneVertex + i + 1].normal, normal, sizeof(float) * 3);
+			memcpy(sceneVertexes[mesh->startSceneVertex + i + 2].normal, normal, sizeof(float) * 3);
+
+			memcpy(sceneVertexes[mesh->startSceneVertex + i + 0].binormal, binormal, sizeof(float) * 3);
+			memcpy(sceneVertexes[mesh->startSceneVertex + i + 1].binormal, binormal, sizeof(float) * 3);
+			memcpy(sceneVertexes[mesh->startSceneVertex + i + 2].binormal, binormal, sizeof(float) * 3);
+
+			memcpy(sceneVertexes[mesh->startSceneVertex + i + 0].tangent, tangent, sizeof(float) * 3);
+			memcpy(sceneVertexes[mesh->startSceneVertex + i + 1].tangent, tangent, sizeof(float) * 3);
+			memcpy(sceneVertexes[mesh->startSceneVertex + i + 2].tangent, tangent, sizeof(float) * 3);
+		}
+	}
+
+	dxrMeshList.push_back(mesh);
+
+	return mesh;
+}
+
 void GL_FinishVertexBufferAllocation(void) {
 //	ThrowIfFailed(m_commandList->Reset(m_commandAllocator.Get(), m_pipelineState.Get()));
 

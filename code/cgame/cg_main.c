@@ -841,6 +841,8 @@ static void CG_RegisterGraphics( void ) {
 		trap_R_RegisterModel(item->world_model[0]);
 		item++;
 	}
+
+	CG_InitSprites();
 // jmarshall end
 
 	for ( i=0 ; i<11 ; i++) {
@@ -869,7 +871,6 @@ static void CG_RegisterGraphics( void ) {
 	cgs.media.nailPuffShader = trap_R_RegisterShader( "nailtrail" );
 	cgs.media.blueProxMine = trap_R_RegisterModel( "models/weaphits/proxmineb.md3" );
 #endif
-	cgs.media.plasmaBallShader = trap_R_RegisterShader( "sprites/plasma1" );
 	cgs.media.bloodTrailShader = trap_R_RegisterShader( "bloodTrail" );
 	cgs.media.lagometerShader = trap_R_RegisterShader("lagometer" );
 	cgs.media.connectionShader = trap_R_RegisterShader( "disconnected" );

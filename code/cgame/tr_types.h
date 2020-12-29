@@ -81,6 +81,8 @@ typedef struct {
 	vec3_t		lightingOrigin;		// so multi-part models can be lit identically (RF_LIGHTING_ORIGIN)
 	float		shadowPlane;		// projection shadows go here, stencils go slightly lower
 
+	float		scale;
+
 	vec3_t		axis[3];			// rotation vectors
 	qboolean	nonNormalizedAxes;	// axis are not normalized, i.e. they have scale
 	float		origin[3];			// also used as MODEL_BEAM's "from"

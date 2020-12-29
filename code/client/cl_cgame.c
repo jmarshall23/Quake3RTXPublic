@@ -475,6 +475,10 @@ int CL_CgameSystemCalls(intptr_t *args ) {
 // ZOID
 		SCR_UpdateScreen();
 		return 0;
+
+	case CG_R_REGISTERCUSTOMMODEL:
+		return re.RegisterCustomModel(VMA(1), args[2], VMA(3), args[4]);
+
 	case CG_CM_LOADMAP:
 		CL_CM_LoadMap( VMA(1) );
 		return 0;

@@ -69,7 +69,7 @@ functions imported from the main executable
 ==================================================================
 */
 
-#define	CGAME_IMPORT_API_VERSION	4
+#define	CGAME_IMPORT_API_VERSION	1004
 
 typedef enum {
 	CG_PRINT,
@@ -167,6 +167,8 @@ typedef enum {
 	CG_R_INPVS,
 	// 1.32
 	CG_FS_SEEK,
+
+	CG_R_REGISTERCUSTOMMODEL,
 
 /*
 	CG_LOADCAMERA,

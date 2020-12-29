@@ -92,6 +92,7 @@ void GL_CreateTopLevelAccelerationStructs(bool forceUpdate) {
 				create_brush_matrix(&currententity->dxrTransform[0], &currententity->e, qfalse);
 				numProcessedEntities++;
 				break;
+			case MOD_POLY:
 			case MOD_MESH:
 				create_entity_matrix(&currententity->dxrTransform[0], &currententity->e, qfalse);
 				numProcessedEntities++;
@@ -139,6 +140,7 @@ void GL_CreateTopLevelAccelerationStructs(bool forceUpdate) {
 
 			switch (qmodel->type)
 			{
+			case MOD_POLY:
 			case MOD_BRUSH:
 			case MOD_MESH:
 				//if (!currententity->skipShadows)

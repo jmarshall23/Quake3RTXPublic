@@ -100,6 +100,8 @@ typedef struct {
 	qboolean (*inPVS)( const vec3_t p1, const vec3_t p2 );
 	void	 (*R_FinishDXRLoading)(void);
 	void     (*ShutdownRaytracingMap)(void);
+
+	qhandle_t(*RegisterCustomModel)(const char* name, qhandle_t shader, polyVert_t* verts, int numVertexes);
 } refexport_t;
 
 //

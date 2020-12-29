@@ -92,6 +92,9 @@
     <ClCompile Include="..\ui\ui_shared.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cg_sprite.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\game\bg_public.h">
@@ -107,6 +110,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\game\surfaceflags.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\renderer\tr_public.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tr_types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

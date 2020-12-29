@@ -47,14 +47,14 @@ void create_entity_matrix(float matrix[16], refEntity_t* e, qboolean enable_left
 	//
 	//aliashdr_t *paliashdr = (aliashdr_t*)Mod_Extradata(e->model);
 
-	float entScale = 1.0f; // (e->scale > 0.f) ? e->scale : 1.f;
+	float entScale = (e->scale > 0.f) ? e->scale : 1.f;
 	vec3_t scales;
 	vec3_t translate;
 	float xyfact, zfact;
 
-	scales[0] = 1.0f;
-	scales[1] = 1.0f;
-	scales[2] = 1.0f;
+	scales[0] = entScale;
+	scales[1] = entScale;
+	scales[2] = entScale;
 	translate[0] = origin[0];
 	translate[1] = origin[1];
 	translate[2] = origin[2];
@@ -83,7 +83,7 @@ void create_entity_matrix(float matrix[16], refEntity_t* e, qboolean enable_left
 	_m[15] = 1.0f;
 
 	//_matrix = _matrix * float4x4Translation(translate[0], translate[1], translate[2]);
-	//_matrix = _matrix * float4x4Scale(scales[0], scales[1], scales[2]);
+	_matrix = _matrix * float4x4Scale(scales[0], scales[1], scales[2]);
 
 	memcpy(matrix, _m, sizeof(float) * 16);
 }

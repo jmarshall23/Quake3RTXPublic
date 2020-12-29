@@ -67,6 +67,62 @@ model_t *R_AllocModel( void ) {
 }
 
 /*
+===============
+RE_RegisterCustomModel
+===============
+*/
+qhandle_t RE_RegisterCustomModel(const char* name, qhandle_t shader, polyVert_t* verts, int numVertexes) {
+	model_t* mod = NULL;
+	qhandle_t	hModel;
+
+	if (!name || !name[0]) {
+		ri.Printf(PRINT_ALL, "RE_RegisterCustomModel: NULL name\n");
+		return 0;
+	}
+
+	if (strlen(name) >= MAX_QPATH) {
+		Com_Printf("Model name exceeds MAX_QPATH\n");
+		return 0;
+	}
+
+	//
+	// search the currently loaded models
+	//
+	for (hModel = 1; hModel < tr.numModels; hModel++) {
+		model_t *_mod = tr.models[hModel];
+		if (!strcmp(_mod->name, name)) {
+			if (_mod->type == MOD_BAD) {
+				return 0;
+			}
+			
+			mod = _mod;
+			break;
+		}
+	}
+
+	if (mod == NULL) {
+		// allocate a new model_t
+		if ((mod = R_AllocModel()) == NULL) {
+			ri.Printf(PRINT_WARNING, "RE_RegisterCustomModel: R_AllocModel() failed for '%s'\n", name);
+			return 0;
+		}
+
+		// only set the name after the model has been successfully loaded
+		Q_strncpyz(mod->name, name, sizeof(mod->name));
+	}
+
+	mod->type = MOD_POLY;
+	mod->polymesh = ri.Hunk_Alloc(sizeof(polyModel_t) + (sizeof(polyVert_t) * numVertexes), h_low);
+
+	mod->polymesh->numVerts = numVertexes;
+	mod->polymesh->shader = tr.shaders[shader];
+	memcpy(mod->polymesh->verts, verts, numVertexes * sizeof(polyVert_t));
+
+	mod->dxrMesh[0] = GL_LoadPolyRaytracedMesh(mod->polymesh->shader, verts, numVertexes);
+	return hModel;
+}
+
+/*
 ====================
 RE_RegisterModel
 

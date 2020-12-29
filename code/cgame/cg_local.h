@@ -738,7 +738,6 @@ typedef struct {
 	qhandle_t	smokePuffShader;
 	qhandle_t	smokePuffRageProShader;
 	qhandle_t	shotgunSmokePuffShader;
-	qhandle_t	plasmaBallShader;
 	qhandle_t	waterBubbleShader;
 	qhandle_t	bloodTrailShader;
 #ifdef MISSIONPACK
@@ -977,6 +976,11 @@ typedef struct {
 	sfxHandle_t	wstbimpmSound;
 	sfxHandle_t	wstbimpdSound;
 	sfxHandle_t	wstbactvSound;
+
+// jmarshall
+	qhandle_t plasmaBallModel;
+	qhandle_t smokePuffModel;
+// jmarshall end
 
 } cgMedia_t;
 
@@ -1397,6 +1401,14 @@ localEntity_t *CG_SmokePuff( const vec3_t p,
 				   int fadeInTime,
 				   int leFlags,
 				   qhandle_t hShader );
+localEntity_t* CG_SmokePuffModel(const vec3_t p, const vec3_t vel,
+	float radius,
+	float r, float g, float b, float a,
+	float duration,
+	int startTime,
+	int fadeInTime,
+	int leFlags,
+	qhandle_t hModel);
 void CG_BubbleTrail( vec3_t start, vec3_t end, float spacing );
 void CG_SpawnEffect( vec3_t org );
 #ifdef MISSIONPACK
@@ -1671,3 +1683,9 @@ qboolean trap_R_inPVS(const vec3_t p1, const vec3_t p2);
 
 void trap_R_FinishDXRLoading(void);
 void trap_R_ShutdownRaytracingMap(void);
+
+qhandle_t trap_R_RegisterCustomModel(const char* name, qhandle_t shader, polyVert_t* verts, int numVertexes);
+
+void CG_InitSprites(void);
+void CG_SpawnSprite(vec3_t origin, float scale, qhandle_t model);
+void CG_SpawnSpriteEx(refEntity_t* ent, vec3_t origin, float scale, qhandle_t model);

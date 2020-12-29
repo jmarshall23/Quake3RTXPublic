@@ -454,3 +454,7 @@ void trap_R_FinishDXRLoading(void) {
 void trap_R_ShutdownRaytracingMap(void) {
 	syscall(CG_R_SHUTDOWNRAYTRACINGMAP);
 }
+
+qhandle_t trap_R_RegisterCustomModel(const char* name, qhandle_t shader, polyVert_t* verts, int numVertexes) {
+	return syscall(CG_R_REGISTERCUSTOMMODEL, name, shader, verts, numVertexes);
+}

@@ -370,14 +370,14 @@ static void CG_RocketTrail( centity_t *ent, const weaponInfo_t *wi ) {
 	for ( ; t <= ent->trailTime ; t += step ) {
 		BG_EvaluateTrajectory( &es->pos, t, lastPos );
 
-		smoke = CG_SmokePuff( lastPos, up, 
+		smoke = CG_SmokePuffModel( lastPos, up,
 					  wi->trailRadius, 
 					  1, 1, 1, 0.33f,
 					  wi->wiTrailTime, 
 					  t,
 					  0,
 					  0, 
-					  cgs.media.smokePuffShader );
+					  cgs.media.smokePuffModel );
 		// use the optimized local entity add
 		smoke->leType = LE_SCALE_FADE;
 	}
@@ -523,15 +523,16 @@ static void CG_PlasmaTrail( centity_t *cent, const weaponInfo_t *wi ) {
 
 	AxisCopy( axisDefault, re->axis );
     re->shaderTime = cg.time / 1000.0f;
-    re->reType = RT_SPRITE;
+    //re->reType = RT_SPRITE;
     re->radius = 0.25f;
-	re->customShader = cgs.media.railRingsShader;
+	//re->customShader = cgs.media.railRingsShader;
 	le->bounceFactor = 0.3f;
 
-    re->shaderRGBA[0] = wi->flashDlightColor[0] * 63;
-    re->shaderRGBA[1] = wi->flashDlightColor[1] * 63;
-    re->shaderRGBA[2] = wi->flashDlightColor[2] * 63;
-    re->shaderRGBA[3] = 63;
+    //re->shaderRGBA[0] = wi->flashDlightColor[0] * 63;
+    //re->shaderRGBA[1] = wi->flashDlightColor[1] * 63;
+    //re->shaderRGBA[2] = wi->flashDlightColor[2] * 63;
+    //re->shaderRGBA[3] = 63;
+	CG_SpawnSpriteEx(re, re->origin, re->radius, cgs.media.plasmaBallModel);
 
     le->color[0] = wi->flashDlightColor[0] * 0.2;
     le->color[1] = wi->flashDlightColor[1] * 0.2;
