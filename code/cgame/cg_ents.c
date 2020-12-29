@@ -478,6 +478,7 @@ static void CG_Missile( centity_t *cent ) {
 		//ent.rotation = 0;
 		//ent.customShader = cgs.media.plasmaBallShader;
 		//trap_R_AddRefEntityToScene( &ent );
+		trap_R_AddLightToScene(ent.origin, 70.0f, 0.0, 1.0, 1.0, 1);
 		CG_SpawnSprite(ent.origin, 16, cgs.media.plasmaBallModel);
 // jmarshall end
 		return;
