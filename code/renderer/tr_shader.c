@@ -2466,6 +2466,11 @@ shader_t *R_FindShader( const char *name, int lightmapIndex, qboolean mipRawImag
 		stages[i].bundle[0].texMods = texMods[i];
 	}
 
+	shader.atlas_x = -1;
+	shader.atlas_y = -1;
+	shader.atlas_width = -1;
+	shader.atlas_height = -1;
+
 	// FIXME: set these "need" values apropriately
 	shader.needsNormal = qtrue;
 	shader.needsST1 = qtrue;
