@@ -615,9 +615,7 @@ static qboolean ParseStage( shaderStage_t *stage, char **text )
 			{
 				ri.Printf( PRINT_WARNING, "WARNING: missing parameter for 'map' keyword in shader '%s'\n", shader.name );
 				return qfalse;
-			}
-
-			strcpy(stage->bundle[0].imageName[0], token);
+			}			
 
 			if ( !Q_stricmp( token, "$whiteimage" ) )
 			{
@@ -638,6 +636,7 @@ static qboolean ParseStage( shaderStage_t *stage, char **text )
 			}
 			else
 			{				
+				strcpy(stage->bundle[0].imageName[0], token);
 				stage->bundle[0].image[0] = R_FindImageFile( token, !shader.noMipMaps, !shader.noPicMip, 0 );
 				if ( !stage->bundle[0].image[0] )
 				{
