@@ -657,6 +657,7 @@ static qboolean ParseStage( shaderStage_t *stage, char **text )
 				return qfalse;
 			}
 
+			strcpy(stage->bundle[0].imageName[0], token);
 			stage->bundle[0].image[0] = R_FindImageFile( token, !shader.noMipMaps, !shader.noPicMip, 0 );
 			if ( !stage->bundle[0].image[0] )
 			{
