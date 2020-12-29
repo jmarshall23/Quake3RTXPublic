@@ -1783,6 +1783,8 @@ static qboolean CollapseMultitexture( void ) {
 			shader.atlas_height = atlas_height;
 			Com_Printf("Found program %s\n", shader.name);
 		}
+
+		free(image_program_buffer);
 	}
 	else
 	{
