@@ -434,7 +434,7 @@ void *GL_LoadDXRMesh(msurface_t *surfaces, int numSurfaces, int bModelIndex)  {
 /*
 ** LerpMeshVertexes
 */
-static void LerpMeshVertexes(md3Surface_t* surf, float backlerp, int frame, int oldframe, dxrVertex_t* vertexes, float x, float y, float w, float h)
+static void LerpMeshVertexes(int materialInfo, md3Surface_t* surf, float backlerp, int frame, int oldframe, dxrVertex_t* vertexes, float x, float y, float w, float h)
 {
 	short* oldXyz, * newXyz, * oldNormals, * newNormals;
 	//float* outXyz, * outNormal;
@@ -483,7 +483,7 @@ static void LerpMeshVertexes(md3Surface_t* surf, float backlerp, int frame, int 
 
 		vertexes->st[0] = texCoords[0];
 		vertexes->st[1] = texCoords[1];
-		vertexes->st[2] = 1;
+		vertexes->st[2] = materialInfo;
 
 		vertexes->vtinfo[0] = x;
 		vertexes->vtinfo[1] = y;
@@ -653,7 +653,11 @@ void* GL_LoadMD3RaytracedMesh(md3Header_t* mod, int frame) {
 		int startVert = mesh->meshVertexes.size();
 		dxrVertex_t* meshVertexes = new dxrVertex_t[surf->numVerts];
 
-		LerpMeshVertexes(surf, 0.0f, frame, frame, meshVertexes, x, y, w, h);
+		int materialInfo = 1;
+		if (tr.shaders[shader->shaderIndex]->hasRaytracingReflection)
+			materialInfo = 5;
+
+		LerpMeshVertexes(materialInfo, surf, 0.0f, frame, frame, meshVertexes, x, y, w, h);
 
 		int indexes = surf->numTriangles * 3;
 		int* triangles = (int*)((byte*)surf + surf->ofsTriangles);
@@ -689,9 +693,9 @@ void* GL_LoadMD3RaytracedMesh(md3Header_t* mod, int frame) {
 			GL_CalcTangentSpace(tangent, binormal, normal, sceneVertexes[mesh->startSceneVertex + i + 0].xyz, sceneVertexes[mesh->startSceneVertex + i + 1].xyz, sceneVertexes[mesh->startSceneVertex + i + 2].xyz,
 				sceneVertexes[mesh->startSceneVertex + i + 0].st, sceneVertexes[mesh->startSceneVertex + i + 1].st, sceneVertexes[mesh->startSceneVertex + i + 2].st);
 
-			memcpy(sceneVertexes[mesh->startSceneVertex + i + 0].normal, normal, sizeof(float) * 3);
-			memcpy(sceneVertexes[mesh->startSceneVertex + i + 1].normal, normal, sizeof(float) * 3);
-			memcpy(sceneVertexes[mesh->startSceneVertex + i + 2].normal, normal, sizeof(float) * 3);
+			//memcpy(sceneVertexes[mesh->startSceneVertex + i + 0].normal, normal, sizeof(float) * 3);
+			//memcpy(sceneVertexes[mesh->startSceneVertex + i + 1].normal, normal, sizeof(float) * 3);
+			//memcpy(sceneVertexes[mesh->startSceneVertex + i + 2].normal, normal, sizeof(float) * 3);
 
 			memcpy(sceneVertexes[mesh->startSceneVertex + i + 0].binormal, binormal, sizeof(float) * 3);
 			memcpy(sceneVertexes[mesh->startSceneVertex + i + 1].binormal, binormal, sizeof(float) * 3);

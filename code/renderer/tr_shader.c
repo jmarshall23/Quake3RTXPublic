@@ -1593,6 +1593,11 @@ static qboolean ParseShader( char **text )
 			ParseSort( text );
 			continue;
 		}
+		else if (!Q_stricmp(token, "reflect"))
+		{
+			shader.hasRaytracingReflection = qtrue;
+			continue;
+		}
 		else
 		{
 			ri.Printf( PRINT_WARNING, "WARNING: unknown general shader parameter '%s' in '%s'\n", token, shader.name );
@@ -2479,7 +2484,7 @@ shader_t *R_FindShader( const char *name, int lightmapIndex, qboolean mipRawImag
 	shader.needsST2 = qtrue;
 	shader.needsColor = qtrue;
 
-	if (!strcmp(name, "textures/gothic_trim/metalsupport4i"))
+	if (!strcmp(strippedName, "models/weapons2/shotgun/shotgun"))
 	{
 		name = name;
 	}
