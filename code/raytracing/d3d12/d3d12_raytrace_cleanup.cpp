@@ -17,7 +17,9 @@ RE_ShutdownRaytracingMap
 ============================
 */
 void RE_ShutdownRaytracingMap(void) {
-	r_finishDXRInit = 1;
+	r_finishDXRInit = 0;
+
+	GL_WaitForPreviousFrame();
 
 	raytracingDataInit = false;
 
