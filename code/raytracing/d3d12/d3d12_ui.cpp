@@ -58,6 +58,8 @@ tr_sampler* m_sampler;
 tr_pipeline* simple_ui_pipeline[MAX_UI_PASSES];
 tr_descriptor_set* simple_ui_desc_set[MAX_UI_PASSES];
 
+int numUsedRenderPasses = 0;
+
 tr_buffer* ui_uniform_buffer;
 
 /*
@@ -182,7 +184,7 @@ void GL_RenderUISurface(int numIndexes, drawVert_t *verts, int *indexes, const s
 		return;
 	}
 
-	if (uiRenderPasses.size() >= MAX_UI_PASSES) {
+	if (numUsedRenderPasses >= MAX_UI_PASSES) {
 		return;
 	}
 
@@ -208,11 +210,28 @@ void GL_RenderUISurface(int numIndexes, drawVert_t *verts, int *indexes, const s
 	int texNum = stage->bundle[0].image[0]->texnum;
 	pass.texture = textures[texNum].texture;
 
-	pass.descriptorset = simple_ui_desc_set[uiRenderPasses.size()];
+	for (int i = 0; i < uiRenderPasses.size(); i++)
+	{
+		if (uiRenderPasses[i].texture == pass.texture) {
+			pass.descriptorset = uiRenderPasses[i].descriptorset;
+			pass.descriptorset->descriptors[0].uniform_buffers[0] = ui_uniform_buffer;
+			pass.descriptorset->descriptors[1].textures[0] = uiRenderPasses[i].descriptorset->descriptors[1].textures[0];
+			pass.descriptorset->descriptors[2].samplers[0] = uiRenderPasses[i].descriptorset->descriptors[2].samplers[0];
+			pass.pipeline = uiRenderPasses[i].pipeline;
+
+			uiRenderPasses.push_back(pass);
+			currentUIVertex += numIndexes;
+			return;
+		}
+	}
+
+	pass.descriptorset = simple_ui_desc_set[numUsedRenderPasses];
 	pass.descriptorset->descriptors[0].uniform_buffers[0] = ui_uniform_buffer;
 	pass.descriptorset->descriptors[1].textures[0] = pass.texture;
 	pass.descriptorset->descriptors[2].samplers[0] = m_sampler;
-	pass.pipeline = simple_ui_pipeline[uiRenderPasses.size()];
+	pass.pipeline = simple_ui_pipeline[numUsedRenderPasses];
+
+	numUsedRenderPasses++;
 
 
 	uiRenderPasses.push_back(pass);
@@ -264,6 +283,8 @@ void GL_RenderUI(ID3D12GraphicsCommandList4* cmdList, ID3D12CommandAllocator* co
 
 	uiRenderPasses.clear();
 	currentUIVertex = 0;
+
+	numUsedRenderPasses = 0;
 }
 
 /*
